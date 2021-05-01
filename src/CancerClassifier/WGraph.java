@@ -4,7 +4,7 @@ package CancerClassifier;
 public class WGraph extends Graph {
 
     public static void main(String[] args) {
-        #ola
+        //hey
     }
     
 }
