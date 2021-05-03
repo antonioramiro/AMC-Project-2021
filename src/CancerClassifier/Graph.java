@@ -2,7 +2,7 @@ package CancerClassifier;
 
 import java.util.Arrays;
 
-public class Graph {
+public class Graph { //implementação básica de um grafo (esta em uma das aulas)
 	int dim;
 	int [][] ma;
 	
