@@ -1,6 +1,11 @@
 package CancerClassifier;
 
+import java.util.ArrayList;
+
 public class Dataset {
+    DataPoint 
+
+
 
     //
     public static int Count(){
