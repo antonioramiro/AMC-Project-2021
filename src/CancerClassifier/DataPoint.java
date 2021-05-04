@@ -6,7 +6,7 @@ import java.util.Arrays;
 public class DataPoint {
 
     //Class Attributes
-    double[] measurements;
+    int[] measurements;
     String classification;
 
     //Constructor of null DataPoint
@@ -16,8 +16,8 @@ public class DataPoint {
     }
 
     //Constructor of DataPoint with specific measurements and classification. Array length and classification must be as expected.
-    public DataPoint(double[] m, String c){
-        if ((m.length == 10) && (c == "benign" && c != "malignant") || (c != "benign" && c == "malignant")){   
+    public DataPoint(int[] m, String c){
+        if ((m.length == 10) && (c == "benign" ^ c == "malignant")){   
             this.measurements = m;
             this.classification = c;
         }else{
@@ -26,7 +26,7 @@ public class DataPoint {
     }
 
     //getter for measurements
-    public double[] getMeasurements() {
+    public int[] getMeasurements() {
         return this.measurements;
     }
 
@@ -36,7 +36,7 @@ public class DataPoint {
     }
 
     //Searching the datapoint for xi in index i and xi in index j, simultaneously
-    public boolean isThere(int i, int j, double xi, double xj){
+    public boolean isThere(int i, int j, int xi, int xj){
         if (i >= 10 || j >= 10 || i < 0 || j < 0){
             throw new ArrayIndexOutOfBoundsException("You shall provide indexes between 0 to 9");
         } else {
@@ -44,6 +44,7 @@ public class DataPoint {
         }
     }
 
+  
 
     @Override
     public String toString() {
@@ -59,7 +60,7 @@ public class DataPoint {
         System.out.println("Empty DataPoint:" + dp1.toString());
 
         //Filled DataPoint
-        double[] m2 = {1,2,3,4,5,6,7,8,9,10};
+        int[] m2 = {1,2,3,4,5,6,7,8,9,10};
         String c2 = "benign";
         DataPoint dp2 = new DataPoint(m2,c2);
         System.out.println("Filled DataPoint:" + dp2.toString());
@@ -78,11 +79,11 @@ public class DataPoint {
         */
 
         //Testing the isThere function
-        double[] m5 = {1,2,3,4,5,6,7,8,9,10};
+        int[] m5 = {1,2,3,4,5,6,7,8,9,10};
         String c5 = "benign";
         DataPoint dp5 = new DataPoint(m5,c5);
-        System.out.println("Supposed to succeed: " + dp5.isThere(0,1,1d,2d));
-        System.out.println("Supposed to fail: " + dp5.isThere(0,1,1d,3d));
+        System.out.println("Supposed to succeed: " + dp5.isThere(0,1,1,2));
+        System.out.println("Supposed to fail: " + dp5.isThere(0,1,1,3));
 
     }
 
