@@ -26,6 +26,10 @@ public class Dataset {
         }
 
     }
+
+    public int Dim(int i){
+        return 0;
+    }
     
     //Counting datapoints in the dataset, in which there is xi in index i and xi in index j, simultaneously
     public int Count(int i, int j, int xi, int xj){
@@ -35,6 +39,15 @@ public class Dataset {
         }
         return counter;
     }
+
+    public int Count(int i, int xi){
+        int counter = 0;
+        for (DataPoint dp: this.dataList){
+            if (dp.isThere(i, xi)) counter++;
+        }
+        return counter;
+    }
+
 
     //Adding a single DataPoint to the dataset
     public void Add(DataPoint v){

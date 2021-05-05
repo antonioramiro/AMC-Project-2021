@@ -44,6 +44,12 @@ public class DataPoint {
         }
     }
 
+    //Searching the datapoint for xi in index i 
+    public boolean isThere(int i, int xi){
+        return this.measurements[i] == xi;
+    
+    }
+
   
 
     @Override
