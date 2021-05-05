@@ -28,7 +28,13 @@ public class Dataset {
     }
 
     public int Dim(int i){
-        return 0;
+        int max = 0; 
+        for(DataPoint dp : this.dataList){
+            if(dp.measurements[i] > max){
+                max = dp.measurements[i];
+            }
+        }
+        return (max + 1);
     }
     
     //Counting datapoints in the dataset, in which there is xi in index i and xi in index j, simultaneously
@@ -123,6 +129,9 @@ public class Dataset {
 
         //Counting the number of combinations in the dataset
         System.out.println(ds2.Count(0, 9, 1, 10));
+
+        //Dim
+        System.out.println(ds2.Dim(9));
         
 
         
