@@ -3,8 +3,6 @@ package CancerClassifier;
 //To allow ArrayList use
 import java.util.ArrayList;
 
-import javax.xml.crypto.Data;
-
 //Dataset stores an ArrayList of DataPoints, and its length.
 public class Dataset {
 
