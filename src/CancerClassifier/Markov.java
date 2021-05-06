@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Markov {
-	ArrayList<ArrayList<Phi>> Phis;
-	ArrayList<ArrayList<Integer>> index;
-	int N;
+
+	private ArrayList<ArrayList<Phi>> Phis;
+	private ArrayList<ArrayList<Integer>> index;
+	private int N;
 
 	public Markov(int N){
 		ArrayList<ArrayList<Phi>> phis = new ArrayList<ArrayList<Phi>>();
@@ -22,7 +23,7 @@ public class Markov {
 		this.N = N;
 	}
 
-	private void setMarkov(int i, int j, Phi p) {
+	public void setMarkov(int i, int j, Phi p) {
 		if (i < N && j < N) {
 			this.Phis.get(i).add(p);
 			this.index.get(i).add(j);
@@ -92,7 +93,7 @@ public class Markov {
 
 		//System.out.println("beigng" + benign);
 		
-		System.out.println(benign.getMarkov(1,4));
+		System.out.println(benign.getMarkov(5,1));
 		/*
 		ArrayList<ArrayList<Phi>> X = new ArrayList<ArrayList<Phi>>();
 

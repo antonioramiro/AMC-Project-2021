@@ -1,10 +1,9 @@
 package CancerClassifier;
 
 import java.util.Arrays;
-import java.util.ArrayList;
 
 // Weighted Graph implementation 
-//public class WGraph extends Graph { -> só quando a classe graph estiver implemtada
+//public class WGraph extends Graph { -> sï¿½ quando a classe graph estiver implemtada
 	
 class Edge {
         int source;
@@ -17,10 +16,10 @@ class Edge {
 		}
 }
 
-public class WGraph {//(extends Graph) , usamos isto quando queremos usar a implementação da classe graph já implementada anteriormente 
-	int dim; //dimensão da matriz de ajacência
-	//int [][] ma; //matriz de adjacência em si
-	int [][] wmtx; //matriz onde vão ser guardados os valores dos pesos de cada aresta, será uma matriz simétrica tal como a outra dado que o grafo não é direcionado 
+public class WGraph {//(extends Graph) , usamos isto quando queremos usar a implementaï¿½ï¿½o da classe graph jï¿½ implementada anteriormente 
+	int dim; //dimensï¿½o da matriz de ajacï¿½ncia
+	//int [][] ma; //matriz de adjacï¿½ncia em si
+	int [][] wmtx; //matriz onde vï¿½o ser guardados os valores dos pesos de cada aresta, serï¿½ uma matriz simï¿½trica tal como a outra dado que o grafo nï¿½o ï¿½ direcionado 
 	//no fundo cada entrada desta matriz refere-se a uma aresta, nessa entrada guardamos o peso dessa aresta
 	
 	public WGraph (int d) {
@@ -29,13 +28,13 @@ public class WGraph {//(extends Graph) , usamos isto quando queremos usar a impl
 		this.wmtx = new int[d][d];
 	}
 	
-	public int getDim() { //função que nos dá a dimensão da matriz de adjcência (que acaba por ser a mesma dimensão da matriz com os pesos)
-		return this.dim; //se acharem por bem também podemos devolver a dimensão da matriz dos pesos mas vai ser igual
+	public int getDim() { //funï¿½ï¿½o que nos dï¿½ a dimensï¿½o da matriz de adjcï¿½ncia (que acaba por ser a mesma dimensï¿½o da matriz com os pesos)
+		return this.dim; //se acharem por bem tambï¿½m podemos devolver a dimensï¿½o da matriz dos pesos mas vai ser igual
 	}
 	
-	public void add(int s, int d, int w) { //adicionar um peso w a uma aresta (que vai do nó s ao nó d)
-		if (s >= 0 && s < this.dim && d >= 0 && d < this.dim) { //verificar se as arestas estão de acordo com a dimensão da matriz
-			//this.ma[s][d] = 1; //adiciono a aresta de qualquer maneira, não sei se preferem verificar antes se existe (dúvida(?))
+	public void add(int s, int d, int w) { //adicionar um peso w a uma aresta (que vai do nï¿½ s ao nï¿½ d)
+		if (s >= 0 && s < this.dim && d >= 0 && d < this.dim) { //verificar se as arestas estï¿½o de acordo com a dimensï¿½o da matriz
+			//this.ma[s][d] = 1; //adiciono a aresta de qualquer maneira, nï¿½o sei se preferem verificar antes se existe (dï¿½vida(?))
 			this.wmtx[s][d] = w; 
 		}
 		else {
@@ -48,9 +47,6 @@ public class WGraph {//(extends Graph) , usamos isto quando queremos usar a impl
 	public String toString() {
 		return "WGraph [dim=" + dim + ", wmtx=" + Arrays.deepToString(wmtx);
 	}
-
-
-
 	
     //funciona	
     public static void main(String[] args) {

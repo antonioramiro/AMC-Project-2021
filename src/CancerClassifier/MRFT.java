@@ -1,34 +1,35 @@
 package CancerClassifier;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class MRFT {
-	//Construtor que recebe uma árvore, e um dataset e coloca os phis em cada aresta da árvore (que podem ser vistos como uma matriz).
+public class MRFT{
 
 	//atributos
-	private int MRFTdim;						//dimensão da MRFT
-	private ArrayList<double[][]>[][] markov;				//matriz das matrizes dos phis
-	private ArrayList<Integer> special;			//aresta especial
+	private int dim;		             //nr de nÃ³s / dimensÃ£o da MRFT
+	private Markov markov;	 	     	 //datatype que armazena os phis
+	private ArrayList<Integer> special;	 //aresta especial
+    private Graph A;
 	
 	//Construtor
 	public MRFT(Dataset T, Graph A) {
+
 		this.markov = add_PHI(T, A);
-		this.MRFTdim = A.getDim();
+		this.dim = A.getDim();
+        this.A = A;
 		this.special = set_special(A);
 	}
 	
 	@Override
 	public String toString() {
-		return "MRFT [MRFTdim=" + MRFTdim + ", PHI_tree=" + Arrays.toString(markov) + ", special=" + special + "]";
+		return "MRFT [dim=" + this.dim + "\n tree=" + A.toString() + "\n special=" + special + "\n markov=" + this.markov.toString() + "]";
 	}
 
 	//escolhe uma aresta para ser a aresta especial
 	public ArrayList<Integer> set_special(Graph A) { 					//escolhe uma aresta especial
-		int i=0;														//vai de 0 ao menor nó que faz aresta com 0
+		int i=0;														//vai de 0 ao menor nï¿½ que faz aresta com 0
 		int j=1;
 		ArrayList<Integer> special = new ArrayList<Integer>();			
-		while(j< A.getDim()) {											//j varia dentro da dimensão do grafo
+		while(j< A.getDim()) {											//j varia dentro da dimensï¿½o do grafo
 			if(A.edgeQ(i,j)) {											
 				special.add(i);
 				special.add(j);
@@ -39,7 +40,7 @@ public class MRFT {
 		return special;
 	}
 	
-	//verifica se a aresta que une dois nós é a aresta especial
+	//verifica se a aresta que une dois nï¿½s ï¿½ a aresta especial
 	public boolean specialQ(int i, int j ) {
 		ArrayList<Integer> edge = new ArrayList<Integer>();
 		edge.add(i);
@@ -49,52 +50,50 @@ public class MRFT {
 	
 	//phi para arestas normais (phi_normal) e aresta especial (phi_special)
 	public double phi_normal(Dataset T, int i, int j, int xi, int xj, double delta) { 			//phi de xi 
-		return (T.Count(i, j, xi, xj) + delta)/(T.Count(i, xi) + delta*T.Dim(j)); 	
+		return (T.Count(i, j, xi, xj) + delta)/(T.Count(i, xi) + delta*T.measurementDim(j)); 	
 	}
 	public double phi_special(Dataset T, int i, int j, int xi, int xj, double delta) { 			//phi de xi e xj
-		return (T.Count(i,j, xi, xj) + delta)/(T.len() + delta*T.Dim(i)*T.Dim(j));     //Maria: alterei para T.len()  (estava T.len)
+		return (T.Count(i,j, xi, xj) + delta)/(T.len() + delta*T.measurementDim(i)*T.measurementDim(j));     //Maria: alterei para T.len()  (estava T.len)
 	}
 	
-	public double[][] add_PHI(Dataset T, Graph A){ //recebe a árvore e faz uma matriz PHI pra cada aresta da árvore		
-		int dim = A.getDim();
+	public Markov add_PHI(Dataset T, Graph A){ //recebe a ï¿½rvore e faz uma matriz PHI pra cada aresta da ï¿½rvore		
 		
-		ArrayList<ArrayList<Double[][]>> markov1 =  new ArrayList<ArrayList<Double[][]>>[][];
-		
-		ArrayList<Double[][]>[][] markov = new ArrayList<Double[][]>[][]; //passar pra markov
-		
-		for(int i=0; i< dim; i++) {  															//selecionar a aresta q começa em i 
-			for(int j=i+1; j< dim; j++) { 														//e termina em j
-				if (A.edgeQ(i,j)) { 															//não usar arestas de i pra i 
+		Markov markov =  new Markov(this.dim);
+				
+		for(int i=0; i < this.dim; i++) {   															//selecionar a aresta q comeï¿½a em i 
+			for(int j=i+1; j < this.dim; j++) { 														//e termina em j
+				if (A.edgeQ(i,j)) { 															//nï¿½o usar arestas de i pra i 
 					
-					double[][] PHI = new double[T.Dim(i)][T.Dim(j)];
+					Phi p = new Phi(T.measurementDim(i),T.measurementDim(j));
 					
-					for (int xi=0; xi < T.Dim(i); xi++) { 										//pra cada valor possível de xi 
-						for (int xj=0; xj < T.Dim(j); xj++) { 									//e cada valor possível de xj
+					for (int xi=0; xi < T.measurementDim(i); xi++) { 										//pra cada valor possï¿½vel de xi 
+						for (int xj=0; xj < T.measurementDim(j); xj++) { 									//e cada valor possï¿½vel de xj
 							
 							boolean found_special = false;
-							if(!found_special && specialQ(i,j)) {	 							//se i->j é uma aresta da árvore
-								PHI[xi][xj] = phi_special(T, i, j, xi, xj, 0.2); 				//calcula a função phi (xi,xj)
+							if(!found_special && specialQ(i,j)) {	 							//se i->j ï¿½ uma aresta da ï¿½rvore
+								p.setPhi(xi,xj,phi_special(T, i, j, xi, xj, 0.2)); 				//calcula a funï¿½ï¿½o phi (xi,xj)
 								found_special = true;
-							}else { 															//se i-> não é uma aresta da árvore
-								PHI[xi][xj] = phi_normal(T, i, j, xi, xj, 0.2); 				//calcula a função phi(xi,xj)
+							}else { 															//se i-> nï¿½o ï¿½ uma aresta da ï¿½rvore
+								p.setPhi(xi,xj,phi_normal(T, i, j, xi, xj, 0.2)); 	 				//calcula a funï¿½ï¿½o phi(xi,xj)
 							}
-							markov[i][j] = PHI[xi][xj];											//matriz de todos os nós que tem phis onde há aresta entre 2 nós
+							markov.setMarkov(i, j, p);
+                											//matriz de todos os nï¿½s que tem phis onde hï¿½ aresta entre 2 nï¿½s
 						}
 					}
 				}
 			}
 		}
-		return markov;
+		return markov; 
 	}
 				
-	public double Prob(Dataset T, Graph A, int[] Xn) { //não deve ser void
-		int dim = A.getDim();
+	public double Probability(int[] Xn) { 
+		int dim = this.dim;
 		double result = 1;
 		
-		for(int i=0; i< dim; i++) {  															//selecionar a aresta q começa em i 
-			for(int j=i+1; j< dim; j++) { 														//e termina em j
+		for(int i=0; i < dim; i++) {  															//selecionar a aresta q comeï¿½a em i 
+			for(int j= i+1; j< dim; j++) { 	 			 										//e termina em j
 				if (A.edgeQ(i,j)) { 
-					result = result*((this.markov[i][j])[Xn[i]][Xn[j]]);
+					result = result*(this.markov.getMarkov(i, j).getPhi(Xn[i],Xn[j]));
 				}
 			}
 		}
@@ -102,37 +101,62 @@ public class MRFT {
 		//para cada i do vetor
 		//para cada j do vetor diferente de i
 			//se i,j for aresta
-				//
-				
+				//		
 	}
 		
+	public static void main(String[] args) {
+        //Creating graph
+        Graph g = new Graph(5);
+		int[][] edges = {{0,1}, {0,3}, {1,1}, {1,2}, {2,1}, {3,2}, {2,4}, {4,3}};
+		for(int[] e : edges) {
+			g.addEdge(e[0], e[1]);
+		}
+
+        //Creating Dataset
+        Dataset ds1 = new Dataset();
+        System.out.println("Empty Dataset: " + ds1);
+        int[] m6 = {1,0,3,4,5,6,7,8,9,10};
+        int c6 = 0;
+        DataPoint dp6 = new DataPoint(m6,c6);
+        int[] m7 = {1,2,3,31,5,6,7,8,9,10};
+        int c7 = 0;
+        DataPoint dp7 = new DataPoint(m7,c7);
+        int[] m8 = {1,2,3,4,5,6,22,8,9,12};
+        int c8 = 1;
+        DataPoint dp8 = new DataPoint(m8,c8);
+        ds1.Add(dp6);
+        for(int i = 0; i < 3; i++){
+            ds1.Add(dp7);
+        }
+        ds1.Add(dp8);
+        
+        //Creating MRFT
+        MRFT mkv = new MRFT(ds1,g);
+        int[] m9 = {1,2,3,4,5,6,22,8,9,12};
+        double a = mkv.Probability(m9);
+        System.out.println(a);
+    }
+    
+}
 
 	//Prob: dado um vetor de dados Xn retorna a probabilidade destes dados no dataset.
 	
 	
 	//COISAS DO DATASET:
-	//1. seria bom ter uma função do Datase que retornasse Dim(i) = valor máximo de xi 
-	//2. a função Count precisa de uma versão de apenas 2 argumentos Count(i, xi) -- ver pdfs
+	//1. seria bom ter uma funï¿½ï¿½o do Datase que retornasse Dim(i) = valor mï¿½ximo de xi 
+	//2. a funï¿½ï¿½o Count precisa de uma versï¿½o de apenas 2 argumentos Count(i, xi) -- ver pdfs
 
 	
     //OUTROS PROBLEMAS:
-	//COMO ASSOCIAR AS ARESTAS ÀS MATRIZES PHI
+	//COMO ASSOCIAR AS ARESTAS ï¿½S MATRIZES PHI
 	//COMO CALCULAR AS PROBABILIDADES 
 	
 	//TO-DO
 		//corriggir erros
-		//função prob
-		//implementar árvores
+		//funï¿½ï¿½o prob
+		//implementar ï¿½rvores
 		//testar
 
-
-	
-
-	public static void main(String[] args) {
-        
-    }
-    
-}
 //nao preciso de uma matriz inteira 
 
 
