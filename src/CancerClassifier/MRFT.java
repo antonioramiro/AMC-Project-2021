@@ -3,6 +3,8 @@ package CancerClassifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+
+
 public class MRFT{
 
 	//atributos
@@ -109,7 +111,7 @@ public class MRFT{
                     System.out.println("Xn: " + Arrays.toString(Xn));
                     
 
-					result = result*(this.markov.getMarkov(i, j).getPhi(Xn[i]-1,Xn[j]-1)); //ajudem me a 
+					result = result*(this.markov.getMarkov(i, j).getPhi(Xn[i],Xn[j])); //ajudem me a 
 				}
 			}
 		}
@@ -119,28 +121,35 @@ public class MRFT{
 			//se i,j for aresta
 				//		
 	}
+
+    public int classFrequency(Dataset T, int i, int xi) {
+		int freq;
+		freq = T.Count(i, xi)/T.measurementDim(i);
+		return freq;
+		
+	}
 		
 	public static void main(String[] args) {
         //Creating graph
-        Tree g = new Tree(5);
-		int[][] edges = {{0,1}, {1,2}, {1,3}};
+        Tree g = new Tree(6);
+		int[][] edges = {{0,1}, {1,2}, {1,3},{0,4},{4,5}};
 		for(int[] e : edges) {
 			g.addEdge(e[0], e[1]);
 		}
 
         //Creating Dataset
         Dataset ds1 = new Dataset();
-        int[] m6 = {1,0,3,4,};
+        int[] m6 = {1,0,3,4,3,5};
         int c6 = 0;
         DataPoint dp6 = new DataPoint(m6,c6);
-        int[] m7 = {3,1,2,4};
+        int[] m7 = {1,0,3,4,3,5};
         int c7 = 0;
         DataPoint dp7 = new DataPoint(m7,c7);
-        int[] m8 = {1,0,2,4};
+        int[] m8 = {1,0,3,4,3,5};
         int c8 = 1;
         DataPoint dp8 = new DataPoint(m8,c8);
         ds1.Add(dp6);
-        for(int i = 0; i < 300; i++){
+        for(int i = 0; i < 30; i++){
             ds1.Add(dp7);
         }
         ds1.Add(dp8);
@@ -148,7 +157,7 @@ public class MRFT{
         
         //Creating MRFT
         MRFT mkv = new MRFT(ds1,g);
-        int[] m9 = {1,2,3,4};
+        int[] m9 = {1,0,3,4,3,5};
         double a = mkv.Probability(m9);
         System.out.println(a);
     }
