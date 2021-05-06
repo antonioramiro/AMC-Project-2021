@@ -11,12 +11,13 @@ public class Classifier {
     ArrayList<Double[][]>[][] benignMRFT, malignantMRFT; //erro aqui
     double benignFrequency, malignantFrequency;
     
-    public Classifier( Array(ArrayList<Double[][]>[][])  MRFT, double[] Frequency){
+    public Classifier( Array<ArrayList<Double[][]>>  MRFT, double[] Frequency) {
         this.benignMRFT = MRFT[0];
         this.malignantMRFT = MRFT[1];
         this.benignFrequency = Frequency[0];
-        this.malignantFrequency = mFrequency[1];
+        this.malignantFrequency = Frequency[1];
     }
+    
 
     public int Classify(int[] Xn){
         

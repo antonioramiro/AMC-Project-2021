@@ -52,7 +52,7 @@ public class MRFT {
 		return (T.Count(i, j, xi, xj) + delta)/(T.Count(i, xi) + delta*T.Dim(j)); 	
 	}
 	public double phi_special(Dataset T, int i, int j, int xi, int xj, double delta) { 			//phi de xi e xj
-		return (T.Count(i,j, xi, xj) + delta)/(T.len + delta*T.Dim(i)*T.Dim(j)); 
+		return (T.Count(i,j, xi, xj) + delta)/(T.len() + delta*T.Dim(i)*T.Dim(j));     //Maria: alterei para T.len()  (estava T.len)
 	}
 	
 	public double[][] add_PHI(Dataset T, Graph A){ //recebe a árvore e faz uma matriz PHI pra cada aresta da árvore		

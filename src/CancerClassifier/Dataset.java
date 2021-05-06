@@ -104,7 +104,7 @@ public class Dataset {
     @Override
     public String toString() {
         return "{" +
-            " len='" + getLen() + "'" +
+            " len='" + len() + "'" +                  //alterei aqui porque estava a chmar uma funçao chamada getLen e o nome da que esta em cima é so len
             ", dataList='" + getDataList() + "'" +
             "}";
     }
@@ -125,7 +125,7 @@ public class Dataset {
         //Filled Dataset
         int[] m7 = {1,2,3,4,5,6,7,8,9,10};
         String c7 = "benign";
-        DataPoint dp7 = new DataPoint(m7,c7);
+        DataPoint dp7 = new DataPoint(m7,c7); //Maria: aqui o problema e que a nossa funcao datapoint recebe um inteiro e uma matriz, neste daqui esta a receber uma strig no lugar do inteiro
 
         int[] m8 = {1,2,3,4,5,6,7,8,9,12};
         String c8 = "malignant";
@@ -137,7 +137,7 @@ public class Dataset {
         };
         dl.add(dp8);
         
-        Dataset ds2 = new Dataset(94,dl);
+        Dataset ds2 = new Dataset(94,dl);  //Maria: se nao estou em erro, a nossa funçao que cria dataset ou nao recebe nenhum argumento (como na linha 122), ou recebe so um array, ou seja, para implementar desta forma temos que definir no construtor que recebe um array e um inteiro ou adiciona-lo a nossa funcao
         System.out.println("Filled Dataset: " + ds2);
 
         //Adding to Dataset
@@ -148,7 +148,7 @@ public class Dataset {
         System.out.println("Dataset with 1 datapoint: " + ds1);
 
         //Getting the fiber of malignant tumours
-        System.out.println(ds2.Fiber("malignant")); 
+        System.out.println(ds2.Fiber("malignant")); //Maria: a nossa funcao fiber recebe um inteiro e nao uma string
 
         //Counting the number of combinations in the dataset
         System.out.println(ds2.Count(0, 9, 1, 10));
