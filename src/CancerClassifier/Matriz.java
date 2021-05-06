@@ -60,7 +60,21 @@ public class Matriz {
         //elements.clear();
         //System.out.println("Count: " + elements.size());
 
-}
-
+    public double Prob(Dataset T, Graph A, int[] Xn) { //não deve ser void
+		int dim = A.getDim();
+		double result = 1;
+		
+		for(int i=0; i< dim; i++) {  															//selecionar a aresta q começa em i 
+			for(int j=i+1; j< dim; j++) { 														//e termina em j
+				if (A.edgeQ(i,j)) {
+					if (specialQ(i,j)) {
+						result = result*(phi_special(T,i,j))
+					}
+				}
+					result = result*;
+				}
+			}
+		}
+    }
 }
 	
