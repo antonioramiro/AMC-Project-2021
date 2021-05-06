@@ -7,24 +7,41 @@ import java.util.ArrayList;
 public class Dataset {
 
     //Class Attributes
-    int len;
     ArrayList<DataPoint> dataList;
-    
+    int[] measurementsDomain;
+    int classDomain;
+   
     //Constructor of empty Dataset
     public Dataset(){
-        this.len = 0;
         this.dataList = new ArrayList<DataPoint>();
+        int[] emptyDomain = {0,0,0,0,0,0,0,0,0,0};
+        this.measurementsDomain = emptyDomain;
+        this.classDomain = 0;
     }
 
     //Constructor of filled Dataset
-    public Dataset(int l,  ArrayList<DataPoint> dL){
-        if(dL.size() == l){
-            this.len = l;
-            this.dataList = dL;
-        } else {
-            throw new IllegalArgumentException("'len', the first argument of Dataset must match with ArrayList's size.");
+    public Dataset(ArrayList<DataPoint> dL){
+        this.dataList = dL;
+        int[] measurementsD = {0,0,0,0,0,0,0,0,0,0};
+        int classD = 0;
+         
+        for(DataPoint dp : this.dataList){
+            for(int j = 0; j < 10; j++){
+                if(dp.getMeasurements()[j] > measurementsD[j]){
+                    measurementsD[j] = dp.getMeasurements()[j];
+                }
+                if(dp.getClassification() > classD){
+                    classD = dp.getClassification();
+                }
+            }
         }
+        this.measurementsDomain = measurementsD;
+        this.classDomain = classD;      
+    }
 
+    //Dataset size
+    public int len(){
+        return this.dataList.size();
     }
 
     public int Dim(int i){
@@ -57,12 +74,22 @@ public class Dataset {
 
     //Adding a single DataPoint to the dataset
     public void Add(DataPoint v){
-        this.len++;
         this.dataList.add(v);
+        for(int j = 0; j < 10; j++){
+            if(v.getMeasurements()[j] > this.measurementsDomain[j]){
+                this.measurementsDomain[j] = v.getMeasurements()[j];
+            }
+            if(v.getClassification() > this.classDomain){
+                this.classDomain = v.getClassification();
+            }
+        }
+
     }
 
-    //Returning a sub-Dataset, depending on which classification is requested
-    public Dataset Fiber(String classification){
+    //Returning a sub-Dataset, depending on which classification is requested, the domain remains unaltered, regardless of 
+    //the fiber class and its distribution, given that the domain maximizers are known to exist, even if not present in
+    //the current fiber
+    public Dataset Fiber(int classification){
         Dataset fiber = new Dataset();
         for (DataPoint dp: this.dataList){
             if (dp.getClassification() == classification){
@@ -82,10 +109,6 @@ public class Dataset {
             "}";
     }
 
-    //Getter for length
-    public int getLen() {
-        return this.len;
-    }
 
     //Getter for the Array
     public ArrayList<DataPoint> getDataList() {

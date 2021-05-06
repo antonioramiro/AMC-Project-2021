@@ -7,17 +7,11 @@ public class DataPoint {
 
     //Class Attributes
     int[] measurements;
-    String classification;
-
-    //Constructor of null DataPoint
-    public DataPoint(){
-        this.classification = null;
-        this.measurements = null;
-    }
+    int classification;
 
     //Constructor of DataPoint with specific measurements and classification. Array length and classification must be as expected.
-    public DataPoint(int[] m, String c){
-        if ((m.length == 10) && (c == "benign" ^ c == "malignant")){   
+    public DataPoint(int[] m, int c){
+        if (m.length == 10){   
             this.measurements = m;
             this.classification = c;
         }else{
@@ -31,7 +25,7 @@ public class DataPoint {
     }
 
     //getter for tumour classification
-    public String getClassification() {
+    public int getClassification() {
         return this.classification;
     }
 
@@ -61,15 +55,12 @@ public class DataPoint {
 
     public static void main(String[] args) {
         
-        //Empty DataPoint
-        DataPoint dp1 = new DataPoint();
-        System.out.println("Empty DataPoint:" + dp1.toString());
-
-        //Filled DataPoint
+    
+        //Creating DataPoint
         int[] m2 = {1,2,3,4,5,6,7,8,9,10};
-        String c2 = "benign";
+        int c2 = 0;
         DataPoint dp2 = new DataPoint(m2,c2);
-        System.out.println("Filled DataPoint:" + dp2.toString());
+        System.out.println("DataPoint:" + dp2.toString());
 
         
         /*Forcing exceptions
@@ -86,7 +77,7 @@ public class DataPoint {
 
         //Testing the isThere function
         int[] m5 = {1,2,3,4,5,6,7,8,9,10};
-        String c5 = "benign";
+        int c5 = 0;
         DataPoint dp5 = new DataPoint(m5,c5);
         System.out.println("Supposed to succeed: " + dp5.isThere(0,1,1,2));
         System.out.println("Supposed to fail: " + dp5.isThere(0,1,1,3));
