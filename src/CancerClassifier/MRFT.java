@@ -130,7 +130,8 @@ public class MRFT {
 
 	public static void main(String[] args) {
         
-    }
+
+	}
     
 }
 //nao preciso de uma matriz inteira 

@@ -3,7 +3,7 @@ package CancerClassifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Matriz {
+/*public class Matriz {
 
 	
 
@@ -28,7 +28,7 @@ public class Matriz {
 
      // Part 1: create new ArrayList.
         // ... Add 3 elements.
-    	ArrayList<ArrayList> = new ArrayList<elements>();
+    	ArrayList<ArrayList<>> = new ArrayList<elements>();
         ArrayList<double [][]> elements = new ArrayList<>();
         ArrayList<Integer> elements2 = new ArrayList<>();
         elements2.add(1);
@@ -44,7 +44,7 @@ public class Matriz {
         for (int i = 0; i < elements.size(); i++) {
 			System.out.println(Arrays.deepToString(elements.get(i)));
         }
-        
+    }
        /* ArrayList<ArrayList<Double[][]>> elements1 = new ArrayList<ArrayList>;
         elements1.add(10, elements);
         elements1.add(15, elements);
@@ -60,21 +60,38 @@ public class Matriz {
         //elements.clear();
         //System.out.println("Count: " + elements.size());
 
-    public double Prob(Dataset T, Graph A, int[] Xn) { //não deve ser void
-		int dim = A.getDim();
-		double result = 1;
-		
-		for(int i=0; i< dim; i++) {  															//selecionar a aresta q começa em i 
-			for(int j=i+1; j< dim; j++) { 														//e termina em j
-				if (A.edgeQ(i,j)) {
-					if (specialQ(i,j)) {
-						result = result*(phi_special(T,i,j))
-					}
-				}
-					result = result*;
-				}
-			}
-		}
-    }
-}
+
+class matrizes {
+	double[][] L;
+	public matrizes(double [][] l) {
+		this.L = l;
+	}
+	@Override
+	public String toString() {
+		return "matrizes [L=" + Arrays.deepToString(L) + "]";
+	}
 	
+}
+
+public class Duvidas {
+
+	public static void main(String[] args) {
+		double[][] z = {{1,2}, {3,4}};
+		matrizes mm = new matrizes(z);
+		
+		System.out.println(Arrays.deepToString(z));
+		System.out.println(mm);
+		
+		ArrayList<ArrayList<matrizes>> X = new ArrayList<ArrayList<matrizes>>();
+		
+		
+		X.add(new ArrayList<matrizes>());
+		X.get(0).add(mm);
+		
+		System.out.println(X);
+		
+		X.get(0).add(mm);
+		
+		System.out.println(X);
+	}
+}

@@ -79,7 +79,7 @@ public class MRF_teste {
 									PHI[xi][xj] = phi_normal(T, i, j, xi, xj, 0.2);
 									//calcula a função phi(xi,xj)
 								}
-								markov.add(PHI);
+								markov.get(i)
 								//markov[i][j] = PHI[xi][xj];											//matriz de todos os nós que tem phis onde há aresta entre 2 nós
 							}
 						}
