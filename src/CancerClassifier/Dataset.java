@@ -2,14 +2,15 @@ package CancerClassifier;
 
 //To allow ArrayList use
 import java.util.ArrayList;
+import java.util.Arrays;
 
 //Dataset stores an ArrayList of DataPoints, and its length.
 public class Dataset {
 
     //Class Attributes
     ArrayList<DataPoint> dataList;
-    int[] measurementsDomain;
-    int classDomain;
+    int[] measurementsDomain; //domain of the dataset measurements
+    int classDomain; //domain of the class
    
     //Constructor of empty Dataset
     public Dataset(){
@@ -19,40 +20,33 @@ public class Dataset {
         this.classDomain = 0;
     }
 
-    //Constructor of filled Dataset
-    public Dataset(ArrayList<DataPoint> dL){
-        this.dataList = dL;
-        int[] measurementsD = {0,0,0,0,0,0,0,0,0,0};
-        int classD = 0;
-         
-        for(DataPoint dp : this.dataList){
-            for(int j = 0; j < 10; j++){
-                if(dp.getMeasurements()[j] > measurementsD[j]){
-                    measurementsD[j] = dp.getMeasurements()[j];
-                }
-                if(dp.getClassification() > classD){
-                    classD = dp.getClassification();
-                }
+    //Adding a single DataPoint to the dataset
+    public void Add(DataPoint v){
+        this.dataList.add(v);
+        for(int j = 0; j < 10; j++){
+            if(v.getMeasurements()[j] >= this.measurementsDomain[j]){
+                this.measurementsDomain[j] = v.getMeasurements()[j] + 1;
+            }
+            if(v.getClassification() >= this.classDomain){
+                this.classDomain = v.getClassification() + 1;
             }
         }
-        this.measurementsDomain = measurementsD;
-        this.classDomain = classD;      
     }
 
-    //Dataset size
+    //Returns dataset size/length
     public int len(){
         return this.dataList.size();
     }
 
-    public int Dim(int i){
-        int max = 0; 
-        for(DataPoint dp : this.dataList){
-            if(dp.measurements[i] > max){
-                max = dp.measurements[i];
-            }
-        }
-        return (max + 1);
+    //returns de dimension of a measurement i
+    public int measurementDim(int i){
+        return this.measurementsDomain[i];
     }
+
+    //returns de dimension of a measurement i
+    public int classDim(){
+        return this.classDomain;
+    }    
     
     //Counting datapoints in the dataset, in which there is xi in index i and xi in index j, simultaneously
     public int Count(int i, int j, int xi, int xj){
@@ -63,27 +57,13 @@ public class Dataset {
         return counter;
     }
 
+    //Counting datapoints in the dataset, in which there is xi in index i 
     public int Count(int i, int xi){
         int counter = 0;
         for (DataPoint dp: this.dataList){
             if (dp.isThere(i, xi)) counter++;
         }
         return counter;
-    }
-
-
-    //Adding a single DataPoint to the dataset
-    public void Add(DataPoint v){
-        this.dataList.add(v);
-        for(int j = 0; j < 10; j++){
-            if(v.getMeasurements()[j] > this.measurementsDomain[j]){
-                this.measurementsDomain[j] = v.getMeasurements()[j];
-            }
-            if(v.getClassification() > this.classDomain){
-                this.classDomain = v.getClassification();
-            }
-        }
-
     }
 
     //Returning a sub-Dataset, depending on which classification is requested, the domain remains unaltered, regardless of 
@@ -100,20 +80,17 @@ public class Dataset {
 
     }
 
-    //Print
+    //To String method
     @Override
     public String toString() {
-        return "{" +
-            " len='" + len() + "'" +                  //alterei aqui porque estava a chmar uma funçao chamada getLen e o nome da que esta em cima é so len
-            ", dataList='" + getDataList() + "'" +
-            "}";
+        return "Dataset: \n"
+               + "Sample size =" + this.len() + "\n"
+               + "Measurements Domain =" + Arrays.toString(this.measurementsDomain) + ";\n" 
+               + "Class Domain =" + this.classDomain + ";\n"
+               + "Data =" + this.dataList
+               + "\n";
     }
-
-
-    //Getter for the Array
-    public ArrayList<DataPoint> getDataList() {
-        return this.dataList;
-    }
+ 
 
 
     public static void main(String[] args) {
@@ -122,41 +99,53 @@ public class Dataset {
         Dataset ds1 = new Dataset();
         System.out.println("Empty Dataset: " + ds1);
 
-        //Filled Dataset
-        int[] m7 = {1,2,3,4,5,6,7,8,9,10};
-        String c7 = "benign";
-        DataPoint dp7 = new DataPoint(m7,c7); //Maria: aqui o problema e que a nossa funcao datapoint recebe um inteiro e uma matriz, neste daqui esta a receber uma strig no lugar do inteiro
+        //Creating Datapoints
+        int[] m6 = {1,0,3,4,5,6,7,8,9,10};
+        int c6 = 0;
+        DataPoint dp6 = new DataPoint(m6,c6);
 
-        int[] m8 = {1,2,3,4,5,6,7,8,9,12};
-        String c8 = "malignant";
+        int[] m7 = {1,2,3,31,5,6,7,8,9,10};
+        int c7 = 0;
+        DataPoint dp7 = new DataPoint(m7,c7);
+
+        int[] m8 = {1,2,3,4,5,6,22,8,9,12};
+        int c8 = 1;
         DataPoint dp8 = new DataPoint(m8,c8);
 
-        ArrayList<DataPoint> dl = new ArrayList<DataPoint>();
-        for(int i = 0; i < 93; i++){
-            dl.add(dp7);
-        };
-        dl.add(dp8);
-        
-        Dataset ds2 = new Dataset(94,dl);  //Maria: se nao estou em erro, a nossa funçao que cria dataset ou nao recebe nenhum argumento (como na linha 122), ou recebe so um array, ou seja, para implementar desta forma temos que definir no construtor que recebe um array e um inteiro ou adiciona-lo a nossa funcao
-        System.out.println("Filled Dataset: " + ds2);
-
         //Adding to Dataset
-        int[] m6 = {1,2,3,4,5,6,7,8,9,10};
-        String c6 = "benign";
-        DataPoint dp6 = new DataPoint(m6,c6);
         ds1.Add(dp6);
-        System.out.println("Dataset with 1 datapoint: " + ds1);
+        System.out.println("Dataset with 1 datapoint: " + ds1 + "\n");
 
-        //Getting the fiber of malignant tumours
-        System.out.println(ds2.Fiber("malignant")); //Maria: a nossa funcao fiber recebe um inteiro e nao uma string
+        for(int i = 0; i < 3; i++){
+            ds1.Add(dp7);
+        }
+        System.out.println("Dataset with 3 datapoints: " + ds1 + "\n");
+
+        ds1.Add(dp8);
+        System.out.println("Dataset with 4 datapoints: " + ds1 + "\n");
+
+        //Getting the size of the dataset
+        System.out.println(ds1.len());
+
+        //Dim of variable indexed in 9
+        System.out.println("Dataset with 52 datapoints: " + ds1.measurementDim(9) + "\n");
+
+        //Dim of the class
+        System.out.println("Dataset with 52 datapoints: " + ds1.classDim() + "\n");
+
+        //Getting the fiber of 0-class tumours
+        System.out.println("0-class Fiber: \n" + ds1.Fiber(0) + "\n"); 
+
+        //Getting the fiber of 1-class tumours
+        System.out.println("1-class Fiber: \n" + ds1.Fiber(1) + "\n"); 
 
         //Counting the number of combinations in the dataset
-        System.out.println(ds2.Count(0, 9, 1, 10));
+        System.out.println("Number of times 1 shows in variable indexed 0, and 10 in 9, respectively and simultaneosly: "
+                           + ds1.Count(0, 9, 1, 10) + "\n");
 
-        //Dim
-        System.out.println(ds2.Dim(9));
         
-
+        
+        
         
     }
     

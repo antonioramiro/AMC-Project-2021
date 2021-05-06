@@ -15,7 +15,7 @@ public class DataPoint {
             this.measurements = m;
             this.classification = c;
         }else{
-            throw new IllegalArgumentException("A Data Point must have 10 measurements and a classification of either benign of malignant.");
+            throw new IllegalArgumentException("A Data Point must have 10 measurements.");
         }
     }
 
@@ -40,22 +40,17 @@ public class DataPoint {
 
     //Searching the datapoint for xi in index i 
     public boolean isThere(int i, int xi){
-        return this.measurements[i] == xi;
-    
+        return this.measurements[i] == xi;    
     }
-
-  
 
     @Override
     public String toString() {
         return "(Measurements: " + Arrays.toString(getMeasurements()) + "; " +
-               "Classification: " + getClassification() + ")";
+               "Classification: " + getClassification() + ") \n";
     }
-
 
     public static void main(String[] args) {
         
-    
         //Creating DataPoint
         int[] m2 = {1,2,3,4,5,6,7,8,9,10};
         int c2 = 0;
@@ -65,12 +60,12 @@ public class DataPoint {
         
         /*Forcing exceptions
         double[] m3 = {1,2,3,4,5,6,7,8,9};
-        String c3 = "benign";
+        int c3 = 1;
         DataPoint dp3 = new DataPoint(m3,c3);
         System.out.println("Exception Length:" + dp3.toString());
         
         double[] m4 = {1,2,3,4,3,5,6,7,8,9};
-        String c4 = "neutral";
+        int c4 = "neutral";
         DataPoint dp4 = new DataPoint(m4,c4);
         System.out.println("Exception Length:" + dp4.toString());
         */
