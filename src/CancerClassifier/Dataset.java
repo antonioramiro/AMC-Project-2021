@@ -11,11 +11,12 @@ public class Dataset {
     ArrayList<DataPoint> dataList;
     int[] measurementsDomain; //domain of the dataset measurements
     int classDomain; //domain of the class
+    int measurementNumber = 4;
    
     //Constructor of empty Dataset
     public Dataset(){
         this.dataList = new ArrayList<DataPoint>();
-        int[] emptyDomain = {0,0,0,0,0,0,0,0,0,0};
+        int[] emptyDomain = new int[this.measurementNumber];
         this.measurementsDomain = emptyDomain;
         this.classDomain = 0;
     }
@@ -23,7 +24,7 @@ public class Dataset {
     //Adding a single DataPoint to the dataset
     public void Add(DataPoint v){
         this.dataList.add(v);
-        for(int j = 0; j < 10; j++){
+        for(int j = 0; j < this.measurementNumber; j++){
             if(v.getMeasurements()[j] >= this.measurementsDomain[j]){
                 this.measurementsDomain[j] = v.getMeasurements()[j] + 1;
             }
@@ -91,6 +92,7 @@ public class Dataset {
     }
 
     public static void main(String[] args) { 
+       /*
         //Empty Dataset
         Dataset ds1 = new Dataset();
         System.out.println("Empty Dataset: " + ds1);
@@ -137,6 +139,23 @@ public class Dataset {
 
         //Counting the number of combinations in the dataset
         System.out.println("Number of times 1 shows in variable indexed 0, and 10 in 9, respectively and simultaneosly: "
-                           + ds1.Count(0, 9, 1, 10) + "\n");  
+                           + ds1.Count(0, 9, 1, 10) + "\n"); */
+                           
+        Dataset ds1 = new Dataset();
+        int[] m6 = {1,0,3,4};
+        int c6 = 0;
+        DataPoint dp6 = new DataPoint(m6,c6);
+        int[] m7 = {3,1,2,4};
+        int c7 = 0;
+        DataPoint dp7 = new DataPoint(m7,c7);
+        int[] m8 = {1,0,2,4};
+        int c8 = 1;
+        DataPoint dp8 = new DataPoint(m8,c8);
+        ds1.Add(dp6);
+        for(int i = 0; i < 3; i++){
+            ds1.Add(dp7);
+        }
+        ds1.Add(dp8);
+        System.out.println("Dataset: " + ds1);
     }    
 }

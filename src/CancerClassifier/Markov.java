@@ -32,13 +32,19 @@ public class Markov {
 	public Phi getMarkov(int i, int j) { //acrescentar expressao de erro caso passe o dom.
 		boolean isThere = false;
 		int k = 0;
-		for (int y = 0; !isThere && y < N; y++) {
-			if (this.index.get(i).get(y) == j) {
-				isThere = true;
-				k = y;
+		System.out.println("i:" + i + "; j:" + j + "; N:" + N);
+		if(i < N && j < N){
+			for (int y = 0; !isThere && y < N; y++) {
+				if (this.index.get(i).get(y) == j) {
+					isThere = true;
+					k = y;
+				}
 			}
+			return this.Phis.get(i).get(k);
+		}else{
+			throw new AssertionError("Requested i and j are out of phi domain");
 		}
-		return this.Phis.get(i).get(k);
+		
 	}
 
 

@@ -11,11 +11,11 @@ public class DataPoint {
 
     //Constructor of DataPoint with specific measurements and classification. Array length and classification must be as expected.
     public DataPoint(int[] m, int c){
-        if (m.length == 10){   
+        if (m.length == 4){   
             this.measurements = m;
             this.classification = c;
         }else{
-            throw new IllegalArgumentException("A Data Point must have 10 measurements.");
+            throw new AssertionError("A Data Point must have 10 measurements.");
         }
     }
 
@@ -32,7 +32,7 @@ public class DataPoint {
     //Searching the datapoint for xi in index i and xi in index j, simultaneously
     public boolean isThere(int i, int j, int xi, int xj){
         if (i >= 10 || j >= 10 || i < 0 || j < 0){
-            throw new ArrayIndexOutOfBoundsException("You shall provide indexes between 0 to 9");
+            throw new AssertionError("You shall provide indexes between 0 to 9");
         } else {
             return (this.measurements[i] == xi && this.measurements[j] == xj);
         }

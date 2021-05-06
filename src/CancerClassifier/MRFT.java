@@ -1,6 +1,7 @@
 package CancerClassifier;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MRFT{
 
@@ -8,14 +9,22 @@ public class MRFT{
 	private int dim;		             //nr de nós / dimensão da MRFT
 	private Markov markov;	 	     	 //datatype que armazena os phis
 	private ArrayList<Integer> special;	 //aresta especial
-    private Graph A;
+    private Tree A;
 	
 	//Construtor
-	public MRFT(Dataset T, Graph A) {
+	public MRFT(Dataset T, Tree A) {
 
+        System.out.println("dominio das mediadas: " + Arrays.toString(T.measurementsDomain));
+        
+        this.dim = A.getDim();
 		this.markov = add_PHI(T, A);
-		this.dim = A.getDim();
+		System.out.println("1Dim de A:" + A.getDim());
+        System.out.println("2Dim de A:" + this.dim);
+        
         this.A = A;
+        ArrayList<Integer> sp = new ArrayList<Integer>();
+        sp.add(0);
+        sp.add(1);
 		this.special = set_special(A);
 	}
 	
@@ -25,14 +34,17 @@ public class MRFT{
 	}
 
 	//escolhe uma aresta para ser a aresta especial
-	public ArrayList<Integer> set_special(Graph A) { 					//escolhe uma aresta especial
+	public ArrayList<Integer> set_special(Tree A) { 					//escolhe uma aresta especial
 		int i=0;														//vai de 0 ao menor n� que faz aresta com 0
 		int j=1;
+        boolean found = false;
 		ArrayList<Integer> special = new ArrayList<Integer>();			
-		while(j< A.getDim()) {											//j varia dentro da dimens�o do grafo
+		while(j < A.getDim() && !found) {											//j varia dentro da dimens�o do grafo
 			if(A.edgeQ(i,j)) {											
 				special.add(i);
 				special.add(j);
+                found = true;
+                System.out.println("Aresta" + i +"com"+ j);
 			}else {
 				j++;
 			}
@@ -56,8 +68,9 @@ public class MRFT{
 		return (T.Count(i,j, xi, xj) + delta)/(T.len() + delta*T.measurementDim(i)*T.measurementDim(j));     //Maria: alterei para T.len()  (estava T.len)
 	}
 	
-	public Markov add_PHI(Dataset T, Graph A){ //recebe a �rvore e faz uma matriz PHI pra cada aresta da �rvore		
+	public Markov add_PHI(Dataset T, Tree A){ //recebe a �rvore e faz uma matriz PHI pra cada aresta da �rvore		
 		
+        System.out.println("Esta dim: " + this.dim);
 		Markov markov =  new Markov(this.dim);
 				
 		for(int i=0; i < this.dim; i++) {   															//selecionar a aresta q come�a em i 
@@ -93,7 +106,10 @@ public class MRFT{
 		for(int i=0; i < dim; i++) {  															//selecionar a aresta q come�a em i 
 			for(int j= i+1; j< dim; j++) { 	 			 										//e termina em j
 				if (A.edgeQ(i,j)) { 
-					result = result*(this.markov.getMarkov(i, j).getPhi(Xn[i],Xn[j]));
+                    System.out.println("Xn: " + Arrays.toString(Xn));
+                    
+
+					result = result*(this.markov.getMarkov(i, j).getPhi(Xn[i]-1,Xn[j]-1)); //ajudem me a 
 				}
 			}
 		}
@@ -106,33 +122,33 @@ public class MRFT{
 		
 	public static void main(String[] args) {
         //Creating graph
-        Graph g = new Graph(5);
-		int[][] edges = {{0,1}, {0,3}, {1,1}, {1,2}, {2,1}, {3,2}, {2,4}, {4,3}};
+        Tree g = new Tree(5);
+		int[][] edges = {{0,1}, {1,2}, {1,3}};
 		for(int[] e : edges) {
 			g.addEdge(e[0], e[1]);
 		}
 
         //Creating Dataset
         Dataset ds1 = new Dataset();
-        System.out.println("Empty Dataset: " + ds1);
-        int[] m6 = {1,0,3,4,5,6,7,8,9,10};
+        int[] m6 = {1,0,3,4,};
         int c6 = 0;
         DataPoint dp6 = new DataPoint(m6,c6);
-        int[] m7 = {1,2,3,31,5,6,7,8,9,10};
+        int[] m7 = {3,1,2,4};
         int c7 = 0;
         DataPoint dp7 = new DataPoint(m7,c7);
-        int[] m8 = {1,2,3,4,5,6,22,8,9,12};
+        int[] m8 = {1,0,2,4};
         int c8 = 1;
         DataPoint dp8 = new DataPoint(m8,c8);
         ds1.Add(dp6);
-        for(int i = 0; i < 3; i++){
+        for(int i = 0; i < 300; i++){
             ds1.Add(dp7);
         }
         ds1.Add(dp8);
+        System.out.println("Dataset: " + ds1);
         
         //Creating MRFT
         MRFT mkv = new MRFT(ds1,g);
-        int[] m9 = {1,2,3,4,5,6,22,8,9,12};
+        int[] m9 = {1,2,3,4};
         double a = mkv.Probability(m9);
         System.out.println(a);
     }
@@ -162,10 +178,10 @@ public class MRFT{
 
 //atributos
 //private Dataset T; 	//dataset
-//private Graph A;
+//private Tree A;
 
 //metodo construtor
-//public MRFT(Dataset T, Graph A) {
+//public MRFT(Dataset T, Tree A) {
 	//this.T = T;
 	//this.A = A;
 //}	
@@ -177,9 +193,9 @@ public class MRFT{
 //public void setT(Dataset t) {
 	//	T = t;
 //}
-//public Graph getA() {
+//public Tree getA() {
 //	return A;
 //}
-//public void setA(Graph a) {
+//public void setA(Tree a) {
 //	A = a;
 //}	
