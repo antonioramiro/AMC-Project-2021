@@ -77,7 +77,6 @@ public class Dataset {
             }
         }
         return fiber;
-
     }
 
     //To String method
@@ -90,11 +89,8 @@ public class Dataset {
                + "Data =" + this.dataList
                + "\n";
     }
- 
 
-
-    public static void main(String[] args) {
-        
+    public static void main(String[] args) { 
         //Empty Dataset
         Dataset ds1 = new Dataset();
         System.out.println("Empty Dataset: " + ds1);
@@ -141,12 +137,6 @@ public class Dataset {
 
         //Counting the number of combinations in the dataset
         System.out.println("Number of times 1 shows in variable indexed 0, and 10 in 9, respectively and simultaneosly: "
-                           + ds1.Count(0, 9, 1, 10) + "\n");
-
-        
-        
-        
-        
-    }
-    
+                           + ds1.Count(0, 9, 1, 10) + "\n");  
+    }    
 }
