@@ -119,18 +119,23 @@ public class MRFT{
 	public double Probability(int[] Xn) { 
 		int dim = this.dim;
 		double result = 1;
-		
-		for(int i=0; i < dim; i++) {  															//selecionar a aresta q come�a em i 
-			for(int j= i; j< dim; j++) { 	 			 										//e termina em j
-				if (A.branchQ(i,j)) { 
-                    System.out.println("Xn: " + Arrays.toString(Xn));
-                    
-
-					result = result*(this.markov.getMarkov(i, j).getPhi(Xn[i],Xn[j])); //ajudem me a 
-				}
+		if ( dim == A.dim ) {
+			for(int i = 0; i < dim; i++) {  															//selecionar a aresta q come�a em i 
+				for(int j = i; j < dim; j++) { 	 			 										//e termina em j
+					if (A.branchQ(i,j)) { 
+	                    System.out.println("Xn: " + Arrays.toString(Xn));
+	                    
+	
+						result = result*(this.markov.getMarkov(i, j).getPhi(Xn[i],Xn[j])); //ajudem me a 
+					}
+				}	
 			}
+			return result;
 		}
-		return result;
+		
+		else {
+			throw new AssertionError("Tree's and array's dimension must be the same");
+		}
 		//para cada i do vetor
 		//para cada j do vetor diferente de i
 			//se i,j for aresta
