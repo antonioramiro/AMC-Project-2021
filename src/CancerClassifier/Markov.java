@@ -36,17 +36,19 @@ public class Markov {
 	public Phi getMarkov(int i, int j) {
 		int minor = Math.min(i,j);
 		int major = Math.max(i,j);
+		
 		boolean isThere = false;
 		int k = 0;
+		
 		if(minor < N && major < N){
 			for (int y = 0; !isThere && y < N; y++) {
 				if (this.index.get(minor).size() > 0 &&	this.index.get(minor).get(y) == major) {
 					isThere = true;
 					k = y;
 				}
-				else{
-					throw new AssertionError("Requested Phi matrix not in domain.");
-				}
+			}
+			if (!isThere) {
+				throw new AssertionError("Node not found");
 			}
 			return this.Phis.get(minor).get(k);
 		}else{
@@ -90,8 +92,8 @@ public class Markov {
 	}
 
 	public static void main(String[] args) {
-		double[][] matrizdophi01 = { { 2, 2 }, { 2, 2 }, {2 , 2} };
-		double[][] matrizdophi12 = { { 1.0, 1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0, 1.0}};
+		double[][] matrizdophi01 = {{ 2, 2 }, { 2, 2 }, {2 , 2}};
+		double[][] matrizdophi12 = {{ 1.0, 1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0, 1.0}};
 		double[][] matrizdophi13 = {{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0}};
 		double[][] matrizdophi14 = {{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0} , {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0}};
 		
@@ -106,7 +108,7 @@ public class Markov {
 		markov.setMarkov(1, 3, phi13);
 		markov.setMarkov(1, 4, phi14);
 		System.out.println(markov.toString());
-
+		
 		System.out.println("markov 0,1" + markov.getMarkov(0, 1));
 		System.out.println("markov 1,2" + markov.getMarkov(1, 2));
 		System.out.println("markov 1,4" + markov.getMarkov(1, 4));

@@ -38,31 +38,37 @@ public class MRFT{
 		return "MRFT [dim=" + this.dim + "\n tree=" + A.toString() + "\n special=" + special + "\n markov=" + this.markov.toString() + "]";
 	}
 
-	//escolhe uma aresta para ser a aresta especial
-	public ArrayList<Integer> set_special(Tree A) { 					//escolhe uma aresta especial
-		int i=0;														//vai de 0 ao menor n� que faz aresta com 0
-		int j=1;
-        boolean found = false;
-		ArrayList<Integer> special = new ArrayList<Integer>();			
-		while(j < A.dim && !found) {											//j varia dentro da dimens�o do grafo
-			if(A.branchQ(i,j)) {											
-				special.add(i);
-				special.add(j);
-                found = true;
-			}else {
-				j++;
-			}
-		}
+	public ArrayList<Integer> set_special(Tree A){
+		ArrayList<Integer> special = new ArrayList<Integer>();
+		special.add(0);
+		special.add(1);
 		return special;
 	}
+	//escolhe uma aresta para ser a aresta especial
+//	public ArrayList<Integer> set_special(Tree A) { 					//escolhe uma aresta especial
+//		int i=0;														//vai de 0 ao menor n� que faz aresta com 0
+ //       boolean found = false;
+//		ArrayList<Integer> special = new ArrayList<Integer>();			
+//		for(int j=1; j < A.dim ; j++) {
+//			if(A.branchQ(i,j) && !found) {											
+//				special.add(i);
+//				special.add(j);
+ //               found = true;
+//			}
+//		return special;
+//		}
+//	}
 	
 	//verifica se a aresta que une dois n�s � a aresta especial
-	public boolean specialQ(int i, int j ) {
+	public boolean specialQ(int i, int j ) {	
 		ArrayList<Integer> edge = new ArrayList<Integer>();
 		edge.add(i);
 		edge.add(j);
-		return edge == this.special;
+		return edge.equals(this.special);
+//		return edge == this.special;
 	}
+	
+
 	
 	//phi para arestas normais (phi_normal) e aresta especial (phi_special)
 	public double phi_normal(Dataset T, int i, int j, int xi, int xj, double delta) { 			//phi de xi 
@@ -81,15 +87,18 @@ public class MRFT{
 			for(int j=i; j < this.dim; j++) { 														//e termina em j
 				if (A.branchQ(i,j)) { 	
 					
+					boolean special = false;
+					if(!found_special && specialQ(i,j)) {	
+						special = true;
+						found_special = true;}
+					
                     Phi p = new Phi(T.measurementDim(i),T.measurementDim(j));
 
 					for (int xi=0; xi < T.measurementDim(i); xi++) { 										//pra cada valor poss�vel de xi 
 						for (int xj=0; xj < T.measurementDim(j); xj++) { 									//e cada valor poss�vel de xj
-							
-							if(!found_special && specialQ(i,j)) {	
+							if (special) {
                                 System.out.println("ENCONTREI A ESPECIAL---------------"); 							//se i->j � uma aresta da �rvore
-								p.setPhi(xi,xj, 2 /*phi_special(T, i, j, xi, xj, 0.2)*/); 				//calcula a fun��o phi (xi,xj)
-								found_special = true;
+								p.setPhi(xi,xj, 2 /*phi_special(T, i, j, xi, xj, 0.2)*/); //calcula a fun��o phi (xi,xj)
 							}else { 															//se i-> n�o � uma aresta da �rvore
 								p.setPhi(xi,xj, 1 /*phi_normal(T, i, j, xi, xj, 0.2)*/); 	 				//calcula a fun��o phi(xi,xj)
 							}                           
@@ -100,6 +109,7 @@ public class MRFT{
                    // System.out.println("markov: " + markov.toString());   
 				}
 			}
+			
 		}
         System.out.println("markov: " + markov.toString());
 		return markov; 
@@ -182,6 +192,8 @@ public class MRFT{
         int[] m9 = {1,0,3,5,4};
         double a = mkv.Probability(m9);
         System.out.println(a);
+        
+
 
         
 
