@@ -22,11 +22,13 @@ public class Tree {
 
         if (minor >= 0 && minor < this.dim && major >= 0 && major <= this.dim) {
 
-            if(!this.leafQ(major)){
+            if(!this.leafQ(major) && !this.branchQ(minor, major)){
                 this.index.add(new ArrayList<Integer>());
                 this.index.get(minor).add(major);
                 this.dim++;
-            }else{
+            }
+            
+            else{
                 throw new AssertionError("Tree doesn't allow three interconnected leafs");
             }   
         } else {
