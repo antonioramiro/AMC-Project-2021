@@ -16,7 +16,7 @@ public class Phi {
 	}
 
     public double getPhi(int i, int j) {
-        System.out.println("i: " + i +"; j:" + j);
+        System.out.println("inPhi i: " + i +"; j:" + j);
         System.out.println("phi :" + Arrays.deepToString(L));
         return L[i][j];
 	}

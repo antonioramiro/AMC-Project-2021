@@ -1,6 +1,7 @@
 package CancerClassifier;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Markov {
 
@@ -32,7 +33,8 @@ public class Markov {
 	public Phi getMarkov(int i, int j) { //acrescentar expressao de erro caso passe o dom.
 		boolean isThere = false;
 		int k = 0;
-		System.out.println("i:" + i + "; j:" + j + "; N:" + N);
+		System.out.println("Markov: " +this.getPhis());
+		System.out.println("inMarkov i:" + i + "; j:" + j + "; N:" + N);
 		if(i < N && j < N){
 			for (int y = 0; !isThere && y < N; y++) {
 				if (this.index.get(i).get(y) == j) {

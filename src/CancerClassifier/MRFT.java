@@ -11,23 +11,34 @@ public class MRFT{
 	private int dim;		             //nr de nós / dimensão da MRFT
 	private Markov markov;	 	     	 //datatype que armazena os phis
 	private ArrayList<Integer> special;	 //aresta especial
-    private Tree A;
+    private Tree2 A;
 	
 	//Construtor
-	public MRFT(Dataset T, Tree A) {
+	public MRFT(Dataset T, Tree2 A) {
 
-        System.out.println("dominio das mediadas: " + Arrays.toString(T.measurementsDomain));
+        if (A.dim == T.measurementNumber){
+            System.out.println("dominio das mediadas: " + Arrays.toString(T.measurementsDomain));
         
-        this.dim = A.getDim();
-		this.markov = add_PHI(T, A);
-		System.out.println("1Dim de A:" + A.getDim());
-        System.out.println("2Dim de A:" + this.dim);
-        
-        this.A = A;
-        ArrayList<Integer> sp = new ArrayList<Integer>();
-        sp.add(0);
-        sp.add(1);
-		this.special = set_special(A);
+            this.dim = A.getDim();
+            this.markov = add_PHI(T, A);
+            System.out.println("1Dim de A:" + A.getDim());
+            System.out.println("2Dim de A:" + this.dim);
+            
+            this.A = A;
+            ArrayList<Integer> sp = new ArrayList<Integer>();
+            sp.add(0);
+            sp.add(1);
+            this.special = set_special(A);
+
+            System.out.println("MEDIDAS");
+            for(int i : T.measurementsDomain){
+                System.out.println(i + "-");
+            }
+            
+        }else {
+            throw new AssertionError("The number of Tree Leafs musts match the number of measurements in the dataset");
+        }
+       
 	}
 	
 	@Override
@@ -36,7 +47,7 @@ public class MRFT{
 	}
 
 	//escolhe uma aresta para ser a aresta especial
-	public ArrayList<Integer> set_special(Tree A) { 					//escolhe uma aresta especial
+	public ArrayList<Integer> set_special(Tree2 A) { 					//escolhe uma aresta especial
 		int i=0;														//vai de 0 ao menor n� que faz aresta com 0
 		int j=1;
         boolean found = false;
@@ -70,20 +81,24 @@ public class MRFT{
 		return (T.Count(i,j, xi, xj) + delta)/(T.len() + delta*T.measurementDim(i)*T.measurementDim(j));     //Maria: alterei para T.len()  (estava T.len)
 	}
 	
-	public Markov add_PHI(Dataset T, Tree A){ //recebe a �rvore e faz uma matriz PHI pra cada aresta da �rvore		
+	public Markov add_PHI(Dataset T, Tree2 A){ //recebe a �rvore e faz uma matriz PHI pra cada aresta da �rvore		
 		
         System.out.println("Esta dim: " + this.dim);
 		Markov markov =  new Markov(this.dim);
 				
 		for(int i=0; i < this.dim; i++) {   															//selecionar a aresta q come�a em i 
-			for(int j=i+1; j < this.dim; j++) { 														//e termina em j
-				if (A.edgeQ(i,j)) { 															//n�o usar arestas de i pra i 
-					
+			for(int j=i; j < this.dim; j++) { 														//e termina em j
+				if (A.edgeQ(i,j)) { 					
+                    										//n�o usar arestas de i pra i 
+                    
+					System.out.println("antes do phi!!!: i="+T.measurementDim(i) +"; j=" + T.measurementDim(j));
 					Phi p = new Phi(T.measurementDim(i),T.measurementDim(j));
-					
+					System.out.println("phi ajuda-me  :" + Arrays.deepToString(p.L));
+
 					for (int xi=0; xi < T.measurementDim(i); xi++) { 										//pra cada valor poss�vel de xi 
 						for (int xj=0; xj < T.measurementDim(j); xj++) { 									//e cada valor poss�vel de xj
-							
+							System.out.println("depois do phi!!!: xi="+xi +"; xj=" + xj);
+
 							boolean found_special = false;
 							if(!found_special && specialQ(i,j)) {	 							//se i->j � uma aresta da �rvore
 								p.setPhi(xi,xj,phi_special(T, i, j, xi, xj, 0.2)); 				//calcula a fun��o phi (xi,xj)
@@ -106,7 +121,7 @@ public class MRFT{
 		double result = 1;
 		
 		for(int i=0; i < dim; i++) {  															//selecionar a aresta q come�a em i 
-			for(int j= i+1; j< dim; j++) { 	 			 										//e termina em j
+			for(int j= i; j< dim; j++) { 	 			 										//e termina em j
 				if (A.edgeQ(i,j)) { 
                     System.out.println("Xn: " + Arrays.toString(Xn));
                     
@@ -131,21 +146,21 @@ public class MRFT{
 		
 	public static void main(String[] args) {
         //Creating graph
-        Tree g = new Tree(6);
-		int[][] edges = {{0,1}, {1,2}, {1,3},{0,4},{4,5}};
+        Tree2 g = new Tree2(4);
+		int[][] edges = {{0,1}, {1,2}, {1,3}};
 		for(int[] e : edges) {
 			g.addEdge(e[0], e[1]);
 		}
 
         //Creating Dataset
         Dataset ds1 = new Dataset();
-        int[] m6 = {1,0,3,4,3,5};
+        int[] m6 = {1,0,3,4};
         int c6 = 0;
         DataPoint dp6 = new DataPoint(m6,c6);
-        int[] m7 = {1,0,3,4,3,5};
+        int[] m7 = {1,0,3,4};
         int c7 = 0;
         DataPoint dp7 = new DataPoint(m7,c7);
-        int[] m8 = {1,0,3,4,3,5};
+        int[] m8 = {1,0,3,4};
         int c8 = 1;
         DataPoint dp8 = new DataPoint(m8,c8);
         ds1.Add(dp6);
@@ -157,14 +172,16 @@ public class MRFT{
         
         //Creating MRFT
         MRFT mkv = new MRFT(ds1,g);
-        int[] m9 = {1,0,3,4,3,5};
+        int[] m9 = {1,0,3,4};
         double a = mkv.Probability(m9);
         System.out.println(a);
     }
     
 }
 
-	//Prob: dado um vetor de dados Xn retorna a probabilidade destes dados no dataset.
+
+
+//Prob: dado um vetor de dados Xn retorna a probabilidade destes dados no dataset.
 	
 	
 	//COISAS DO DATASET:

@@ -11,7 +11,7 @@ public class Dataset {
     ArrayList<DataPoint> dataList;
     int[] measurementsDomain; //domain of the dataset measurements
     int classDomain; //domain of the class
-    int measurementNumber = 6;
+    int measurementNumber = 4;
    
     //Constructor of empty Dataset
     public Dataset(){
