@@ -21,30 +21,37 @@ public class Tree {
         System.out.println("o: " + o + "; d:" + d);
 
         if (minor >= 0 && minor < this.dim && major >= 0 && major <= this.dim) {
-
-            if(!this.leafQ(major)){
-                this.index.add(new ArrayList<Integer>());
-                this.index.get(minor).add(major);
-                this.dim++;
-            }
             if (this.branchQ(minor, major)) {
-            	throw new AssertionError("This leaf already exists in the Tree");
+            	throw new AssertionError("This leaf already exists in the Tree.");
+            }else{
+                if(!this.leafQ(major)){
+                    this.index.add(new ArrayList<Integer>());
+                    this.index.get(minor).add(major);
+                    this.dim++;
+                }
+                else{
+                    throw new AssertionError("Tree doesn't allow three interconnected leafs.");
+                }
             }
-            
-            else{
-                throw new AssertionError("Tree doesn't allow three interconnected leafs");
-            }   
         } else {
-            throw new AssertionError("node not in graph");
+            throw new AssertionError("You cannot add a fallen leaf. Please, add branches to catch it");
         }
     }
 
     public boolean branchQ(int o, int d) {
         boolean isThere = false;
-        if (o >= 0 && o < this.dim && d >= 0 && d < this.dim) {
+        int minor = Math.min(o, d); 
+        int major = Math.max(o, d);
+        
+        if (minor >= 0 && minor < this.dim && major > 0 && major < this.dim){
+            System.out.println("Existe " + minor + ":" + major + "?");
+
+            for (int y = 0; !isThere && y < this.dim &&  y < this.index.get(minor).size(); y++) {
             
-            for (int y = 0; !isThere && y < this.dim; y++) {
-                if (this.index.get(o).get(y) == d) {
+                System.out.println("y:" + y + "minor:" + minor);
+
+
+                if (this.index.get(minor).get(y) == major) {
                     isThere = true;
                 }
             }
@@ -78,10 +85,14 @@ public class Tree {
 
         System.out.println(t.branchQ(1, 3));
 
-        int[][] edges = { { 0, 1},{0,2},{1,2}};
+        int[][] edges = {{0,1}, {1,2}, {1,3}};
         for (int[] e : edges) {
             t.addLeaf(e[0], e[1]);
         }
+        
+
+        System.out.println(t.leafQ(5));
+        System.out.println(t.branchQ(0,1));
 
         System.out.println(t);
 

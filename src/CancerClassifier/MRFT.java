@@ -15,7 +15,7 @@ public class MRFT{
 	
 	//Construtor
 	public MRFT(Dataset T, Tree A) {
-
+        System.out.println("3.");
         if (A.dim == T.measurementNumber){
             System.out.println("dominio das mediadas: " + Arrays.toString(T.measurementsDomain));
         
@@ -34,6 +34,7 @@ public class MRFT{
             for(int i : T.measurementsDomain){
                 System.out.println(i + "-");
             }
+            System.out.println("4.");
             
         }else {
             throw new AssertionError("The number of Tree Leafs musts match the number of measurements in the dataset");
@@ -119,10 +120,17 @@ public class MRFT{
 	public double Probability(int[] Xn) { 
 		int dim = this.dim;
 		double result = 1;
+        System.out.println("5.");
 		if ( Xn.length == dim ) {
-			for(int i = 0; i < dim; i++) {  															//selecionar a aresta q come�a em i 
-				for(int j = i; j < dim; j++) { 	 			 										//e termina em j
-					if (A.branchQ(i,j)) { 
+            System.out.println("6.");
+			for(int i = 0; i < dim; i++) { 
+                System.out.println("Prob.i=" + i); 															//selecionar a aresta q come�a em i 
+				for(int j = i; j < dim; j++) { 	
+                    System.out.println("Prob.j=" + j + "\n" + "BranchThere="+ A.branchQ(i,j)); 			 										//e termina em j
+					if (A.branchQ(i,j)) {
+                        
+
+                        System.out.println("7."); 
 	                    System.out.println("Xn: " + Arrays.toString(Xn));
 	                    
 	
@@ -150,6 +158,8 @@ public class MRFT{
 	}
 		
 	public static void main(String[] args) {
+
+        System.out.println("1.");
         //Creating graph
         Tree g = new Tree();
 		int[][] edges = {{0,1}, {1,2}, {1,3}};
@@ -174,10 +184,10 @@ public class MRFT{
         }
         ds1.Add(dp8);
         System.out.println("Dataset: " + ds1);
-        
+        System.out.println("2.");
         //Creating MRFT
         MRFT mkv = new MRFT(ds1,g);
-        int[] m9 = {1,0,3,4};
+        int[] m9 = {1,0,3,5};
         double a = mkv.Probability(m9);
         System.out.println(a);
     }
