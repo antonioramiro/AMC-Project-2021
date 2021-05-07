@@ -22,10 +22,13 @@ public class Tree {
 
         if (minor >= 0 && minor < this.dim && major >= 0 && major <= this.dim) {
 
-            if(!this.leafQ(major) && !this.branchQ(minor, major)){
+            if(!this.leafQ(major)){
                 this.index.add(new ArrayList<Integer>());
                 this.index.get(minor).add(major);
                 this.dim++;
+            }
+            if (this.branchQ(minor, major)) {
+            	throw new AssertionError("This leaf already exists in the Tree");
             }
             
             else{
