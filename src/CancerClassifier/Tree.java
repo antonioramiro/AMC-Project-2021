@@ -76,14 +76,15 @@ public class Tree {
 
         System.out.println(t.branchQ(1, 3));
 
-        int[][] edges = {{0,1}, {1,2}, {1,3}};
+        int[][] edges = {{0,1}, {1,2}, {1,3},{1,4}};
         for (int[] e : edges) {
             t.addLeaf(e[0], e[1]);
         }
         
 
+
         System.out.println(t.leafQ(5));
-        System.out.println(t.branchQ(0,1));
+        System.out.println(t.branchQ(1,3));
 
         System.out.println(t);
 

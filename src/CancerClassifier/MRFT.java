@@ -75,10 +75,12 @@ public class MRFT{
 	public Markov add_PHI(Dataset T, Tree A){ //recebe a �rvore e faz uma matriz PHI pra cada aresta da �rvore		
 		
 		Markov markov =  new Markov(this.dim);
-				
+		boolean found_special = false;	
+
 		for(int i=0; i < this.dim; i++) {   															//selecionar a aresta q come�a em i 
 			for(int j=i; j < this.dim; j++) { 														//e termina em j
 				if (A.branchQ(i,j)) { 	
+                    boolean special =  false;
 
                     System.out.println("Measurements(" + Arrays.toString(T.measurementsDomain));										//n�o usar arestas de i pra i 
                     System.out.println("Measurements(" + i + " , " + j + " ) : ( " + T.measurementDim(i) +" , " + T.measurementDim(j)+ ")");
@@ -86,30 +88,30 @@ public class MRFT{
                     Phi p = new Phi(T.measurementDim(i),T.measurementDim(j));
                 
                     System.out.println("Phi aft(" + i + " , " + j + " ) é matriz ( " + (p.L).length + "x" + (p.L)[0].length + ")");
-                    
+
 					for (int xi=0; xi < T.measurementDim(i); xi++) { 										//pra cada valor poss�vel de xi 
 						for (int xj=0; xj < T.measurementDim(j); xj++) { 									//e cada valor poss�vel de xj
-
-                            
-
-							boolean found_special = false;
-							if(!found_special && specialQ(i,j)) {	 							//se i->j � uma aresta da �rvore
-								p.setPhi(xi,xj,phi_special(T, i, j, xi, xj, 0.2)); 				//calcula a fun��o phi (xi,xj)
+							
+							if(!found_special && specialQ(i,j)) {	
+                                System.out.println("ENCONTREI A ESPECIAL---------------"); 							//se i->j � uma aresta da �rvore
+								p.setPhi(xi,xj, 2 /*phi_special(T, i, j, xi, xj, 0.2)*/); 				//calcula a fun��o phi (xi,xj)
 								found_special = true;
 							}else { 															//se i-> n�o � uma aresta da �rvore
-								p.setPhi(xi,xj,phi_normal(T, i, j, xi, xj, 0.2)); 	 				//calcula a fun��o phi(xi,xj)
-							}
-
-                           
-
-
-							markov.setMarkov(i, j, p);
+								p.setPhi(xi,xj, 1 /*phi_normal(T, i, j, xi, xj, 0.2)*/); 	 				//calcula a fun��o phi(xi,xj)
+							}                           
+                            //System.out.print("Markov antes: " + markov.getMarkov(i,j));			
+                            //System.out.print("Markov depois: " + markov.getMarkov(i,j));
                 											//matriz de todos os n�s que tem phis onde h� aresta entre 2 n�s
 						}
 					}
+                    markov.setMarkov(i, j, p);
+                    System.out.println("phi("+i+","+j+"):" + p.toString());
+                    System.out.println("markov: " + markov.toString());
+                    
 				}
 			}
 		}
+        //System.out.println("markov: " + markov.toString());
 		return markov; 
 	}
 				
@@ -120,16 +122,23 @@ public class MRFT{
 			for(int i = 0; i < dim; i++) { 														//selecionar a aresta q come�a em i 
 				for(int j = i; j < dim; j++) { 			 										//e termina em j
 					if (A.branchQ(i,j)) {
-                        System.out.println("i: "+i+"; j: "+j);
+                        System.out.println("Branches - i: "+i+"; j: "+j);
 
-                        System.out.println("fi("+i+","+j+") = " + this.markov.getMarkov(i, j));
+                        /*System.out.println("fi("+i+","+j+") = " + this.markov.getMarkov(i, j));
 
                         System.out.println("Xn =" + Arrays.toString(Xn));
-                        System.out.println("Xn(" +i+","+j+") = (" + Xn[i] + " , " + Xn[j] + ");");
+                        System.out.println("Xn(" +i+","+j+") = (" + Xn[i] + " , " + Xn[j] + ");");*/
+                        if(i==1 && j ==3){
+                            System.out.println(markov.toString());
+                            System.out.println(this.markov.getMarkov(i, j)); 
+                        }
+                        
 
-						result = result*(this.markov.getMarkov(i, j).getPhi(Xn[i],Xn[j])); //ajudem me a 
+						result = (result*(this.markov.getMarkov(i, j).getPhi(Xn[i],Xn[j]))); //ajudem me a 
+
+                        /*
                         System.out.println("fi("+i+","+j+") = " + this.markov.getMarkov(i, j).getPhi(Xn[i],Xn[j]));
-                        System.out.println("r:" + result);
+                        System.out.println("r:" + result);*/
 					}
 				}	
 			}
@@ -183,6 +192,9 @@ public class MRFT{
         int[] m9 = {1,0,3,5,4};
         double a = mkv.Probability(m9);
         System.out.println(a);
+
+        
+
     }
     
 }
