@@ -11,17 +11,17 @@ public class MRFT{
 	private int dim;		             //nr de nós / dimensão da MRFT
 	private Markov markov;	 	     	 //datatype que armazena os phis
 	private ArrayList<Integer> special;	 //aresta especial
-    private Tree2 A;
+    private Tree A;
 	
 	//Construtor
-	public MRFT(Dataset T, Tree2 A) {
+	public MRFT(Dataset T, Tree A) {
 
         if (A.dim == T.measurementNumber){
             System.out.println("dominio das mediadas: " + Arrays.toString(T.measurementsDomain));
         
-            this.dim = A.getDim();
+            this.dim = A.dim ;
             this.markov = add_PHI(T, A);
-            System.out.println("1Dim de A:" + A.getDim());
+            System.out.println("1Dim de A:" + A.dim);
             System.out.println("2Dim de A:" + this.dim);
             
             this.A = A;
@@ -47,13 +47,13 @@ public class MRFT{
 	}
 
 	//escolhe uma aresta para ser a aresta especial
-	public ArrayList<Integer> set_special(Tree2 A) { 					//escolhe uma aresta especial
+	public ArrayList<Integer> set_special(Tree A) { 					//escolhe uma aresta especial
 		int i=0;														//vai de 0 ao menor n� que faz aresta com 0
 		int j=1;
         boolean found = false;
 		ArrayList<Integer> special = new ArrayList<Integer>();			
-		while(j < A.getDim() && !found) {											//j varia dentro da dimens�o do grafo
-			if(A.edgeQ(i,j)) {											
+		while(j < A.dim && !found) {											//j varia dentro da dimens�o do grafo
+			if(A.branchQ(i,j)) {											
 				special.add(i);
 				special.add(j);
                 found = true;
@@ -81,14 +81,14 @@ public class MRFT{
 		return (T.Count(i,j, xi, xj) + delta)/(T.len() + delta*T.measurementDim(i)*T.measurementDim(j));     //Maria: alterei para T.len()  (estava T.len)
 	}
 	
-	public Markov add_PHI(Dataset T, Tree2 A){ //recebe a �rvore e faz uma matriz PHI pra cada aresta da �rvore		
+	public Markov add_PHI(Dataset T, Tree A){ //recebe a �rvore e faz uma matriz PHI pra cada aresta da �rvore		
 		
         System.out.println("Esta dim: " + this.dim);
 		Markov markov =  new Markov(this.dim);
 				
 		for(int i=0; i < this.dim; i++) {   															//selecionar a aresta q come�a em i 
 			for(int j=i; j < this.dim; j++) { 														//e termina em j
-				if (A.edgeQ(i,j)) { 					
+				if (A.branchQ(i,j)) { 					
                     										//n�o usar arestas de i pra i 
                     
 					System.out.println("antes do phi!!!: i="+T.measurementDim(i) +"; j=" + T.measurementDim(j));
@@ -122,7 +122,7 @@ public class MRFT{
 		
 		for(int i=0; i < dim; i++) {  															//selecionar a aresta q come�a em i 
 			for(int j= i; j< dim; j++) { 	 			 										//e termina em j
-				if (A.edgeQ(i,j)) { 
+				if (A.branchQ(i,j)) { 
                     System.out.println("Xn: " + Arrays.toString(Xn));
                     
 
@@ -146,10 +146,10 @@ public class MRFT{
 		
 	public static void main(String[] args) {
         //Creating graph
-        Tree2 g = new Tree2(4);
+        Tree g = new Tree();
 		int[][] edges = {{0,1}, {1,2}, {1,3}};
 		for(int[] e : edges) {
-			g.addEdge(e[0], e[1]);
+			g.addLeaf(e[0], e[1]);
 		}
 
         //Creating Dataset
