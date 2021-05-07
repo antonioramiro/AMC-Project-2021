@@ -33,8 +33,6 @@ public class Markov {
 	public Phi getMarkov(int i, int j) { //acrescentar expressao de erro caso passe o dom.
 		boolean isThere = false;
 		int k = 0;
-		System.out.println("Markov: " +this.getPhis());
-		System.out.println("inMarkov i:" + i + "; j:" + j + "; N:" + N);
 		if(i < N && j < N){
 			for (int y = 0; !isThere && y < N; y++) {
 				if (this.index.get(i).get(y) == j) {
@@ -83,24 +81,24 @@ public class Markov {
 			"}";
 	}
 
-
 	public static void main(String[] args) {
-		double[][] x = { { 1, 2,39 }, { 3, 4,90 } };
-		double[][] z = { { 1, 2 }, { 3, 4 } };
+		double[][] x = { { 1, 2, 4 , 5, 1, 2 }, {1, 2, 4 , 5, 1, 2  } };
+		double[][] z = { { 1, 2,3 }, {  1, 2,3  }, {  1, 2,3  } };
 		Phi a = new Phi(x);
 		Phi b = new Phi(z);
 
 		/*System.out.println(Arrays.deepToString(x));
 		System.out.println(a);*/
 
-		Markov benign = new Markov(12);
-		benign.setMarkov(1, 4, a);
-		benign.setMarkov(5, 9, b);
+		Markov benign = new Markov(5);
+		benign.setMarkov(0, 4, a);
+		benign.setMarkov(5, 3, b);
 		benign.setMarkov(0, 0, a);
 
+		benign.getMarkov(0, 4);
 		//System.out.println("beigng" + benign);
 		
-		System.out.println(benign.getMarkov(5,1));
+		System.out.println(benign.getMarkov(4,1));
 		/*
 		ArrayList<ArrayList<Phi>> X = new ArrayList<ArrayList<Phi>>();
 

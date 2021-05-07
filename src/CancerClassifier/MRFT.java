@@ -15,26 +15,17 @@ public class MRFT{
 	
 	//Construtor
 	public MRFT(Dataset T, Tree A) {
-        System.out.println("3.");
+       
         if (A.dim == T.measurementNumber){
-            System.out.println("dominio das mediadas: " + Arrays.toString(T.measurementsDomain));
         
             this.dim = A.dim ;
             this.markov = add_PHI(T, A);
-            System.out.println("1Dim de A:" + A.dim);
-            System.out.println("2Dim de A:" + this.dim);
             
             this.A = A;
             ArrayList<Integer> sp = new ArrayList<Integer>();
             sp.add(0);
             sp.add(1);
             this.special = set_special(A);
-
-            System.out.println("MEDIDAS");
-            for(int i : T.measurementsDomain){
-                System.out.println(i + "-");
-            }
-            System.out.println("4.");
             
         }else {
             throw new AssertionError("The number of Tree Leafs musts match the number of measurements in the dataset");
@@ -58,7 +49,6 @@ public class MRFT{
 				special.add(i);
 				special.add(j);
                 found = true;
-                System.out.println("Aresta" + i +"com"+ j);
 			}else {
 				j++;
 			}
@@ -84,21 +74,23 @@ public class MRFT{
 	
 	public Markov add_PHI(Dataset T, Tree A){ //recebe a �rvore e faz uma matriz PHI pra cada aresta da �rvore		
 		
-        System.out.println("Esta dim: " + this.dim);
 		Markov markov =  new Markov(this.dim);
 				
 		for(int i=0; i < this.dim; i++) {   															//selecionar a aresta q come�a em i 
 			for(int j=i; j < this.dim; j++) { 														//e termina em j
-				if (A.branchQ(i,j)) { 					
-                    										//n�o usar arestas de i pra i 
-                    
-					System.out.println("antes do phi!!!: i="+T.measurementDim(i) +"; j=" + T.measurementDim(j));
-					Phi p = new Phi(T.measurementDim(i),T.measurementDim(j));
-					System.out.println("phi ajuda-me  :" + Arrays.deepToString(p.L));
+				if (A.branchQ(i,j)) { 	
 
+                    System.out.println("Measurements(" + Arrays.toString(T.measurementsDomain));										//n�o usar arestas de i pra i 
+                    System.out.println("Measurements(" + i + " , " + j + " ) : ( " + T.measurementDim(i) +" , " + T.measurementDim(j)+ ")");
+					
+                    Phi p = new Phi(T.measurementDim(i),T.measurementDim(j));
+                
+                    System.out.println("Phi aft(" + i + " , " + j + " ) é matriz ( " + (p.L).length + "x" + (p.L)[0].length + ")");
+                    
 					for (int xi=0; xi < T.measurementDim(i); xi++) { 										//pra cada valor poss�vel de xi 
 						for (int xj=0; xj < T.measurementDim(j); xj++) { 									//e cada valor poss�vel de xj
-							System.out.println("depois do phi!!!: xi="+xi +"; xj=" + xj);
+
+                            
 
 							boolean found_special = false;
 							if(!found_special && specialQ(i,j)) {	 							//se i->j � uma aresta da �rvore
@@ -107,6 +99,10 @@ public class MRFT{
 							}else { 															//se i-> n�o � uma aresta da �rvore
 								p.setPhi(xi,xj,phi_normal(T, i, j, xi, xj, 0.2)); 	 				//calcula a fun��o phi(xi,xj)
 							}
+
+                           
+
+
 							markov.setMarkov(i, j, p);
                 											//matriz de todos os n�s que tem phis onde h� aresta entre 2 n�s
 						}
@@ -120,21 +116,20 @@ public class MRFT{
 	public double Probability(int[] Xn) { 
 		int dim = this.dim;
 		double result = 1;
-        System.out.println("5.");
 		if ( Xn.length == dim ) {
-            System.out.println("6.");
-			for(int i = 0; i < dim; i++) { 
-                System.out.println("Prob.i=" + i); 															//selecionar a aresta q come�a em i 
-				for(int j = i; j < dim; j++) { 	
-                    System.out.println("Prob.j=" + j + "\n" + "BranchThere="+ A.branchQ(i,j)); 			 										//e termina em j
+			for(int i = 0; i < dim; i++) { 														//selecionar a aresta q come�a em i 
+				for(int j = i; j < dim; j++) { 			 										//e termina em j
 					if (A.branchQ(i,j)) {
-                        
+                        System.out.println("i: "+i+"; j: "+j);
 
-                        System.out.println("7."); 
-	                    System.out.println("Xn: " + Arrays.toString(Xn));
-	                    
-	
+                        System.out.println("fi("+i+","+j+") = " + this.markov.getMarkov(i, j));
+
+                        System.out.println("Xn =" + Arrays.toString(Xn));
+                        System.out.println("Xn(" +i+","+j+") = (" + Xn[i] + " , " + Xn[j] + ");");
+
 						result = result*(this.markov.getMarkov(i, j).getPhi(Xn[i],Xn[j])); //ajudem me a 
+                        System.out.println("fi("+i+","+j+") = " + this.markov.getMarkov(i, j).getPhi(Xn[i],Xn[j]));
+                        System.out.println("r:" + result);
 					}
 				}	
 			}
@@ -158,24 +153,22 @@ public class MRFT{
 	}
 		
 	public static void main(String[] args) {
-
-        System.out.println("1.");
         //Creating graph
         Tree g = new Tree();
-		int[][] edges = {{0,1}, {1,2}, {1,3}};
+		int[][] edges = {{0,1}, {1,2}, {1,3},{1,4}};
 		for(int[] e : edges) {
 			g.addLeaf(e[0], e[1]);
 		}
 
         //Creating Dataset
         Dataset ds1 = new Dataset();
-        int[] m6 = {1,0,3,4};
+        int[] m6 = {2,1,4,6,5};
         int c6 = 0;
         DataPoint dp6 = new DataPoint(m6,c6);
-        int[] m7 = {1,0,3,4};
+        int[] m7 = {1,0,3,4,9};
         int c7 = 0;
         DataPoint dp7 = new DataPoint(m7,c7);
-        int[] m8 = {1,0,3,4};
+        int[] m8 = {1,0,3,4,5};
         int c8 = 1;
         DataPoint dp8 = new DataPoint(m8,c8);
         ds1.Add(dp6);
@@ -184,10 +177,10 @@ public class MRFT{
         }
         ds1.Add(dp8);
         System.out.println("Dataset: " + ds1);
-        System.out.println("2.");
+
         //Creating MRFT
         MRFT mkv = new MRFT(ds1,g);
-        int[] m9 = {1,0,3,5};
+        int[] m9 = {1,0,3,5,4};
         double a = mkv.Probability(m9);
         System.out.println(a);
     }

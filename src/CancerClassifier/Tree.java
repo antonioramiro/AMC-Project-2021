@@ -17,9 +17,6 @@ public class Tree {
     public void addLeaf(int o, int d) {
         int minor = Math.min(o, d); 
         int major = Math.max(o, d);
-
-        System.out.println("o: " + o + "; d:" + d);
-
         if (minor >= 0 && minor < this.dim && major >= 0 && major <= this.dim) {
             if (this.branchQ(minor, major)) {
             	throw new AssertionError("This leaf already exists in the Tree.");
@@ -44,13 +41,7 @@ public class Tree {
         int major = Math.max(o, d);
         
         if (minor >= 0 && minor < this.dim && major > 0 && major < this.dim){
-            System.out.println("Existe " + minor + ":" + major + "?");
-
             for (int y = 0; !isThere && y < this.dim &&  y < this.index.get(minor).size(); y++) {
-            
-                System.out.println("y:" + y + "minor:" + minor);
-
-
                 if (this.index.get(minor).get(y) == major) {
                     isThere = true;
                 }
