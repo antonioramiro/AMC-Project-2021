@@ -34,10 +34,10 @@ public class Classifier {
 
     public static void main(String[] args) {
         //Creating graph
-        Tree2 g = new Tree2(6);
+        Tree g = new Tree();
 		int[][] edges = {{0,1}, {1,2}, {1,3},{0,4},{4,5}};
 		for(int[] e : edges) {
-			g.addEdge(e[0], e[1]);
+			g.addLeaf(e[0], e[1]);
 		}
 
         //Creating Dataset
