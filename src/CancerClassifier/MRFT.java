@@ -119,7 +119,7 @@ public class MRFT{
 	public double Probability(int[] Xn) { 
 		int dim = this.dim;
 		double result = 1;
-		if ( dim == A.dim ) {
+		if ( Xn.length == dim ) {
 			for(int i = 0; i < dim; i++) {  															//selecionar a aresta q come�a em i 
 				for(int j = i; j < dim; j++) { 	 			 										//e termina em j
 					if (A.branchQ(i,j)) { 
