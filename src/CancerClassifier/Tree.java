@@ -15,22 +15,20 @@ public class Tree {
     }
 
     public void addLeaf(int o, int d) {
-        int minus = o;
-        if (d < o) minus = d;
+        int minor = Math.min(o, d); 
+        int major = Math.max(o, d);
 
         System.out.println("o: " + o + "; d:" + d);
 
-        if (o >= 0 && o < this.dim && d >= 0 && d <= this.dim) {
+        if (minor >= 0 && minor < this.dim && major >= 0 && major <= this.dim) {
 
-            if(!this.leafQ(d)){
+            if(!this.leafQ(major)){
                 this.index.add(new ArrayList<Integer>());
-                this.index.get(o).add(d);
+                this.index.get(minor).add(major);
                 this.dim++;
             }else{
                 throw new AssertionError("Tree doesn't allow three interconnected leafs");
-            }
-
-            
+            }   
         } else {
             throw new AssertionError("node not in graph");
         }
