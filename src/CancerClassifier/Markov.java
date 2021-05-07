@@ -90,20 +90,30 @@ public class Markov {
 	}
 
 	public static void main(String[] args) {
-		double[][] x = { { 1, 2, 4 , 5, 1, 2 }, {1, 2, 4 , 5, 1, 2  } };
-		double[][] z = { { 1, 2,3 }, {  1, 2,3  }, {  1, 2,3  } };
-		Phi a = new Phi(x);
-		Phi b = new Phi(z);
-
-		Markov benign = new Markov(5);
-		benign.setMarkov(0, 4, a);
-		benign.setMarkov(4, 3, b);
-		benign.setMarkov(0, 0, a);
-		System.out.println(benign.toString());
-
-		System.out.println("benign 0,4" + benign.getMarkov(0, 4));
+		double[][] matrizdophi01 = { { 2, 2 }, { 2, 2 }, {2 , 2} };
+		double[][] matrizdophi12 = { { 1.0, 1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0, 1.0}};
+		double[][] matrizdophi13 = {{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0}};
+		double[][] matrizdophi14 = {{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0} , {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0}};
 		
-		System.out.println(benign.getMarkov(4,0));
+		Phi phi01 = new Phi(matrizdophi01);
+		Phi phi12 = new Phi(matrizdophi12);
+		Phi phi13 = new Phi(matrizdophi13);
+		Phi phi14 = new Phi(matrizdophi14);
+
+		Markov markov = new Markov(5);
+		markov.setMarkov(0, 1, phi01);
+		markov.setMarkov(1, 2, phi12);
+		markov.setMarkov(1, 3, phi13);
+		markov.setMarkov(1, 4, phi14);
+		System.out.println(markov.toString());
+
+		System.out.println("markov 0,1" + markov.getMarkov(0, 1));
+		System.out.println("markov 1,2" + markov.getMarkov(1, 2));
+		System.out.println("markov 1,4" + markov.getMarkov(1, 4));
+		System.out.println("markov 1,3" + markov.getMarkov(1, 3));
+
+		
+
 		/*
 		ArrayList<ArrayList<Phi>> X = new ArrayList<ArrayList<Phi>>();
 
@@ -114,7 +124,10 @@ public class Markov {
 		X.get(0).add(b);
 
 		System.out.println(X);*/
-
-		
+		//markov: { Phis='[[[Phi=[[1.0, 1.0], [1.0, 1.0], [1.0, 1.0]]]],
+				//		[[Phi=[[1.0, 1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0, 1.0]]], 
+		//[Phi=[[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]]], 
+		//[Phi=[[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]]]],
+					//	[], [], []]', index='[[1], [2, 3, 4], [], [], []]', N='5'}		
 	}
 }

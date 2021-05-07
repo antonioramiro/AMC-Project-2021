@@ -80,14 +80,8 @@ public class MRFT{
 		for(int i=0; i < this.dim; i++) {   															//selecionar a aresta q come�a em i 
 			for(int j=i; j < this.dim; j++) { 														//e termina em j
 				if (A.branchQ(i,j)) { 	
-                    boolean special =  false;
-
-                    System.out.println("Measurements(" + Arrays.toString(T.measurementsDomain));										//n�o usar arestas de i pra i 
-                    System.out.println("Measurements(" + i + " , " + j + " ) : ( " + T.measurementDim(i) +" , " + T.measurementDim(j)+ ")");
 					
                     Phi p = new Phi(T.measurementDim(i),T.measurementDim(j));
-                
-                    System.out.println("Phi aft(" + i + " , " + j + " ) é matriz ( " + (p.L).length + "x" + (p.L)[0].length + ")");
 
 					for (int xi=0; xi < T.measurementDim(i); xi++) { 										//pra cada valor poss�vel de xi 
 						for (int xj=0; xj < T.measurementDim(j); xj++) { 									//e cada valor poss�vel de xj
@@ -99,19 +93,15 @@ public class MRFT{
 							}else { 															//se i-> n�o � uma aresta da �rvore
 								p.setPhi(xi,xj, 1 /*phi_normal(T, i, j, xi, xj, 0.2)*/); 	 				//calcula a fun��o phi(xi,xj)
 							}                           
-                            //System.out.print("Markov antes: " + markov.getMarkov(i,j));			
-                            //System.out.print("Markov depois: " + markov.getMarkov(i,j));
-                											//matriz de todos os n�s que tem phis onde h� aresta entre 2 n�s
 						}
 					}
                     markov.setMarkov(i, j, p);
-                    System.out.println("phi("+i+","+j+"):" + p.toString());
-                    System.out.println("markov: " + markov.toString());
-                    
+                   // System.out.println("phi("+i+","+j+"):" + p.toString());
+                   // System.out.println("markov: " + markov.toString());   
 				}
 			}
 		}
-        //System.out.println("markov: " + markov.toString());
+        System.out.println("markov: " + markov.toString());
 		return markov; 
 	}
 				
