@@ -41,7 +41,7 @@ public class Markov {
 		int k = 0;
 		
 		if(minor < N && major < N){
-			for (int y = 0; !isThere && y < N; y++) {
+			for (int y = 0; !isThere && y < this.index.get(minor).size(); y++) {
 				if (this.index.get(minor).size() > 0 &&	this.index.get(minor).get(y) == major) {
 					isThere = true;
 					k = y;
@@ -113,6 +113,7 @@ public class Markov {
 		System.out.println("markov 1,2" + markov.getMarkov(1, 2));
 		System.out.println("markov 1,4" + markov.getMarkov(1, 4));
 		System.out.println("markov 1,3" + markov.getMarkov(1, 3));
+		System.out.println("markov 1,3" + markov.getMarkov(0, 4));
 
 		
 

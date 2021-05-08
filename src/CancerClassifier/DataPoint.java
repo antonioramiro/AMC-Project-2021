@@ -11,7 +11,7 @@ public class DataPoint {
 
     //Constructor of DataPoint with specific measurements and classification. Array length and classification must be as expected.
     public DataPoint(int[] m, int c){
-        if (m.length == 5){   
+        if (m.length == m.length){   
             this.measurements = m;
             this.classification = c;
         }else{

@@ -19,18 +19,17 @@ public class MRFT{
         if (A.dim == T.measurementNumber){
         
             this.dim = A.dim ;
+            this.special = set_special(A);
             this.markov = add_PHI(T, A);
             
             this.A = A;
             ArrayList<Integer> sp = new ArrayList<Integer>();
             sp.add(0);
             sp.add(1);
-            this.special = set_special(A);
             
         }else {
             throw new AssertionError("The number of Tree Leafs musts match the number of measurements in the dataset");
         }
-       
 	}
 	
 	@Override
@@ -44,20 +43,7 @@ public class MRFT{
 		special.add(1);
 		return special;
 	}
-	//escolhe uma aresta para ser a aresta especial
-//	public ArrayList<Integer> set_special(Tree A) { 					//escolhe uma aresta especial
-//		int i=0;														//vai de 0 ao menor n� que faz aresta com 0
- //       boolean found = false;
-//		ArrayList<Integer> special = new ArrayList<Integer>();			
-//		for(int j=1; j < A.dim ; j++) {
-//			if(A.branchQ(i,j) && !found) {											
-//				special.add(i);
-//				special.add(j);
- //               found = true;
-//			}
-//		return special;
-//		}
-//	}
+
 	
 	//verifica se a aresta que une dois n�s � a aresta especial
 	public boolean specialQ(int i, int j ) {	
@@ -88,7 +74,7 @@ public class MRFT{
 				if (A.branchQ(i,j)) { 	
 					
 					boolean special = false;
-					if(!found_special && specialQ(i,j)) {	
+					if(!found_special && this.specialQ(i,j)) {	
 						special = true;
 						found_special = true;}
 					
@@ -97,10 +83,10 @@ public class MRFT{
 					for (int xi=0; xi < T.measurementDim(i); xi++) { 										//pra cada valor poss�vel de xi 
 						for (int xj=0; xj < T.measurementDim(j); xj++) { 									//e cada valor poss�vel de xj
 							if (special) {
-                                System.out.println("ENCONTREI A ESPECIAL---------------"); 							//se i->j � uma aresta da �rvore
-								p.setPhi(xi,xj, 2 /*phi_special(T, i, j, xi, xj, 0.2)*/); //calcula a fun��o phi (xi,xj)
+                          					//se i->j � uma aresta da �rvore
+								p.setPhi(xi,xj, phi_special(T, i, j, xi, xj, 0.2)); //calcula a fun��o phi (xi,xj)
 							}else { 															//se i-> n�o � uma aresta da �rvore
-								p.setPhi(xi,xj, 1 /*phi_normal(T, i, j, xi, xj, 0.2)*/); 	 				//calcula a fun��o phi(xi,xj)
+								p.setPhi(xi,xj, phi_normal(T, i, j, xi, xj, 0.2)); 	 				//calcula a fun��o phi(xi,xj)
 							}                           
 						}
 					}
@@ -171,14 +157,14 @@ public class MRFT{
 
         //Creating Dataset
         Dataset ds1 = new Dataset();
-        int[] m6 = {2,1,4,6,5};
+        int[] m6 = {3,3,3,3,3};
         int c6 = 0;
         DataPoint dp6 = new DataPoint(m6,c6);
-        int[] m7 = {1,0,3,4,9};
+        int[] m7 = {3,3,3,3,3};
         int c7 = 0;
         DataPoint dp7 = new DataPoint(m7,c7);
-        int[] m8 = {1,0,3,4,5};
-        int c8 = 1;
+        int[] m8 = {3,3,3,3,3};
+        int c8 = 0;
         DataPoint dp8 = new DataPoint(m8,c8);
         ds1.Add(dp6);
         for(int i = 0; i < 30; i++){
@@ -189,9 +175,11 @@ public class MRFT{
 
         //Creating MRFT
         MRFT mkv = new MRFT(ds1,g);
-        int[] m9 = {1,0,3,5,4};
+        int[] m9 = {3,3,3,3,3};
         double a = mkv.Probability(m9);
         System.out.println(a);
+        
+        
         
 
 
