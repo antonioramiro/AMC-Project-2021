@@ -1,6 +1,5 @@
 package CancerClassifier;
 
-
 import java.util.ArrayList;
 
 
@@ -20,7 +19,7 @@ public class Classifier {
 
         for(int i = 0; i < classDimension; i++){  //
             double classLikelyhood = Frequency[i] * (arrayMRFT.get(i).Probability(Xn));
-            System.out.println("linha 23 classs: " + arrayMRFT.get(i).Probability(Xn));
+            System.out.println("Probability of "+i+": "+ Math.round(classLikelyhood * 100) + " %");
             if(p < classLikelyhood){
                 diagnosis = i;
                 p = classLikelyhood;
@@ -56,7 +55,7 @@ public class Classifier {
             ds1.Add(dp7);
         }
         ds1.Add(dp8);
-        System.out.println("Dataset: " + ds1);
+        //System.out.println("Dataset: " + ds1);
         
         //Creating MRFT
         MRFT mkv = new MRFT(ds1,g);
@@ -70,7 +69,7 @@ public class Classifier {
         double[] f = {0.5,0.5};
 
         Classifier c = new Classifier(a, f);
-        System.out.println(c.Classify(m9));
+        System.out.println("You have cancer? " + c.Classify(m9));
     }
 
     

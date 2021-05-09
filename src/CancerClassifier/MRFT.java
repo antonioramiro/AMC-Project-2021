@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class MRFT{
 
 	//Atributos
-	private int dim;		             //dimensão do MRFT
+	private int dim;		             //dimensï¿½o do MRFT
 	private Markov markov;	 	     	 //Datatype que armazena os Phis
 	private ArrayList<Integer> special;	 //Aresta especial
     private Tree A;						
@@ -13,7 +13,7 @@ public class MRFT{
 	//Construtor
 	public MRFT(Dataset T, Tree A) {
        
-        if (A.dim == T.measurementNumber){	//certifica-se de que a árvore e o dataset dados têm a mesma dimensão
+        if (A.dim == T.measurementNumber){	//certifica-se de que a ï¿½rvore e o dataset dados tï¿½m a mesma dimensï¿½o
         
             this.dim = A.dim ;
             this.special = set_special(A);
@@ -25,7 +25,7 @@ public class MRFT{
             sp.add(1);
             
         }else {
-            throw new AssertionError("The number of Tree Leafs musts match the number of measurements in the dataset");
+            throw new AssertionError("The number of Tree Leafs (" +A.dim+ ") must match the number of measurements (" +T.measurementNumber+ ") in the dataset");
         }
 	}
 	
@@ -42,7 +42,7 @@ public class MRFT{
 		return special;
 	}
 
-	//Verifica se dois nós i e j são ligados pela aresta especial
+	//Verifica se dois nï¿½s i e j sï¿½o ligados pela aresta especial
 	public boolean specialQ(int i, int j ) {	
 		ArrayList<Integer> edge = new ArrayList<Integer>();
 		edge.add(i);
@@ -60,33 +60,33 @@ public class MRFT{
 		return (T.Count(i,j, xi, xj) + delta)/(T.len() + delta*T.measurementDim(i)*T.measurementDim(j));     //Maria: alterei para T.len()  (estava T.len)
 	}
 	
-	//Dado um dataset e uma árvore, cria um Markov e adciona as matrizess PHI correspondentres a cada aresta da árvore
+	//Dado um dataset e uma ï¿½rvore, cria um Markov e adciona as matrizess PHI correspondentres a cada aresta da ï¿½rvore
 	public Markov add_PHI(Dataset T, Tree A){ 
 		
 		Markov markov =  new Markov(this.dim);
 		boolean found_special = false;	
 
-		for(int i=0; i < this.dim; i++) {		//percorrer todas as combinações de nós da árvore											
+		for(int i=0; i < this.dim; i++) {		//percorrer todas as combinaï¿½ï¿½es de nï¿½s da ï¿½rvore											
 			for(int j=i; j < this.dim; j++) { 														
-				if (A.branchQ(i,j)) { 			//verificar se os nós em causa constituem uma aresta na árvore
+				if (A.branchQ(i,j)) { 			//verificar se os nï¿½s em causa constituem uma aresta na ï¿½rvore
 					
 					boolean special = false;
-					if(!found_special && this.specialQ(i,j)) {			//verificar se os nós em causa constituem a aresta especial
+					if(!found_special && this.specialQ(i,j)) {			//verificar se os nï¿½s em causa constituem a aresta especial
 						special = true;
 						found_special = true;}
 					
                     Phi PHI = new Phi(T.measurementDim(i),T.measurementDim(j));		//criar uma nova matriz PHI
 
-					for (int xi=0; xi < T.measurementDim(i); xi++) { 				//percorrer todas as combinações possíveis de xi e xj						 
+					for (int xi=0; xi < T.measurementDim(i); xi++) { 				//percorrer todas as combinaï¿½ï¿½es possï¿½veis de xi e xj						 
 						for (int xj=0; xj < T.measurementDim(j); xj++) { 									
 							if (special) {
-								PHI.setPhi(xi,xj, phi_special(T, i, j, xi, xj, 0.2)); 	//adcionar os valores de phi(xi, xj) na posição correspondente da matriz PHI
+								PHI.setPhi(xi,xj, phi_special(T, i, j, xi, xj, 0.2)); 	//adcionar os valores de phi(xi, xj) na posiï¿½ï¿½o correspondente da matriz PHI
 							}else { 															
 								PHI.setPhi(xi,xj, phi_normal(T, i, j, xi, xj, 0.2)); 	
 							}                           
 						}
 					}
-                    markov.setMarkov(i, j, PHI);			//adcionar a matriz PHI correspondente à aresta (i,j) no Markov
+                    markov.setMarkov(i, j, PHI);			//adcionar a matriz PHI correspondente ï¿½ aresta (i,j) no Markov
 				}
 			}
 		}
@@ -97,7 +97,7 @@ public class MRFT{
 	public double Probability(int[] Xn) { 
 		int dim = this.dim;
 		double result = 1;
-		if ( Xn.length == dim ) {					//certifica-se de que a dimensão do vetor é a mesma do MRFT
+		if ( Xn.length == dim ) {					//certifica-se de que a dimensï¿½o do vetor ï¿½ a mesma do MRFT
 			for(int i = 0; i < dim; i++) { 								
 				for(int j = i; j < dim; j++) { 			 										
 					if (A.branchQ(i,j)) {			                     	
