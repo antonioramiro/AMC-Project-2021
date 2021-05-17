@@ -95,11 +95,14 @@ public class MRFT{
                     Phi p = new Phi(T.measurementDim(i),T.measurementDim(j));
 
 					for (int xi=0; xi < T.measurementDim(i); xi++) { 										//pra cada valor possï¿½vel de xi 
+						System.out.println("linha 98 : xi = " + xi + " T.measurementDim(i) = " + T.measurementDim(i));
 						for (int xj=0; xj < T.measurementDim(j); xj++) { 									//e cada valor possï¿½vel de xj
+							System.out.println("linha 100 : xi = " + xj + " T.measurementDim(j) = " + T.measurementDim(j));
 							if (special) {
                                 System.out.println("ENCONTREI A ESPECIAL---------------"); 							//se i->j ï¿½ uma aresta da ï¿½rvore
 								p.setPhi(xi,xj, 2 /*phi_special(T, i, j, xi, xj, 0.2)*/); //calcula a funï¿½ï¿½o phi (xi,xj)
 							}else { 															//se i-> nï¿½o ï¿½ uma aresta da ï¿½rvore
+								System.out.println("linha 105 : Não é especial");
 								p.setPhi(xi,xj, 1 /*phi_normal(T, i, j, xi, xj, 0.2)*/); 	 				//calcula a funï¿½ï¿½o phi(xi,xj)
 							}                           
 						}
@@ -181,7 +184,7 @@ public class MRFT{
         int c8 = 1;
         DataPoint dp8 = new DataPoint(m8,c8);
         ds1.Add(dp6);
-        for(int i = 0; i < 30; i++){
+        for(int i = 0; i < 3; i++){
             ds1.Add(dp7);
         }
         ds1.Add(dp8);
@@ -192,6 +195,8 @@ public class MRFT{
         int[] m9 = {1,0,3,5,4};
         double a = mkv.Probability(m9);
         System.out.println(a);
+        System.out.println(mkv.specialQ(0, 1));
+        System.out.println(mkv.set_special(g));
         
 
 
