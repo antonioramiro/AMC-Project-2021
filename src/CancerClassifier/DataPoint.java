@@ -11,12 +11,9 @@ public class DataPoint {
 
     //Constructor of DataPoint with specific measurements and classification. Array length and classification must be as expected.
     public DataPoint(int[] m, int c){
-        if (m.length == 5){   
-            this.measurements = m;
-            this.classification = c;
-        }else{
-            throw new AssertionError("A Data Point must have 10 measurements.");
-        }
+        this.measurements = m;
+        this.classification = c;
+        
     }
 
     //getter for measurements

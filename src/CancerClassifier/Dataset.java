@@ -11,14 +11,16 @@ public class Dataset {
     ArrayList<DataPoint> dataList;
     int[] measurementsDomain; //domain of the dataset measurements
     int classDomain; //domain of the class
-    int measurementNumber = 5;
+    int measurementNumber;
    
     //Constructor of empty Dataset
-    public Dataset(){
+    public Dataset(int measurementNumber){
         this.dataList = new ArrayList<DataPoint>();
+        this.measurementNumber = measurementNumber;
         int[] emptyDomain = new int[this.measurementNumber];
         this.measurementsDomain = emptyDomain;
         this.classDomain = 0;
+        
     }
 
     //Adding a single DataPoint to the dataset
@@ -71,7 +73,7 @@ public class Dataset {
     //the fiber class and its distribution, given that the domain maximizers are known to exist, even if not present in
     //the current fiber
     public Dataset Fiber(int classification){
-        Dataset fiber = new Dataset();
+        Dataset fiber = new Dataset(this.measurementNumber);
         for (DataPoint dp: this.dataList){
             if (dp.getClassification() == classification){
                 fiber.Add(dp);
@@ -141,7 +143,7 @@ public class Dataset {
         System.out.println("Number of times 1 shows in variable indexed 0, and 10 in 9, respectively and simultaneosly: "
                            + ds1.Count(0, 9, 1, 10) + "\n"); */
                            
-        Dataset ds1 = new Dataset();
+        Dataset ds1 = new Dataset(4);
         int[] m6 = {1,0,3,4};
         int c6 = 0;
         DataPoint dp6 = new DataPoint(m6,c6);
