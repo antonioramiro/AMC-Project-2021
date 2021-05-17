@@ -67,11 +67,8 @@ public class window {
 		ChooseFileB.setBackground(Color.DARK_GRAY);
 		ChooseFileB.setForeground(Color.WHITE);
 		ChooseFileB.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		ChooseFileB.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int returnValue = ChooseFile.showOpenDialog(this);
-
-			}});
+		ChooseFileB.addActionListener(new ActionListener());
+			
 		
 		ChooseFileB.setBounds(10, 38, 88, 22);
 		Interface1.getContentPane().add(ChooseFileB);
