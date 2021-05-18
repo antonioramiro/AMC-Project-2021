@@ -69,6 +69,19 @@ public class Dataset {
         return counter;
     }
 
+    public int countClassification(int i){
+        int counter = 0;
+        for (DataPoint dp: this.dataList){
+            if (dp.isClass(i)) counter++;
+        }
+        return counter;
+    }
+
+    //returning the number of times a class exists
+    public double classFrequency(int i) {
+		return Double.valueOf(this.countClassification(i))/Double.valueOf(this.len());	
+	}
+
     //Returning a sub-Dataset, depending on which classification is requested, the domain remains unaltered, regardless of 
     //the fiber class and its distribution, given that the domain maximizers are known to exist, even if not present in
     //the current fiber
@@ -144,6 +157,7 @@ public class Dataset {
                            + ds1.Count(0, 9, 1, 10) + "\n"); */
                            
         Dataset ds1 = new Dataset(4);
+
         int[] m6 = {1,0,3,4};
         int c6 = 0;
         DataPoint dp6 = new DataPoint(m6,c6);
@@ -153,11 +167,19 @@ public class Dataset {
         int[] m8 = {1,0,2,4};
         int c8 = 1;
         DataPoint dp8 = new DataPoint(m8,c8);
+
         ds1.Add(dp6);
         for(int i = 0; i < 3; i++){
             ds1.Add(dp7);
         }
         ds1.Add(dp8);
+
         System.out.println("Dataset: " + ds1);
+
+        
+        System.out.println("Nr de Class(0) " + ds1.countClassification(1));
+        System.out.println("Len total " + ds1.len());
+        System.out.println("Frequency of class " + ds1.classFrequency(1));
+
     }    
 }

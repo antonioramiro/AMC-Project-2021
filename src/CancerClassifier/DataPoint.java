@@ -40,6 +40,11 @@ public class DataPoint {
         return this.measurements[i] == xi;    
     }
 
+    //Searching the datapoint for xi in index i 
+    public boolean isClass(int i){
+        return this.classification == i;    
+    }
+
     @Override
     public String toString() {
         return "(Measurements: " + Arrays.toString(getMeasurements()) + "; " +

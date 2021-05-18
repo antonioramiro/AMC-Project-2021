@@ -112,12 +112,7 @@ public class MRFT{
 		}
 	}
 
-    public int classFrequency(Dataset T, int i, int xi) {
-		int freq;
-		freq = T.Count(i, xi)/T.measurementDim(i);
-		return freq;
-		
-	}
+    
 		
 	public static void main(String[] args) {
         //Creating graph
