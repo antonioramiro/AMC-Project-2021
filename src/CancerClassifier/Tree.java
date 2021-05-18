@@ -1,7 +1,6 @@
 package CancerClassifier;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Tree {
     int dim;
