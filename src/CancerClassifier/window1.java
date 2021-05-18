@@ -61,18 +61,7 @@ public class window1 {
 			public void actionPerformed(ActionEvent e) { 
 				Dataset data = FileHandling.getDataset(addPath.getText());
 				
-				//esconder a partir daqui
-				Tree cl = new ChowLiu(data);
-				int dim = data.classDim();
-				ArrayList<MRFT> listmrft = new ArrayList<MRFT>(); 
-				double[] freqs = new double[dim];
-				
-				for (int i=0; i< dim; i++) {
-					listmrft.add(MRFT(data.Fiber(i), cl));
-					freqs[i] = data.classFrequency(i);
-				}
-				//função da antonio que grava as coisas em um .txt 
-				
+				//file handler, exporta o pacote, que recebe "data" da funÃ§ anterior
 			}
 		});
 		GoBtn.setBounds(245, 76, 89, 23);
