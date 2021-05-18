@@ -7,7 +7,7 @@ import java.util.Scanner; // Import the Scanner class to read text files
 
 public class FileHandling {
 
-  public static void getDataset(String path) {
+  public static Dataset getDataset(String path) {
 
     try {
       File csvFile = new File(path);
@@ -26,7 +26,6 @@ public class FileHandling {
 
       int firstClassification = Integer.parseInt(firstValues[measurementNumber]);
 
-      System.out.println(firstData);
       Dataset newDataset = new Dataset(measurementNumber);
       DataPoint first = new DataPoint(firstMeasurements, firstClassification);
       newDataset.Add(first);
@@ -48,16 +47,15 @@ public class FileHandling {
         newDataset.Add(dp);
       }
       csvReader.close();
-      System.out.println(newDataset);
-      //return newDataset;
+      
+      return newDataset;
 
       
     } catch (FileNotFoundException e) {
       System.out.println("An error occurred.");
       e.printStackTrace();
-
     } 
-    
+    return null;
   }
 
 
@@ -66,8 +64,8 @@ public class FileHandling {
   public static void main(String[] args) {
     
     System.out.println("\n");
-    FileHandling.getDataset("Datasets/thyroid.csv");
-    
+    Dataset a = FileHandling.getDataset("Datasets/bcancer.csv");
+    System.out.println(a.len());
 
   }
 }
