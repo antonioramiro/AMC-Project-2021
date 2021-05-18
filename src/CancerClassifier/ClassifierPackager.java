@@ -13,7 +13,7 @@ public class ClassifierPackager implements Serializable{
 
         Tree chowliuTree = new Tree(); //ChowLiu(data);
 
-		int[][] edges = {{0,1}, {1,2}, {1,3},{1,4}};
+		int[][] edges = {{0,1}, {1,2}, {1,3},{1,4},{0,5}, {1,6}, {1,7},{1,8},{1,9}};
 		for(int[] e : edges) {
 			chowliuTree.addLeaf(e[0], e[1]);
 		}
@@ -55,14 +55,14 @@ public class ClassifierPackager implements Serializable{
     public static void main(String[] args) {
     
         //Creating Dataset
-        Dataset ds1 = new Dataset(5);
-        int[] m6 = {3,3,3,3,3};
+        Dataset ds1 = new Dataset(10);
+        int[] m6 = {3,3,3,3,3,3,3,3,3,3};
         int c6 = 0;
         DataPoint dp6 = new DataPoint(m6,c6);
-        int[] m7 = {3,3,3,3,3};
+        int[] m7 = {3,3,3,3,3,3,3,3,3,3};
         int c7 = 1;
         DataPoint dp7 = new DataPoint(m7,c7);
-        int[] m8 = {3,3,3,3,3};
+        int[] m8 = {3,3,3,3,3,3,3,3,3,3};
         int c8 = 0;
         DataPoint dp8 = new DataPoint(m8,c8);
         ds1.Add(dp6);

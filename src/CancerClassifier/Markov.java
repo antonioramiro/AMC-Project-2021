@@ -1,8 +1,9 @@
 package CancerClassifier;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Markov {
+public class Markov implements Serializable{
 
 	private ArrayList<ArrayList<Phi>> Phis;
 	private ArrayList<ArrayList<Integer>> index;
