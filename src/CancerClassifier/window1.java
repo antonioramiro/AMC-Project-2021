@@ -59,8 +59,10 @@ public class window1 {
 		GoBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
 				Dataset data = FileHandling.getDataset(addPath.getText());
+				ChowLiu cl = new ChowLiu(data);
+				MRFT mrft = new MRFT(data, cl); 
 				
-				System.out.println(data);
+				
 			}
 		});
 		GoBtn.setBounds(245, 76, 89, 23);
