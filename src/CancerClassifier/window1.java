@@ -7,6 +7,7 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 public class window1 {
@@ -59,9 +60,18 @@ public class window1 {
 		GoBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
 				Dataset data = FileHandling.getDataset(addPath.getText());
-				ChowLiu cl = new ChowLiu(data);
-				MRFT mrft = new MRFT(data, cl); 
 				
+				//esconder a partir daqui
+				Tree cl = new ChowLiu(data);
+				int dim = data.classDim();
+				ArrayList<MRFT> listmrft = new ArrayList<MRFT>(); 
+				double[] freqs = new double[dim];
+				
+				for (int i=0; i< dim; i++) {
+					listmrft.add(MRFT(data.Fiber(i), cl));
+					freqs[i] = data.classFrequency(i);
+				}
+				//função da antonio que grava as coisas em um .txt 
 				
 			}
 		});
