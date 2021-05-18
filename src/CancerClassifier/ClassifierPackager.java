@@ -35,12 +35,12 @@ public class ClassifierPackager implements Serializable{
         return this.dim;
     }
 
-    public MRFT getMrft(int i) {
-        return this.mrftList.get(i);
-    }
+    public MRFT getMrft() {
+        return this.mrftList;
+    } 
 
-    public double getFreq(int i) {
-        return this.freqList[i];
+    public double getFreq() {
+        return this.freqList;
     }
 
     @Override

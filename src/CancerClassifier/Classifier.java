@@ -26,6 +26,7 @@ public class Classifier {
                 p = classLikelyhood;
             }         	
         }
+        
         if(diagnosis == -1){
             throw new AssertionError("Could not assess clinical state");
         }
