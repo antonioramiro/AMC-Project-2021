@@ -1,11 +1,11 @@
 package CancerClassifier;
 
-//Import
-import java.io.File; // Import the File class
-import java.io.FileNotFoundException; // Import this class to handle errors
-import java.util.Scanner; // Import the Scanner class to read text files
+//Import Dataset Needs
+import java.io.File; 
+import java.io.FileNotFoundException; 
+import java.util.Scanner; 
 
-//Serialization 
+//Serialization Needs
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -15,7 +15,10 @@ import java.io.ObjectInputStream;
 
 public class FileHandling {
 
+  //getDataset receives the path and imports the .csv onto a variable of the type Dataset
   public static Dataset getDataset(String path) {
+
+    
     try {
       File csvFile = new File(path);
       Scanner csvReader = new Scanner(csvFile);
@@ -65,15 +68,15 @@ public class FileHandling {
   }
 
 
-  public static void exportClassifier(Dataset data){
+  public static void exportClassifier(Dataset data, String datasetName){
     ClassifierPackager  object = new ClassifierPackager(data);
-    String filename = "file.classifier";
+    String filename = datasetName + ".classifier";
       
     // Serialization 
     try
     {   
         //Saving of object in a file
-        FileOutputStream file = new FileOutputStream(filename);
+        FileOutputStream file = new FileOutputStream("Classifiers/" + filename);
         ObjectOutputStream out = new ObjectOutputStream(file);
           
         // Method for serialization of object
@@ -91,10 +94,6 @@ public class FileHandling {
         System.out.println("IOException is caught");
         ex.printStackTrace();
     }
-
-
-    ClassifierPackager object1 = null;
-    
   }
 
   public static ClassifierPackager importClassifier(String path){
@@ -137,7 +136,7 @@ public class FileHandling {
     Dataset a = FileHandling.getDataset("Datasets/bcancer.csv");
     System.out.println(a);
 
-    FileHandling.exportClassifier(a);
-    FileHandling.importClassifier("file.classifier");
+    FileHandling.exportClassifier(a,"bcancer");
+    FileHandling.importClassifier("Classifiers/bcancer.classifier");
   }
 }
