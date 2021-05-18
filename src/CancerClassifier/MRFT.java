@@ -1,36 +1,32 @@
 package CancerClassifier;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-
-
 
 public class MRFT{
 
-	//atributos
-	private int dim;		             //nr de nÃ³s / dimensÃ£o da MRFT
-	private Markov markov;	 	     	 //datatype que armazena os phis
-	private ArrayList<Integer> special;	 //aresta especial
-    private Tree A;
+	//Atributos
+	private int dim;		             //dimensï¿½o do MRFT
+	private Markov markov;	 	     	 //Datatype que armazena os Phis
+	private ArrayList<Integer> special;	 //Aresta especial
+    private Tree A;						
 	
 	//Construtor
 	public MRFT(Dataset T, Tree A) {
        
-        if (A.dim == T.measurementNumber){
+        if (A.dim == T.measurementNumber){	//certifica-se de que a ï¿½rvore e o dataset dados tï¿½m a mesma dimensï¿½o
         
             this.dim = A.dim ;
+            this.special = set_special(A);
             this.markov = add_PHI(T, A);
             
             this.A = A;
             ArrayList<Integer> sp = new ArrayList<Integer>();
             sp.add(0);
             sp.add(1);
-            this.special = set_special(A);
             
         }else {
-            throw new AssertionError("The number of Tree Leafs musts match the number of measurements in the dataset");
+            throw new AssertionError("The number of Tree Leafs (" +A.dim+ ") must match the number of measurements (" +T.measurementNumber+ ") in the dataset");
         }
-       
 	}
 	
 	@Override
@@ -38,39 +34,25 @@ public class MRFT{
 		return "MRFT [dim=" + this.dim + "\n tree=" + A.toString() + "\n special=" + special + "\n markov=" + this.markov.toString() + "]";
 	}
 
+	//Seleciona uma aresta como especial
 	public ArrayList<Integer> set_special(Tree A){
 		ArrayList<Integer> special = new ArrayList<Integer>();
 		special.add(0);
 		special.add(1);
 		return special;
 	}
-	//escolhe uma aresta para ser a aresta especial
-//	public ArrayList<Integer> set_special(Tree A) { 					//escolhe uma aresta especial
-//		int i=0;														//vai de 0 ao menor nï¿½ que faz aresta com 0
- //       boolean found = false;
-//		ArrayList<Integer> special = new ArrayList<Integer>();			
-//		for(int j=1; j < A.dim ; j++) {
-//			if(A.branchQ(i,j) && !found) {											
-//				special.add(i);
-//				special.add(j);
- //               found = true;
-//			}
-//		return special;
-//		}
-//	}
-	
-	//verifica se a aresta que une dois nï¿½s ï¿½ a aresta especial
+
+	//Verifica se dois nï¿½s i e j sï¿½o ligados pela aresta especial
 	public boolean specialQ(int i, int j ) {	
 		ArrayList<Integer> edge = new ArrayList<Integer>();
 		edge.add(i);
 		edge.add(j);
 		return edge.equals(this.special);
-//		return edge == this.special;
 	}
 	
 
 	
-	//phi para arestas normais (phi_normal) e aresta especial (phi_special)
+	//Calcula o valor de phi para arestas normais (phi_normal) e para a aresta especial (phi_special)
 	public double phi_normal(Dataset T, int i, int j, int xi, int xj, double delta) { 			//phi de xi 
 		return (T.Count(i, j, xi, xj) + delta)/(T.Count(i, xi) + delta*T.measurementDim(j)); 	
 	}
@@ -78,83 +60,56 @@ public class MRFT{
 		return (T.Count(i,j, xi, xj) + delta)/(T.len() + delta*T.measurementDim(i)*T.measurementDim(j));     //Maria: alterei para T.len()  (estava T.len)
 	}
 	
-	public Markov add_PHI(Dataset T, Tree A){ //recebe a ï¿½rvore e faz uma matriz PHI pra cada aresta da ï¿½rvore		
+	//Dado um dataset e uma ï¿½rvore, cria um Markov e adciona as matrizess PHI correspondentres a cada aresta da ï¿½rvore
+	public Markov add_PHI(Dataset T, Tree A){ 
 		
 		Markov markov =  new Markov(this.dim);
 		boolean found_special = false;	
 
-		for(int i=0; i < this.dim; i++) {   															//selecionar a aresta q comeï¿½a em i 
-			for(int j=i; j < this.dim; j++) { 														//e termina em j
-				if (A.branchQ(i,j)) { 	
+		for(int i=0; i < this.dim; i++) {		//percorrer todas as combinaï¿½ï¿½es de nï¿½s da ï¿½rvore											
+			for(int j=i; j < this.dim; j++) { 														
+				if (A.branchQ(i,j)) { 			//verificar se os nï¿½s em causa constituem uma aresta na ï¿½rvore
 					
 					boolean special = false;
-					if(!found_special && specialQ(i,j)) {	
+					if(!found_special && this.specialQ(i,j)) {			//verificar se os nï¿½s em causa constituem a aresta especial
 						special = true;
 						found_special = true;}
 					
-                    Phi p = new Phi(T.measurementDim(i),T.measurementDim(j));
+                    Phi PHI = new Phi(T.measurementDim(i),T.measurementDim(j));		//criar uma nova matriz PHI
 
-					for (int xi=0; xi < T.measurementDim(i); xi++) { 										//pra cada valor possï¿½vel de xi 
-						System.out.println("linha 98 : xi = " + xi + " T.measurementDim(i) = " + T.measurementDim(i));
-						for (int xj=0; xj < T.measurementDim(j); xj++) { 									//e cada valor possï¿½vel de xj
-							System.out.println("linha 100 : xi = " + xj + " T.measurementDim(j) = " + T.measurementDim(j));
+					for (int xi=0; xi < T.measurementDim(i); xi++) { 				//percorrer todas as combinaï¿½ï¿½es possï¿½veis de xi e xj						 
+						for (int xj=0; xj < T.measurementDim(j); xj++) { 									
 							if (special) {
-                                System.out.println("ENCONTREI A ESPECIAL---------------"); 							//se i->j ï¿½ uma aresta da ï¿½rvore
-								p.setPhi(xi,xj, 2 /*phi_special(T, i, j, xi, xj, 0.2)*/); //calcula a funï¿½ï¿½o phi (xi,xj)
-							}else { 															//se i-> nï¿½o ï¿½ uma aresta da ï¿½rvore
-								System.out.println("linha 105 : Não é especial");
-								p.setPhi(xi,xj, 1 /*phi_normal(T, i, j, xi, xj, 0.2)*/); 	 				//calcula a funï¿½ï¿½o phi(xi,xj)
+								PHI.setPhi(xi,xj, phi_special(T, i, j, xi, xj, 0.2)); 	//adcionar os valores de phi(xi, xj) na posiï¿½ï¿½o correspondente da matriz PHI
+							}else { 															
+								PHI.setPhi(xi,xj, phi_normal(T, i, j, xi, xj, 0.2)); 	
 							}                           
 						}
 					}
-                    markov.setMarkov(i, j, p);
-                   // System.out.println("phi("+i+","+j+"):" + p.toString());
-                   // System.out.println("markov: " + markov.toString());   
+                    markov.setMarkov(i, j, PHI);			//adcionar a matriz PHI correspondente ï¿½ aresta (i,j) no Markov
 				}
 			}
-			
 		}
-        System.out.println("markov: " + markov.toString());
 		return markov; 
 	}
 				
+	//Dado um vetor Xn, calcula a probabilidade de seus valores no MRFT
 	public double Probability(int[] Xn) { 
 		int dim = this.dim;
 		double result = 1;
-		if ( Xn.length == dim ) {
-			for(int i = 0; i < dim; i++) { 														//selecionar a aresta q comeï¿½a em i 
-				for(int j = i; j < dim; j++) { 			 										//e termina em j
-					if (A.branchQ(i,j)) {
-                        System.out.println("Branches - i: "+i+"; j: "+j);
-
-                        /*System.out.println("fi("+i+","+j+") = " + this.markov.getMarkov(i, j));
-
-                        System.out.println("Xn =" + Arrays.toString(Xn));
-                        System.out.println("Xn(" +i+","+j+") = (" + Xn[i] + " , " + Xn[j] + ");");*/
-                        if(i==1 && j ==3){
-                            System.out.println(markov.toString());
-                            System.out.println(this.markov.getMarkov(i, j)); 
-                        }
-                        
-
-						result = (result*(this.markov.getMarkov(i, j).getPhi(Xn[i],Xn[j]))); //ajudem me a 
-
-                        /*
-                        System.out.println("fi("+i+","+j+") = " + this.markov.getMarkov(i, j).getPhi(Xn[i],Xn[j]));
-                        System.out.println("r:" + result);*/
+		if ( Xn.length == dim ) {					//certifica-se de que a dimensï¿½o do vetor ï¿½ a mesma do MRFT
+			for(int i = 0; i < dim; i++) { 								
+				for(int j = i; j < dim; j++) { 			 										
+					if (A.branchQ(i,j)) {			                     	
+						result = (result*(this.markov.getMarkov(i, j).getPhi(Xn[i],Xn[j]))); 
 					}
 				}	
 			}
 			return result;
-		}
-		
+		}		
 		else {
 			throw new AssertionError("Tree's and array's dimension must be the same");
 		}
-		//para cada i do vetor
-		//para cada j do vetor diferente de i
-			//se i,j for aresta
-				//		
 	}
 
     public int classFrequency(Dataset T, int i, int xi) {
@@ -173,18 +128,18 @@ public class MRFT{
 		}
 
         //Creating Dataset
-        Dataset ds1 = new Dataset();
-        int[] m6 = {2,1,4,6,5};
+        Dataset ds1 = new Dataset(5);
+        int[] m6 = {3,3,3,3,3};
         int c6 = 0;
         DataPoint dp6 = new DataPoint(m6,c6);
-        int[] m7 = {1,0,3,4,9};
+        int[] m7 = {3,3,3,3,3};
         int c7 = 0;
         DataPoint dp7 = new DataPoint(m7,c7);
-        int[] m8 = {1,0,3,4,5};
-        int c8 = 1;
+        int[] m8 = {3,3,3,3,3};
+        int c8 = 0;
         DataPoint dp8 = new DataPoint(m8,c8);
         ds1.Add(dp6);
-        for(int i = 0; i < 3; i++){
+        for(int i = 0; i < 30; i++){
             ds1.Add(dp7);
         }
         ds1.Add(dp8);
@@ -192,63 +147,12 @@ public class MRFT{
 
         //Creating MRFT
         MRFT mkv = new MRFT(ds1,g);
-        int[] m9 = {1,0,3,5,4};
+        int[] m9 = {3,3,3,3,3};
         double a = mkv.Probability(m9);
         System.out.println(a);
-        System.out.println(mkv.specialQ(0, 1));
-        System.out.println(mkv.set_special(g));
-        
-
-
-        
-
     }
     
 }
 
 
 
-//Prob: dado um vetor de dados Xn retorna a probabilidade destes dados no dataset.
-	
-	
-	//COISAS DO DATASET:
-	//1. seria bom ter uma funï¿½ï¿½o do Datase que retornasse Dim(i) = valor mï¿½ximo de xi 
-	//2. a funï¿½ï¿½o Count precisa de uma versï¿½o de apenas 2 argumentos Count(i, xi) -- ver pdfs
-
-	
-    //OUTROS PROBLEMAS:
-	//COMO ASSOCIAR AS ARESTAS ï¿½S MATRIZES PHI
-	//COMO CALCULAR AS PROBABILIDADES 
-	
-	//TO-DO
-		//corriggir erros
-		//funï¿½ï¿½o prob
-		//implementar ï¿½rvores
-		//testar
-
-//nao preciso de uma matriz inteira 
-
-
-//atributos
-//private Dataset T; 	//dataset
-//private Tree A;
-
-//metodo construtor
-//public MRFT(Dataset T, Tree A) {
-	//this.T = T;
-	//this.A = A;
-//}	
-
-//getters and setters
-//public Dataset getT() {
-	//return T;
-//}
-//public void setT(Dataset t) {
-	//	T = t;
-//}
-//public Tree getA() {
-//	return A;
-//}
-//public void setA(Tree a) {
-//	A = a;
-//}	

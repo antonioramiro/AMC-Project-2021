@@ -52,20 +52,21 @@ public class FileHandling {
 
       
     } catch (FileNotFoundException e) {
-      System.out.println("An error occurred.");
       e.printStackTrace();
     } 
     return null;
   }
 
+  public static void exportClassifier(String name){
 
+  }
   
 
   public static void main(String[] args) {
     
     System.out.println("\n");
     Dataset a = FileHandling.getDataset("Datasets/bcancer.csv");
-    System.out.println(a.len());
+    System.out.println(a);
 
   }
 }
