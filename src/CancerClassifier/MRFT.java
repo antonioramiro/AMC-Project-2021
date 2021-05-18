@@ -8,7 +8,7 @@ public class MRFT{
 	private int dim;		             //dimens�o do MRFT
 	private Markov markov;	 	     	 //Datatype que armazena os Phis
 	private ArrayList<Integer> special;	 //Aresta especial
-					
+    private Tree A;						
 	
 	//Construtor
 	public MRFT(Dataset T, Tree A) {
@@ -19,6 +19,7 @@ public class MRFT{
             this.special = set_special(A);
             this.markov = add_PHI(T, A);
             
+            this.A = A;
             ArrayList<Integer> sp = new ArrayList<Integer>();
             sp.add(0);
             sp.add(1);
@@ -30,7 +31,7 @@ public class MRFT{
 	
 	@Override
 	public String toString() {
-		return "MRFT [dim=" + this.dim +  "\n special=" + special + "\n markov=" + this.markov.toString() + "]";
+		return "MRFT [dim=" + this.dim + "\n tree=" + A.toString() + "\n special=" + special + "\n markov=" + this.markov.toString() + "]";
 	}
 
 	//Seleciona uma aresta como especial
