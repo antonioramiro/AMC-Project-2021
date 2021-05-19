@@ -20,7 +20,6 @@ public class Classifier {
 
         for(int i = 0; i < classDimension; i++){  //
             double classLikelyhood = Frequency[i] * (arrayMRFT.get(i).Probability(Xn));
-            System.out.println("linha 23 classs: " + arrayMRFT.get(i).Probability(Xn));
             if(p < classLikelyhood){
                 diagnosis = i;
                 p = classLikelyhood;

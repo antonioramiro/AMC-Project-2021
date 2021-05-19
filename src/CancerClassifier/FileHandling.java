@@ -127,16 +127,18 @@ public class FileHandling {
       System.out.println("ClassNotFoundException is caught");
     }
 
-    return null;
+    ClassifierPackager error = new ClassifierPackager(null);
+    return error;
   }
 
   public static void main(String[] args) {
     
     System.out.println("\n");
     Dataset a = FileHandling.getDataset("Datasets/diabetes.csv");
-    System.out.println(a);
+    System.out.println("Dataset example: " + a);
 
     FileHandling.exportClassifier(a,"maria");
-    FileHandling.importClassifier("Classifiers/diabetes123.classifier");
+    ClassifierPackager b = FileHandling.importClassifier("Classifiers/maria.classifier");
+    System.out.println(b);
   }
 }
