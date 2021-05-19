@@ -26,6 +26,7 @@ public class Classifier {
                 p = classLikelyhood;
             }         	
         }
+        
         if(diagnosis == -1){
             throw new AssertionError("Could not assess clinical state");
         }
@@ -41,7 +42,7 @@ public class Classifier {
 		}
 
         //Creating Dataset
-        Dataset ds1 = new Dataset();
+        Dataset ds1 = new Dataset(6);
         int[] m6 = {1,0,3,4,3,5};
         int c6 = 0;
         DataPoint dp6 = new DataPoint(m6,c6);

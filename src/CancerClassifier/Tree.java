@@ -1,9 +1,9 @@
 package CancerClassifier;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class Tree {
+public class Tree implements Serializable{
     int dim;
     public ArrayList<ArrayList<Integer>> index;
 

@@ -1,9 +1,10 @@
 package CancerClassifier;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 
-public class Phi {
+public class Phi implements Serializable{
 	double[][] L;
 
 	public Phi(double[][] l) {
