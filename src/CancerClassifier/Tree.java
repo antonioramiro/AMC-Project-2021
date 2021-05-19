@@ -80,13 +80,34 @@ public class Tree {
         for (int[] e : edges) {
             t.addLeaf(e[0], e[1]);
         }
+        ArrayList<ArrayList<Integer>> z = new ArrayList<ArrayList<Integer>>();
         
+        ArrayList<Integer> x1 = new ArrayList<Integer>();
+        ArrayList<Integer> x2 = new ArrayList<Integer>();
+        ArrayList<Integer> x3 = new ArrayList<Integer>();
+        x1.add(0);
+        x1.add(1);
+        
+        x3.add(0);
+        x3.add(2);
+        
+        x2.add(0);
+        x2.add(3);
+        //System.out.println("arraylist x = " + x);
+        z.add(x1);
+        z.add(x3);
+        z.add(x2);
+        
+     
+        System.out.println("arrayList z = " + z);
+        System.out.println("maximalTree z = " + MST.MaximalTree(z));
 
 
         System.out.println(t.leafQ(5));
         System.out.println(t.branchQ(1,3));
 
         System.out.println(t);
+        System.out.println(z.get(0).get(1));
 
     }
 }
