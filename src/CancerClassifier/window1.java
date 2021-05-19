@@ -15,8 +15,7 @@ import java.awt.event.ActionEvent;
 
 public class window1 {
 
-	private JFrame frame;
-	private JTextField addPath;
+	private JFrame frmWindow;
 	private final JFileChooser OpenFile;
 
 	/**
@@ -27,7 +26,7 @@ public class window1 {
 			public void run() {
 				try {
 					window1 window = new window1();
-					window.frame.setVisible(true);
+					window.frmWindow.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -42,50 +41,45 @@ public class window1 {
 		initialize();
 		
 		OpenFile = new JFileChooser();
-		//OpenFile.setFileFilter(new FileNameExtensionFilter("cvs documents","csv"));
+		OpenFile.setFileFilter(new FileNameExtensionFilter("cvs documents","csv"));
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 364, 154);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		frmWindow = new JFrame();
+		frmWindow.setTitle("Window 1");
+		frmWindow.setBounds(100, 100, 364, 154);
+		frmWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmWindow.getContentPane().setLayout(null);
 		
-		addPath = new JTextField();
-		addPath.setBounds(10, 45, 324, 20);
-		frame.getContentPane().add(addPath);
-		addPath.setColumns(10);
-		
-		JLabel FilePathText = new JLabel("File Path");
-		FilePathText.setBounds(10, 29, 324, 14);
-		frame.getContentPane().add(FilePathText);
-		
-		JButton GoBtn = new JButton("Go!");
-		GoBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) { 
-				Dataset data = FileHandling.getDataset(addPath.getText());
-				System.out.println(data);
-				//ClassifierPackager(data);
-				
-				//file handler, exporta o pacote, que recebe "data" da funç anterior
-			}
-		});
-		GoBtn.setBounds(245, 76, 89, 23);
-		frame.getContentPane().add(GoBtn);
+		JLabel PathLbl = new JLabel("");
+		PathLbl.setBounds(122, 27, 216, 19);
+		frmWindow.getContentPane().add(PathLbl);
 		
 		JButton openBtn = new JButton("Open file...");
 		openBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(OpenFile.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
+				if(OpenFile.showOpenDialog(frmWindow) == JFileChooser.APPROVE_OPTION) {
 					String path = OpenFile.getSelectedFile().getAbsolutePath();
-					Dataset data = FileHandling.getDataset(path);
-					System.out.println(data);
+					PathLbl.setText(path);
 			}
 		}});
-		openBtn.setBounds(10, 76, 89, 23);
-		frame.getContentPane().add(openBtn);
+		openBtn.setBounds(10, 25, 111, 23);
+		frmWindow.getContentPane().add(openBtn);
+		
+		JButton GoBtn = new JButton("Go!");
+		GoBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) { 
+				String path = PathLbl.getText();
+				if (! path.isBlank()) {
+					Dataset data = FileHandling.getDataset(path);
+					System.out.println(data);
+				}
+			}
+		});
+		GoBtn.setBounds(245, 76, 89, 23);
+		frmWindow.getContentPane().add(GoBtn);
 	}
 }
