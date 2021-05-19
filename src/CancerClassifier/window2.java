@@ -105,3 +105,5 @@ public class window2 {
 		frmClassifier.getContentPane().add(lblNewLabel_1);
 	}
 }
+//1,2,1,0,0,0,1,0
+//Datasets/aline.classifier

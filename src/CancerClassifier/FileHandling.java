@@ -18,7 +18,6 @@ public class FileHandling {
   //getDataset receives the path and imports the .csv onto a variable of the type Dataset
   public static Dataset getDataset(String path) {
 
-    
     try {
       File csvFile = new File(path);
       Scanner csvReader = new Scanner(csvFile);
@@ -118,12 +117,14 @@ public class FileHandling {
       
     catch(IOException ex)
     {
-        System.out.println("IOException is caught");
+      ex.printStackTrace();
+      System.out.println("IOException is caught");
     }
       
     catch(ClassNotFoundException ex)
     {
-        System.out.println("ClassNotFoundException is caught");
+      ex.printStackTrace();
+      System.out.println("ClassNotFoundException is caught");
     }
 
     return null;
@@ -132,10 +133,10 @@ public class FileHandling {
   public static void main(String[] args) {
     
     System.out.println("\n");
-    Dataset a = FileHandling.getDataset("Datasets/bcancer.csv");
+    Dataset a = FileHandling.getDataset("Datasets/diabetes.csv");
     System.out.println(a);
 
-    FileHandling.exportClassifier(a,"bcancer");
-    FileHandling.importClassifier("Classifiers/bcancer.classifier");
+    FileHandling.exportClassifier(a,"maria");
+    FileHandling.importClassifier("Classifiers/diabetes123.classifier");
   }
 }
