@@ -12,6 +12,9 @@ import javax.swing.JFileChooser;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextArea;
+import javax.swing.JScrollBar;
+import java.awt.Color;
 
 public class window1 {
 
@@ -49,13 +52,15 @@ public class window1 {
 	 */
 	private void initialize() {
 		frmWindow = new JFrame();
+		frmWindow.getContentPane().setBackground(Color.WHITE);
 		frmWindow.setTitle("Window 1");
-		frmWindow.setBounds(100, 100, 364, 154);
+		frmWindow.setBounds(100, 100, 664, 154);
 		frmWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmWindow.getContentPane().setLayout(null);
 		
 		JLabel PathLbl = new JLabel("");
-		PathLbl.setBounds(122, 27, 216, 19);
+		PathLbl.setBackground(Color.BLACK);
+		PathLbl.setBounds(122, 48, 504, 19);
 		frmWindow.getContentPane().add(PathLbl);
 		
 		JButton openBtn = new JButton("Open file...");
@@ -66,7 +71,7 @@ public class window1 {
 					PathLbl.setText(path);
 			}
 		}});
-		openBtn.setBounds(10, 25, 111, 23);
+		openBtn.setBounds(10, 44, 102, 23);
 		frmWindow.getContentPane().add(openBtn);
 		
 		JButton GoBtn = new JButton("Go!");
@@ -79,7 +84,11 @@ public class window1 {
 				}
 			}
 		});
-		GoBtn.setBounds(245, 76, 89, 23);
+		GoBtn.setBounds(537, 70, 89, 23);
 		frmWindow.getContentPane().add(GoBtn);
+		
+		JLabel lblNewLabel = new JLabel("Select a dataset to import");
+		lblNewLabel.setBounds(10, 23, 376, 14);
+		frmWindow.getContentPane().add(lblNewLabel);
 	}
 }
