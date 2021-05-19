@@ -4,8 +4,11 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
@@ -14,6 +17,7 @@ public class window1 {
 
 	private JFrame frame;
 	private JTextField addPath;
+	private final JFileChooser OpenFile;
 
 	/**
 	 * Launch the application.
@@ -36,6 +40,9 @@ public class window1 {
 	 */
 	public window1() {
 		initialize();
+		
+		OpenFile = new JFileChooser();
+		//OpenFile.setFileFilter(new FileNameExtensionFilter("cvs documents","csv"));
 	}
 
 	/**
@@ -68,5 +75,17 @@ public class window1 {
 		});
 		GoBtn.setBounds(245, 76, 89, 23);
 		frame.getContentPane().add(GoBtn);
+		
+		JButton openBtn = new JButton("Open file...");
+		openBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(OpenFile.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
+					String path = OpenFile.getSelectedFile().getAbsolutePath();
+					Dataset data = FileHandling.getDataset(path);
+					System.out.println(data);
+			}
+		}});
+		openBtn.setBounds(10, 76, 89, 23);
+		frame.getContentPane().add(openBtn);
 	}
 }
