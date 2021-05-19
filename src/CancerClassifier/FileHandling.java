@@ -111,8 +111,7 @@ public class FileHandling {
         file.close();
           
         System.out.println("Object has been deserialized ");
-        System.out.println("a = " + cp.getFreq(1));
-
+       
         return cp;
 
     }

@@ -60,6 +60,7 @@ public class window1 {
 		GoBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
 				Dataset data = FileHandling.getDataset(addPath.getText());
+				System.out.println(data);
 				//ClassifierPackager(data);
 				
 				//file handler, exporta o pacote, que recebe "data" da funç anterior

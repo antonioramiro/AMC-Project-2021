@@ -64,6 +64,14 @@ public class window2 {
 		frmClassifier.getContentPane().add(addPath);
 		addPath.setColumns(10);
 		
+		JLabel resultLabel = new JLabel("");
+		resultLabel.setBackground(Color.BLACK);
+		resultLabel.setForeground(Color.BLACK);
+		resultLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		resultLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		resultLabel.setBounds(119, 108, 149, 36);
+		frmClassifier.getContentPane().add(resultLabel);
+		
 		JLabel lblNewLabel = new JLabel("Insert Values");
 		lblNewLabel.setBounds(10, 22, 358, 14);
 		frmClassifier.getContentPane().add(lblNewLabel);
@@ -83,20 +91,13 @@ public class window2 {
 			      ClassifierPackager cp = FileHandling.importClassifier(addPath.getText());
 			      Classifier c = new Classifier(cp.getMrft(), cp.getFreq());
 			      int result = c.Classify(firstValues);
-
-				
+			      resultLabel.setText(String.valueOf(result));		
 			}
 		});
 		ClassifyBtn.setBounds(279, 121, 89, 23);
 		frmClassifier.getContentPane().add(ClassifyBtn);
 		
-		JLabel resultLabel = new JLabel("");
-		resultLabel.setBackground(Color.BLACK);
-		resultLabel.setForeground(Color.BLACK);
-		resultLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		resultLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		resultLabel.setBounds(119, 108, 149, 36);
-		frmClassifier.getContentPane().add(resultLabel);
+
 		
 		
 		JLabel lblNewLabel_1 = new JLabel("Path");
