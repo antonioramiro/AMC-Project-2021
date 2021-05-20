@@ -74,7 +74,7 @@ public class Tree implements Serializable{
         Tree t = new Tree();
         System.out.println(t);
 
-        System.out.println(t.branchQ(1, 3));
+        System.out.println("branch: " + t.branchQ(1, 3));
 
         int[][] edges = {{0,1}, {1,2}, {1,3},{1,4}};
         for (int[] e : edges) {
@@ -85,29 +85,52 @@ public class Tree implements Serializable{
         ArrayList<Integer> x1 = new ArrayList<Integer>();
         ArrayList<Integer> x2 = new ArrayList<Integer>();
         ArrayList<Integer> x3 = new ArrayList<Integer>();
+        ArrayList<Integer> x4 = new ArrayList<Integer>();
+        ArrayList<Integer> x5 = new ArrayList<Integer>();
+        ArrayList<Integer> x6 = new ArrayList<Integer>();
+        ArrayList<Integer> x7 = new ArrayList<Integer>();
         x1.add(0);
         x1.add(1);
         
         x3.add(0);
         x3.add(2);
         
-        x2.add(0);
-        x2.add(3);
+        x2.add(1);
+        x2.add(2);
+        
+        x4.add(0);
+        x4.add(3);
+        
+        x5.add(1);
+        x5.add(4);
+        
+        x6.add(2);
+        x6.add(4);
+        
+        x7.add(3);
+        x7.add(0);
         //System.out.println("arraylist x = " + x);
         z.add(x1);
         z.add(x3);
         z.add(x2);
+        z.add(x4);
+        z.add(x5);
+        z.add(x6);
+        z.add(x7);
         
+        //Tree tree = MST.MaximalTree(z);
+        //System.out.println("tree: " + tree);
      
         System.out.println("arrayList z = " + z);
-        System.out.println("maximalTree z = " + MST.MaximalTree(z));
+        System.out.println("path: " + MST.pathQ(2, 4, MST.MaximalTree(z)));
+        //System.out.println("maximalTree z = " + MST.MaximalTree(z));
 
 
-        System.out.println(t.leafQ(5));
-        System.out.println(t.branchQ(1,3));
+        //System.out.println(t.leafQ(5));
+        //System.out.println(t.branchQ(1,3));
 
-        System.out.println(t);
-        System.out.println(z.get(0).get(1));
+        //System.out.println(t);
+        //System.out.println(z.get(0).get(1));
 
     }
 }

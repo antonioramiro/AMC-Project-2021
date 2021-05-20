@@ -2,6 +2,11 @@ package CancerClassifier;
 
 import java.util.ArrayList;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
+
 public class MST {
 	
 	int dim_Dataset; //m do eneunciado
@@ -22,7 +27,7 @@ public class MST {
 	
 	public static WGraph Fibfrequency (WGraph wg, Dataset T, int i, int j) { //recebe um dataset e calcula a frequencia de cada fibra, assumindo que todos os nós estão ligados 
 		double fibfrequency = 0;
-		int m = T.len();
+		double m = T.len();
 		System.out.println("m = " + m);
 		//for (int j = 0; j < T.measurementNumber; j++) {
 		for (int xi = 0; xi < T.measurementDim(i); xi++) { //calcula a frequencia de cada xi na fibra i
@@ -53,10 +58,72 @@ public class MST {
 	return wg;
 	}
 		
+	
+	
+	
+	public static LinkedList<Integer> offspring(Tree t, int o){ //descendentes do nó o no grafo
+		LinkedList<Integer> children = new LinkedList<Integer>();
+		if (o>=0 && o<t.dim) {
+			for (int i = 0; i < t.dim; i++) {
+				if (t.branchQ(o, i)) {
+					children.add(i);
+				}
+			}
+			return children;
+		} else {
+			throw new AssertionError("node not in graph");
+		}
+	}
+	
+	
 
+	public ArrayList<Integer> DFS (int o, Tree t) { //dá-nos os descendentes de cada árvore, em profundidade
+		if ( o>= 0 && o< t.dim) {
+			ArrayList<Integer> r = new ArrayList<Integer>();
+			Stack<Integer> stack = new Stack<Integer>();
+			boolean [] visited = new boolean[t.dim]; //lista de visitados
+			stack.push(o); //adicionamos o primeiro nó
+			while (!stack.isEmpty()) {
+				int node = stack.pop(); // remove o mais recente
+				if (!visited[node]) {
+					r.add(node);
+					visited[node]=true;
+					for (int i: MST.offspring(t, node) ) {
+						stack.push(node);
+					}
+					
+				}
+			}
+			return r;
+		}
+		else {
+			throw new AssertionError("node not in graph");
+		}
+	}
 		
+	
 		
-		
+	public static boolean pathQ(int o, int d, Tree t) {
+		boolean found = false;
+		if (o>=0 && o<t.dim && d>=0 && d<t.dim) {
+			boolean[] visited = new boolean[t.dim];
+			Queue<Integer> q = new LinkedList<Integer>();
+			
+			q.add(o);
+			while(!q.isEmpty() && !found) {
+				int node = q.remove();
+				if (!visited[node]) {
+					found = (node == d);
+					visited[node] = true;
+					for (int i : MST.offspring(t, node)) {
+						q.add(i);
+					}
+				}
+			}
+			
+		}return found;
+	}
+
 	
 
 
@@ -107,39 +174,125 @@ public class MST {
 		Tree maximalTree = new Tree(); //árvore final que vamos devolver
 		ArrayList<Integer> visited = new ArrayList<Integer>(); //lista de indices visitados
 		maximalTree.addLeaf(edge_list.get(0).get(0), edge_list.get(0).get(1)); //adiciona a primeira aresta (que supostamente é a que tem maior peso)
+		
+		//System.out.println("maximalTree1 = " + maximalTree);
 		visited.add(edge_list.get(0).get(0));
-		visited.add(edge_list.get(0).get(1));
-		System.out.println("visited inicio = " + visited);
-		int dim = edge_list.size();
+		visited.add(edge_list.get(0).get(1)); // é isto que está mal
+		//System.out.println("get = " + edge_list.get(0).get(1));
+		//System.out.println("visited inicio = " + visited);
+		//System.out.println("edge list inicio = " + edge_list);
+		//int dim = edge_list.size();
+		edge_list.remove(0);
+		
 		
 		while (!edge_list.isEmpty()) {
-			for (int i = 1; i < dim; i++) { //verificando que não há ciclos
-				for (int k = 0; k < visited.size(); k++) { 
-					System.out.println("k = " + k);
-					System.out.println("i = " + i);
+			//for (int i = 0; i < dim; i++) { //verificando que não há ciclos
+				//System.out.println("edge list size = " + edge_list.size());
+				for (int k = 0; k < visited.size() && !edge_list.isEmpty(); k++) { 
+					//System.out.println("k = " + k);
+					//System.out.println("edge list k = " + edge_list);
+					//System.out.println("visited = " + visited);
+					//System.out.println("i = " + i);
+					//System.out.println("visited size = " + visited.size());
+					//System.out.println("visited list = " + visited);
+					
 					//int currentEdge = edge_list.get(i).get(0);
-					if (!maximalTree.branchQ(edge_list.get(i).get(0), visited.get(k)) && !maximalTree.branchQ(edge_list.get(i).get(1), visited.get(k))) { //se não formar um ciclo
-						maximalTree.addLeaf(edge_list.get(i).get(0), edge_list.get(i).get(1)); //adiciona a folha à nossa árvore final
+					//visited.get(k) != edge_list.get(0).get(0) && visited.get(k) != edge_list.get(0).get(1) && 
+					if (MST.pathQ(edge_list.get(0).get(0), edge_list.get(0).get(1), maximalTree) || MST.pathQ(edge_list.get(0).get(1), edge_list.get(0).get(0), maximalTree)) { //se formar um ciclo
 						edge_list.remove(0);
-						System.out.println("contains: " + visited.contains(edge_list.get(i).get(0)));
-						if (!visited.contains(edge_list.get(i).get(0))) {
-							System.out.println("contains: " + edge_list.get(i).get(0));
-							visited.add(edge_list.get(i).get(0));
-							}
-						if (!visited.contains(edge_list.get(i).get(1))) {
-							visited.add(edge_list.get(i).get(1));
-							}
+						//System.out.println("edge list = " + edge_list);
+					}
+					else {
+						maximalTree.addLeaf(edge_list.get(0).get(0), edge_list.get(0).get(1)); //adiciona a folha à nossa árvore final
+						//System.out.println("edge list1 = " + edge_list);
+						//System.out.println("maximalTree = " + maximalTree);
+						//System.out.println("edge list2 = " + edge_list);
+						//System.out.println("contains: " + visited.contains(edge_list.get(i).get(0)));
+						//System.out.println("maximalTree3 = " + maximalTree);
 						
 						
-				}
+						if (!edge_list.isEmpty() && !visited.contains(edge_list.get(0).get(0))) {
+							//System.out.println("contains: " + edge_list.get(i).get(0));
+							visited.add(edge_list.get(0).get(0));
+							//System.out.println("visited list = " + visited);
+							}
+						if (!edge_list.isEmpty() && !visited.contains(edge_list.get(0).get(1))) {
+							visited.add(edge_list.get(0).get(1));
+							//System.out.println("visited list = " + visited);
+							}
+						edge_list.remove(0);
+						//System.out.println("edge list = " + edge_list);
+					}
+					
+					
 				}
 				
+				//System.out.println("edge list2 = " + edge_list);
+				
 		}
+		return maximalTree;
 		}
 			
-		return maximalTree;
-	}
-		
+	/*	
+	public static boolean hasPath(int root, Tree tree, int x) 
+    { 
+        // if root is NULL 
+        // there is no path 
+        if (tree.dim == 0) { 
+            return false; 
+        }
+        tree.
+        // push the node's value in 'arr' 
+             
+        
+        // if it is the required node 
+        // return true 
+        else {
+        	for (int i = 0; i < tree.dim; i++) {
+        		if (x == i && hasPath(root, tree, i))
+        		hasPath(root, tree, i);
+        	return true; 
+        }
+        	
+        }
+            
+        
+        // else check whether the required node lies 
+        // in the left subtree or right subtree of  
+        // the current node 
+        if (hasPath(root.left, arr, x) || 
+            hasPath(root.right, arr, x)) 
+            return true; 
+        
+        // required node does not lie either in the  
+        // left or right subtree of the current node 
+        // Thus, remove current node's value from  
+        // 'arr'and then return false     
+        arr.remove(arr.size()-1); 
+        return false;             
+    } 
+  
+    // function to print the path from root to the 
+    // given node if the node lies in the binary tree 
+    public static void printPath(Node root, int x) 
+    { 
+        // ArrayList to store the path 
+        ArrayList<Integer> arr=new ArrayList<>();
+      
+        // if required node 'x' is present 
+        // then print the path 
+        if (hasPath(root, arr, x)) 
+        { 
+            for (int i=0; i<arr.size()-1; i++)     
+                System.out.print(arr.get(i)+"->");
+            System.out.print(arr.get(arr.size() - 1));    
+        } 
+        
+        // 'x' is not present in the binary tree  
+        else
+            System.out.print("No Path"); 
+    } 
+		*/
 
 
 	@Override
@@ -148,7 +301,7 @@ public class MST {
 	}
 	
 	public static void main(String[] args) {
-		Dataset ds1 = new Dataset();
+		Dataset ds1 = new Dataset(5);
         int[] m6 = {1,0,0,4,1};
         int c6 = 0;
         DataPoint dp6 = new DataPoint(m6,c6);
@@ -166,18 +319,18 @@ public class MST {
         }
         //MST mst = new MST(ds1);
         WGraph wg = new WGraph(5);
-        wg = MST.Fibfrequency(wg, ds1, 1, 2);
-        /*wg.add(1, 2, 2);
+        //wg = MST.Fibfrequency(wg, ds1, 1, 2);
+        wg.add(1, 2, 2);
         wg.add(1, 3, 1);
         wg.add(1, 4, 3);
-        wg.add(2, 4, 5);*/
+        wg.add(2, 4, 5);
         //System.out.println("DataPoint: " + dp6);
-        System.out.println(ds1);
+        //System.out.println(ds1);
         //System.out.println(wg);
         // System.out.println("teste:" + Math.log10(2));
         //System.out.println(ds1);
         //System.out.println("Peso da aresta 1,2 = " + wg.get_weight(1, 2));
-        //System.out.println("Fibfrequency = " + mst.Fibfrequency(ds1,1,2)); //imprime um weighted graph 
+        System.out.println("Fibfrequency = " + MST.Fibfrequency(wg, ds1,1,2)); //imprime um weighted graph 
         //System.out.println(wg);
 		
 	}
