@@ -3,17 +3,13 @@ package CancerClassifier;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.awt.event.ActionEvent;
-import javax.swing.JTextArea;
-import javax.swing.JScrollBar;
 import java.awt.Color;
 
 public class window1 {
@@ -44,7 +40,7 @@ public class window1 {
 		initialize();
 		
 		OpenFile = new JFileChooser();
-		OpenFile.setFileFilter(new FileNameExtensionFilter("cvs documents","csv"));
+		OpenFile.setFileFilter(new FileNameExtensionFilter("csv documents","csv"));
 	}
 
 	/**
@@ -80,7 +76,14 @@ public class window1 {
 				String path = PathLbl.getText();
 				if (! path.isBlank()) {
 					Dataset data = FileHandling.getDataset(path);
-					System.out.println(data);
+					System.out.println(path);
+					String[] SplitEndOfPath = path.split("/");
+					String EndOfPath = SplitEndOfPath[(SplitEndOfPath.length)-1];
+					String[] SplitCSV = EndOfPath.split(".");
+					String FinalPath = SplitCSV[0];
+					FileHandling.exportClassifier(data, FinalPath);
+					//FileHandling.exportClassifier(data,"aqui");
+					//FileHandling.exportClassifier(data,parsedPath[parsedPath.length-1].split(".")[0]);
 				}
 			}
 		});

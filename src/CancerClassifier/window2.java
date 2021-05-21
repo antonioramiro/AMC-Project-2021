@@ -3,9 +3,6 @@ package CancerClassifier;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JTable;
-import javax.swing.JFormattedTextField;
-import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;

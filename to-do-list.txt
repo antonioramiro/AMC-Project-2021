@@ -1,0 +1,9 @@
+- MST 
+- corrigir a tree
+- window2 JFileChooser
+- WGraph minor major
+- WGraph edge sort
+- Tree first + aresta especial
+- coisas q o antonio escreveu
+- frequencia atributo do dataset
+- 
