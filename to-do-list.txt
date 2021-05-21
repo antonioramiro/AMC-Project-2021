@@ -1,9 +1,40 @@
-- MST 
-- corrigir a tree
-- window2 JFileChooser
-- WGraph minor major
+//Alterações que fizémos na primeira parte
+
+- apaguei o measurem. number e passou a atributo do dataset
+- mudei o class frequency de sitio e corrigi a funcao
+
+
+//1.a parte--------------------------------------------------
+
+/cenas essenciais de mudar
+- corrigir a tree (de nao ser 0,1,2,...)
 - WGraph edge sort
 - Tree first + aresta especial
-- coisas q o antonio escreveu
-- frequencia atributo do dataset
+- WGraph minor major
+
+/partes a melhorar
+- frequencia atributo do dataset + implementação por fibra
+- whraph melhorar impolementacao
+- melhorar abstraçao do MRFT e a arvore la
+- iterador para ajudar abstracao (ciclos de mrft)
+- Markov, set não está protegido para simetricos
+- implementar fibras diretamente no dataset
+
+
+//2.a parte---------------------------------------------------
+/ por fazer
+- MST 
+
+/melhorar
+- window2 JFileChooser
+- dar exemplos melhores
+- cross valdiation
+
+
+
+
+
+
+
+
 - 
