@@ -7,10 +7,8 @@
 //1.a parte--------------------------------------------------
 
 /cenas essenciais de mudar
-- corrigir a tree (de nao ser 0,1,2,...)
 - WGraph edge sort
 - Tree first + aresta especial
-- WGraph minor major
 
 /partes a melhorar
 - frequencia atributo do dataset + implementação por fibra

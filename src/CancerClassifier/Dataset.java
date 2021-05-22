@@ -94,6 +94,10 @@ public class Dataset {
         }
         return fiber;
     }
+    
+    public int getMeasurementNumber () {
+    	return this.measurementNumber;
+    }
 
     //To String method
     @Override

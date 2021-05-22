@@ -12,7 +12,8 @@ import java.util.Stack;
 public class ChowLiu {
 	
 	int dim_Dataset; //m do eneunciado
-	static int dim_measurement;
+	int dim_measurement;
+	WGraph wg;
 	//double [][] wtmx;
 	 
 	
@@ -20,14 +21,31 @@ public class ChowLiu {
 	public ChowLiu (Dataset T) {
 		this.dim_Dataset = T.len();
 		this.dim_measurement = T.measurementNumber;
+		this.wg = createWGraph(T);
+		
+		
+		
 	}
 	
 	//WGraph wg = new WGraph(5);
 	
+	public WGraph createWGraph (Dataset T) {
+		int dim = this.dim_measurement;
+		WGraph wg = new WGraph(dim);
 	
+		for (int i = 0; i < dim; i++ ) {
+			for (int j = i; j < dim; j++ ) {
+				if (i != j) {
+					wg.add(i, j, this.WeightSetter(T, i, j));
+				}
+				
+			}
+		}
+		return wg;
+	}
 
 	
-	public static WGraph Fibfrequency (WGraph wg, Dataset T, int i, int j) { //recebe um dataset e calcula a frequencia de cada fibra, assumindo que todos os n�s est�o ligados 
+	public double WeightSetter (Dataset T, int i, int j) { //recebe um dataset e calcula a frequencia de cada fibra, assumindo que todos os n�s est�o ligados 
 		double fibfrequency = 0;
 		double m = T.len();
 		System.out.println("m = " + m);
@@ -37,12 +55,12 @@ public class ChowLiu {
 			for (int xj = 0; xj < T.measurementDim(j); xj++) { //calcula a frequencia de cada xj na fibra j
 					System.out.println("T.measurementDim(j) = " + T.measurementDim(j));
 					if ((T.Count(i, j, xi, xj)/m) == 0 || (T.Count(i, xi)/m) == 0 || (T.Count(j, xj)/m) == 0) {
-							fibfrequency = fibfrequency + 16;
+							fibfrequency = fibfrequency + 0;
 							
 							//wg.add(i, j, fibfrequency);
 					}
 					else {
-							fibfrequency = fibfrequency + 15 + (T.Count(i, j, xi, xj)/m)*(Math.log10((T.Count(i, j, xi, xj)/m)/((T.Count(i, xi)/m)*(T.Count(j, xj)/m)))); //formula do prof
+							fibfrequency = fibfrequency + (T.Count(i, j, xi, xj)/m)*(Math.log10((T.Count(i, j, xi, xj)/m)/((T.Count(i, xi)/m)*(T.Count(j, xj)/m)))); //formula do prof
 							
 							//wg.add(i, j, fibfrequency);
 					}
@@ -55,9 +73,9 @@ public class ChowLiu {
 		System.out.println("i = " + i + ", j = " + j);
 		System.out.println(wg);
 		System.out.println("Adicionando");
-		wg.add(i, j, fibfrequency); //depois de calcular o peso da aresta, adiciona-a ao WGraph
+		 //depois de calcular o peso da aresta, adiciona-a ao WGraph
 		
-	return wg;
+	return fibfrequency;
 	}
 		
 	
@@ -173,8 +191,10 @@ public class ChowLiu {
 	}*/
 
 	
-	public static Tree MaximalTree (ArrayList<ArrayList<Integer>> edge_list) {
-		Tree maximalTree = new Tree(); //�rvore final que vamos devolver
+	public Tree MaximalTree (ArrayList<ArrayList<Integer>> edge_list) {
+		Tree maximalTree = new Tree(this.dim_measurement); //�rvore final que vamos devolver
+		System.out.println("dim measurement" + dim_measurement);
+		System.out.println("tree: " + maximalTree);
 		ArrayList<Integer> visited = new ArrayList<Integer>(); //lista de indices visitados
 		maximalTree.addLeaf(edge_list.get(0).get(0), edge_list.get(0).get(1)); //adiciona a primeira aresta (que supostamente � a que tem maior peso)
 		
@@ -298,7 +318,8 @@ public class ChowLiu {
 		*/
 
 		
-	public static ArrayList<ArrayList<Integer>> orderedBranchList(WGraph wg){
+	public ArrayList<ArrayList<Integer>> orderedBranchList(){
+		WGraph wg = this.wg;
 
 		System.out.println(wg);
 		System.out.println("");
@@ -307,17 +328,18 @@ public class ChowLiu {
 		ArrayList<Double> weightList = new ArrayList<Double>();
 
 		int graphDim = wg.dim;
+		System.out.println("graphDim: " + graphDim);
 		if(graphDim == 0){
 			throw new AssertionError("A non-empty graph has to be provided");
 		}
 
-		int finalListSize = 0;
+		//int finalListSize = 0;
 		boolean empty = true;
 		
 		
 
 		for(int i = 0; i < graphDim; i++){
-			for(int j = 0; j < graphDim; j++){
+			for(int j = i; j < graphDim; j++){
 				
 				System.out.println("i,j: " + i + "," + j);
 				int minor = Math.min(i, j); 
@@ -342,6 +364,7 @@ public class ChowLiu {
 
 
 						empty = false;
+						
 					
 
 					} else {
@@ -349,15 +372,21 @@ public class ChowLiu {
 						currentEdge.add(minor);
 						currentEdge.add(major);
 
-						boolean inserted = false;
-
-						for(int k = 0; k < finalListSize && !inserted; k++){
+						
+						if ( currentWeight <= weightList.get(weightList.size()-1)) {
+							finalList.add(currentEdge);
+							weightList.add(currentWeight);
 							
-							System.out.println("k:" + k);
+						}
+						else {
+							boolean inserted = false;
+							for(int k = 0; k < weightList.size() && !inserted; k++){
+							
+							System.out.println("k0: " + k);
 
 							if(currentWeight >= weightList.get(k)){
 
-								
+								System.out.println("k: " + k);
 								
 								finalList.add(k,currentEdge);
 								weightList.add(k,currentWeight);
@@ -367,17 +396,22 @@ public class ChowLiu {
 								System.out.println("2weightList:" + weightList);
 								System.out.println("2currentEdge:" + currentEdge);
 								System.out.println("2finalList:" + finalList);
+								
 
 							}
+						}
+
+						
+							
 
 							
 
 						}
-
+						
 					}
 
-					finalListSize++;
-					System.out.println("finalListSize:" + finalListSize);
+					
+					System.out.println("finalListSize:" + weightList.size());
 				
 					}
 					
@@ -400,7 +434,7 @@ public class ChowLiu {
         int[] m6 = {1,0,0,4,1};
         int c6 = 0;
         DataPoint dp6 = new DataPoint(m6,c6);
-        int[] m7 = {3,1,1,4,9};
+        int[] m7 = {3,1,1,4,6};
         int c7 = 0;
         DataPoint dp7 = new DataPoint(m7,c7);
         int[] m8 = {1,1,1,4,7};
@@ -412,6 +446,59 @@ public class ChowLiu {
         for(int i = 0; i < 400; i++){
             ds1.Add(dp6);
         }
+        
+        Dataset a = FileHandling.getDataset("Datasets/bcancer.csv");
+        
+        ChowLiu teste = new ChowLiu(a);
+        
+        ArrayList<ArrayList<Integer>> z = teste.orderedBranchList();
+        System.out.println("orered list: " + z);
+        Tree tree = teste.MaximalTree(z);
+        System.out.println("MaximalTree: " + tree);
+        
+        /*
+        
+        ArrayList<ArrayList<Integer>> z = new ArrayList<ArrayList<Integer>>();
+        ArrayList<Integer> x1 = new ArrayList<Integer>();
+        ArrayList<Integer> x2 = new ArrayList<Integer>();
+        ArrayList<Integer> x3 = new ArrayList<Integer>();
+        ArrayList<Integer> x4 = new ArrayList<Integer>();
+        ArrayList<Integer> x5 = new ArrayList<Integer>();
+        ArrayList<Integer> x6 = new ArrayList<Integer>();
+        ArrayList<Integer> x7 = new ArrayList<Integer>();
+        x1.add(0);
+        x1.add(1);
+        
+        x3.add(0);
+        x3.add(2);
+        
+        x2.add(1);
+        x2.add(2);
+        
+        x4.add(0);
+        x4.add(3);
+        
+        x5.add(1);
+        x5.add(4);
+        
+        x6.add(2);
+        x6.add(4);
+        
+        x7.add(7);
+        x7.add(5);
+        //System.out.println("arraylist x = " + x);
+        z.add(x1);
+        z.add(x3);
+        z.add(x2);
+        z.add(x4);
+        z.add(x5);
+        z.add(x6);
+        z.add(x7); 
+        
+        
+        System.out.println(teste.MaximalTree(z));
+        
+        
         //MST mst = new MST(ds1);
         WGraph wg = new WGraph(5);
         //wg = MST.Fibfrequency(wg, ds1, 1, 2);
@@ -430,18 +517,18 @@ public class ChowLiu {
 
 		WGraph wg1 = new WGraph(5);
         //wg = MST.Fibfrequency(wg, ds1, 1, 2);
-        wg1.add(1, 2, 2);
-        wg1.add(4, 3, 1);
-        wg1.add(3, 4, 3);
+        wg1.add(1, 2, 2d);
+        wg1.add(4, 3, 1d);
+        wg1.add(3, 4, 3d);
         wg1.add(2, 4, 5.2);
-		wg1.add(4, 0, 16);
-		wg1.add(4, 3, 1);
+		wg1.add(4, 0, 16d);
+		wg1.add(4, 3, 1d);
 		wg1.add(3, 1, 13.3);
-		wg1.add(4, 2, 6);
+		wg1.add(4, 2, 6d);
 		wg1.add(0, 0, 1.32);
 
 		System.out.println(ChowLiu.orderedBranchList(wg1));
-		
+		*/
 	}
 
 }

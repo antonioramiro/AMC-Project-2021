@@ -7,14 +7,17 @@ import java.util.ListIterator;
 
 public class Tree implements Serializable{
     private static final long serialVersionUID = 3L;
-    int dim;
+    public int dim;
     public ArrayList<ArrayList<Integer>> index;
 
-    public Tree() {
+    public Tree(int dim) {
         ArrayList<ArrayList<Integer>> index = new ArrayList<ArrayList<Integer>>();
         this.index = index;
-        this.index.add(new ArrayList<Integer>());
-        this.dim = 1;
+        this.dim = dim;
+        for (int i = 0; i< this.dim ;i++) {
+        	this.index.add(new ArrayList<Integer>());
+        }
+        	
     }
 
 
@@ -63,22 +66,29 @@ public class Tree implements Serializable{
     public void addLeaf(int o, int d) {
         int minor = Math.min(o, d); 
         int major = Math.max(o, d);
-        if (minor >= 0 && minor < this.dim && major >= 0 && major <= this.dim) {
-            if (this.branchQ(minor, major)) {
-            	throw new AssertionError("This leaf already exists in the Tree.");
-            }else{
+        if (minor > this.dim && major > this.dim) {
+        	throw new AssertionError("Leaves out of treetop.");
+        }
+        else {
+        	if (minor >= 0 && major >= 0) {
+        		if (this.branchQ(minor, major)) {
+        			throw new AssertionError("This leaf already exists in the Tree.");
+            }
+        	else{
                 if(!this.leafQ(major)){
-                    this.index.add(new ArrayList<Integer>());
+                    //this.index.add(new ArrayList<Integer>());
                     this.index.get(minor).add(major);
-                    this.dim++;
                 }
                 else{
-                    throw new AssertionError("Tree doesn't allow three interconnected leafs.");
+                    throw new AssertionError("Tree doesn't allow interconnected leafs.");
                 }
             }
-        } else {
+        	} 
+        	else {
             throw new AssertionError("You cannot add a fallen leaf. Please, add branches to catch it");
+        	}
         }
+        
     }
 
     public boolean branchQ(int o, int d) {
@@ -117,15 +127,17 @@ public class Tree implements Serializable{
     }
 
     public static void main(String[] args) {
-        Tree t = new Tree();
+        Tree t = new Tree(2);
+        //t.addLeaf(1, 0);
+        //t.addLeaf(3, 2);
         System.out.println(t);
 
         System.out.println("branch: " + t.branchQ(1, 3));
 
-        int[][] edges = {{0,1}, {1,2}, {1,3},{1,4}};
-        for (int[] e : edges) {
+        int[][] edges = {{1,2}, {1,3},{5,4},{5,3}, {4,2}};
+        /*for (int[] e : edges) {
             t.addLeaf(e[0], e[1]);
-        }
+        }*/
        // System.out.println("t br: " +  Arrays.toString(t.branchIterator()));
        ListIterator<ArrayList<Integer>> branchIterator = t.branchIterator();
        while(branchIterator.hasNext()){
@@ -135,6 +147,7 @@ public class Tree implements Serializable{
        System.out.println("first" + t.first());
 
         ArrayList<ArrayList<Integer>> z = new ArrayList<ArrayList<Integer>>();
+        Tree tree = new Tree(8);
         
         ArrayList<Integer> x1 = new ArrayList<Integer>();
         ArrayList<Integer> x2 = new ArrayList<Integer>();
@@ -161,8 +174,8 @@ public class Tree implements Serializable{
         x6.add(2);
         x6.add(4);
         
-        x7.add(3);
-        x7.add(0);
+        x7.add(7);
+        x7.add(5);
         //System.out.println("arraylist x = " + x);
         z.add(x1);
         z.add(x3);
@@ -170,7 +183,8 @@ public class Tree implements Serializable{
         z.add(x4);
         z.add(x5);
         z.add(x6);
-        z.add(x7);
+        z.add(x7); 
+        
         
         
         //Tree tree = MST.MaximalTree(z);
@@ -180,7 +194,8 @@ public class Tree implements Serializable{
         //System.out.println("path: " + MST.pathQ(2, 4, MST.MaximalTree(z)));
 
 
-        //System.out.println("maximalTree z = " + MST.MaximalTree(z));
+        System.out.println("maximalTree z = " + ChowLiu.MaximalTree(z));
+        //System.
 
 
         //System.out.println(t.leafQ(5));

@@ -37,10 +37,14 @@ public class WGraph {//(extends Graph) , usamos isto quando queremos usar a impl
 	}
 	
 	public void add(int source, int destiny, double weight) { //adicionar um peso w a uma aresta (que vai do n� s ao n� d)
-		if (source >= 0 && source < this.dim && destiny >= 0 && destiny < this.dim) { //verificar se as arestas est�o de acordo com a dimens�o da matriz
+		int minor = Math.min(source, destiny); 
+        int major = Math.max(source, destiny);
+		if (minor >= 0 && minor < this.dim && major >= 0 && major < this.dim) { //verificar se as arestas est�o de acordo com a dimens�o da matriz
 			//this.ma[s][d] = 1; //adiciono a aresta de qualquer maneira, n�o sei se preferem verificar antes se existe (d�vida(?))
-			this.wmtx[source][destiny] = weight;
-			this.wmtx[destiny][source] = weight;
+			if (this.wmtx[minor][major] < 10e-10) {
+				this.wmtx[minor][major] = weight;
+			}
+			
 		}
 		else {
 			throw new AssertionError("this node does not belongs in this graph");
@@ -49,7 +53,9 @@ public class WGraph {//(extends Graph) , usamos isto quando queremos usar a impl
 	}
 	
 	public double get_weight(int source, int destiny) { //falta verificar se existe node/ramo
-		return this.wmtx[source][destiny];
+		int minor = Math.min(source, destiny); 
+        int major = Math.max(source, destiny);
+		return this.wmtx[minor][major];
 	}
 	
 	public boolean indexisnotemptyQ (double [] wtmx) {
@@ -158,7 +164,6 @@ public class WGraph {//(extends Graph) , usamos isto quando queremos usar a impl
         for (int[] e : edges) {
         	wg.add(e[0], e[1], e[2]);
         }
-        System.out.println("teste:" + Math.log10(2));
         System.out.println(wg);
         System.out.println(wg.Edge_Sort());
     }
