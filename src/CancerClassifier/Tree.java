@@ -3,7 +3,7 @@ package CancerClassifier;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
+import java.util.ListIterator;
 
 public class Tree implements Serializable{
     int dim;
@@ -36,7 +36,7 @@ public class Tree implements Serializable{
         return firstBranch;
     }
 
-    public  Iterator<ArrayList<Integer>> branchIterator(){
+    public  ListIterator<ArrayList<Integer>> branchIterator(){
 
         ArrayList<ArrayList<Integer>> branchList = new ArrayList<ArrayList<Integer>>();
         int dim = this.dim;
@@ -53,7 +53,7 @@ public class Tree implements Serializable{
             
         }
 
-        Iterator<ArrayList<Integer>> branchIterator = branchList.iterator();
+        ListIterator<ArrayList<Integer>> branchIterator = branchList.listIterator();
         
         return branchIterator;
 
@@ -126,7 +126,7 @@ public class Tree implements Serializable{
             t.addLeaf(e[0], e[1]);
         }
        // System.out.println("t br: " +  Arrays.toString(t.branchIterator()));
-       Iterator<ArrayList<Integer>> branchIterator = t.branchIterator();
+       ListIterator<ArrayList<Integer>> branchIterator = t.branchIterator();
        while(branchIterator.hasNext()){
            System.out.println(branchIterator.next());
        }

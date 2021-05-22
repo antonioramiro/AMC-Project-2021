@@ -1,9 +1,9 @@
-
-
 package CancerClassifier;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.ListIterator;
 
 public class MRFT implements Serializable{
 
@@ -13,18 +13,25 @@ public class MRFT implements Serializable{
 	private ArrayList<Integer> special;	 //Aresta especial
     private Tree A;			
     private int[] measurementsDomain; 
+	private ListIterator<ArrayList<Integer>> branchIterator;
 	
 	//Construtor
 	public MRFT(Dataset T, Tree A) {
        
         if (A.dim == T.measurementNumber){	//certifica-se de que a ï¿½rvore e o dataset dados tï¿½m a mesma dimensï¿½o
-        
+			
+			this.A = A;
+
             this.dim = A.dim ;
+			this.measurementsDomain = T.measurementsDomain;
+			
+			this.branchIterator = A.branchIterator();
             this.special = set_special(A);
             this.markov = add_PHI(T, A);
-            this.measurementsDomain = T.measurementsDomain;
             
-            this.A = A;
+            
+
+            
             ArrayList<Integer> sp = new ArrayList<Integer>();
             sp.add(0);
             sp.add(1);
@@ -39,8 +46,8 @@ public class MRFT implements Serializable{
 		return "MRFT [dim=" + this.dim + "\n tree=" + A.toString() + "\n special=" + special + "\n markov=" + this.markov.toString() + "]";
 	}
 	
-	//não gostei dessa solução 
-	public int measurementDim(int i){
+	//nï¿½o gostei dessa soluï¿½ï¿½o 
+	public int getMeasurementDim(int i){
         return this.measurementsDomain[i];
 	}
 
@@ -64,24 +71,31 @@ public class MRFT implements Serializable{
 	
 	//Calcula o valor de phi para arestas normais (phi_normal) e para a aresta especial (phi_special)
 	public double phi_normal(Dataset T, int i, int j, int xi, int xj, double delta) { 			//phi de xi 
-		return (T.Count(i, j, xi, xj) + delta)/(T.Count(i, xi) + delta*this.measurementDim(j)); 	
+		return (T.Count(i, j, xi, xj) + delta)/(T.Count(i, xi) + delta*this.getMeasurementDim(j)); 	
 	}
 	public double phi_special(Dataset T, int i, int j, int xi, int xj, double delta) { 			//phi de xi e xj
-		return (T.Count(i,j, xi, xj) + delta)/(T.len() + delta*this.measurementDim(i)*this.measurementDim(j));     //Maria: alterei para T.len()  (estava T.len)
+		return (T.Count(i,j, xi, xj) + delta)/(T.len() + delta*this.getMeasurementDim(i)*this.getMeasurementDim(j));     //Maria: alterei para T.len()  (estava T.len)
 	}
 	
 	//Dado um dataset e uma ï¿½rvore, cria um Markov e adciona as matrizess PHI correspondentres a cada aresta da ï¿½rvore
 	public Markov add_PHI(Dataset T, Tree A){ 
 		
 		Markov markov =  new Markov(this.dim);
-		boolean found_special = false;	
+		boolean found_special = false;
 
-		for(int i=0; i < this.dim; i++) {		//percorrer todas as combinaï¿½ï¿½es de nï¿½s da ï¿½rvore											
-			for(int j=i; j < this.dim; j++) { 														
-				if (A.branchQ(i,j)) { 			//verificar se os nï¿½s em causa constituem uma aresta na ï¿½rvore
-					
-					int dimi = measurementDim(i);
-					int dimj = measurementDim(j);
+
+
+		ListIterator<ArrayList<Integer>> iterator = this.branchIterator;
+
+		System.out.println("this." + this.branchIterator.hasNext() + ";  addPhi" + iterator.hasNext());
+
+		while(iterator.hasNext()){
+			ArrayList<Integer> ij = iterator.next();
+			int i = ij.get(0);
+			int j = ij.get(1);
+
+			int dimi = getMeasurementDim(i);
+					int dimj = getMeasurementDim(j);
 					
 					boolean special = false;
 					if(!found_special && this.specialQ(i,j)) {			//verificar se os nï¿½s em causa constituem a aresta especial
@@ -100,9 +114,9 @@ public class MRFT implements Serializable{
 						}
 					}
                     markov.setMarkov(i, j, PHI);			//adcionar a matriz PHI correspondente ï¿½ aresta (i,j) no Markov
-				}
-			}
 		}
+		System.out.println("this." + this.branchIterator.hasNext() + ";  addPhi." + iterator.hasNext());
+		
 		return markov; 
 	}
 				
@@ -111,8 +125,18 @@ public class MRFT implements Serializable{
 		int dim = this.dim;
 		double result = 1;
 		if ( Xn.length == dim ) {					//certifica-se de que a dimensï¿½o do vetor ï¿½ a mesma do MRFT
-			for(int i = 0; i < dim; i++) { 								
-				for(int j = i; j < dim; j++) { 			 										
+
+			ListIterator<ArrayList<Integer>> iterator = this.branchIterator;
+
+			while(iterator.hasNext()){
+				ArrayList<Integer> ij = iterator.next();
+				int i = ij.get(0);
+				int j = ij.get(1);
+				System.out.println("ola");
+			}
+			
+			for(int i = 0; i < this.dim; i++) { 								
+				for(int j = i; j < this.dim; j++) { 			 										
 					if (A.branchQ(i,j)) {			                     	
 						System.out.println(i+ "," + j);
 						result = (result*(this.markov.getMarkov(i, j).getPhi(Xn[i],Xn[j]))); 
