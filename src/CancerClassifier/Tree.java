@@ -2,6 +2,8 @@ package CancerClassifier;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 
 public class Tree implements Serializable{
     int dim;
@@ -12,6 +14,29 @@ public class Tree implements Serializable{
         this.index = index;
         this.index.add(new ArrayList<Integer>());
         this.dim = 1;
+    }
+
+    public  Iterator<ArrayList<Integer>> branchIterator(){
+
+        ArrayList<ArrayList<Integer>> branchList = new ArrayList<ArrayList<Integer>>();
+        int dim = this.dim;
+
+        for(int i = 0; i < dim; i++){
+            int connectedNr = this.index.get(i).size();
+            for(int j = 0; j < connectedNr; j++){
+                ArrayList<Integer> currentBranch = new ArrayList<Integer>();
+                currentBranch.add(i);
+                currentBranch.add(this.index.get(i).get(j));
+
+                branchList.add(currentBranch);
+            }
+            
+        }
+
+        Iterator<ArrayList<Integer>> branchIterator = branchList.iterator();
+        
+        return branchIterator;
+
     }
 
     public void addLeaf(int o, int d) {
@@ -80,6 +105,12 @@ public class Tree implements Serializable{
         for (int[] e : edges) {
             t.addLeaf(e[0], e[1]);
         }
+       // System.out.println("t br: " +  Arrays.toString(t.branchIterator()));
+       Iterator<ArrayList<Integer>> branchIterator = t.branchIterator();
+       while(branchIterator.hasNext()){
+           System.out.println(branchIterator.next());
+       }
+
         ArrayList<ArrayList<Integer>> z = new ArrayList<ArrayList<Integer>>();
         
         ArrayList<Integer> x1 = new ArrayList<Integer>();
@@ -118,11 +149,14 @@ public class Tree implements Serializable{
         z.add(x6);
         z.add(x7);
         
+        
         //Tree tree = MST.MaximalTree(z);
         //System.out.println("tree: " + tree);
      
-        System.out.println("arrayList z = " + z);
-        System.out.println("path: " + MST.pathQ(2, 4, MST.MaximalTree(z)));
+        //System.out.println("arrayList z = " + z);
+        //System.out.println("path: " + MST.pathQ(2, 4, MST.MaximalTree(z)));
+
+
         //System.out.println("maximalTree z = " + MST.MaximalTree(z));
 
 
