@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
+
+
 public class MST {
 	
 	int dim_Dataset; //m do eneunciado
@@ -25,7 +27,7 @@ public class MST {
 	
 
 	
-	public static WGraph Fibfrequency (WGraph wg, Dataset T, int i, int j) { //recebe um dataset e calcula a frequencia de cada fibra, assumindo que todos os nós estão ligados 
+	public static WGraph Fibfrequency (WGraph wg, Dataset T, int i, int j) { //recebe um dataset e calcula a frequencia de cada fibra, assumindo que todos os nï¿½s estï¿½o ligados 
 		double fibfrequency = 0;
 		double m = T.len();
 		System.out.println("m = " + m);
@@ -61,7 +63,7 @@ public class MST {
 	
 	
 	
-	public static LinkedList<Integer> offspring(Tree t, int o){ //descendentes do nó o no grafo
+	public static LinkedList<Integer> offspring(Tree t, int o){ //descendentes do nï¿½ o no grafo
 		LinkedList<Integer> children = new LinkedList<Integer>();
 		if (o>=0 && o<t.dim) {
 			for (int i = 0; i < t.dim; i++) {
@@ -77,12 +79,12 @@ public class MST {
 	
 	
 
-	public ArrayList<Integer> DFS (int o, Tree t) { //dá-nos os descendentes de cada árvore, em profundidade
+	public ArrayList<Integer> DFS (int o, Tree t) { //dï¿½-nos os descendentes de cada ï¿½rvore, em profundidade
 		if ( o>= 0 && o< t.dim) {
 			ArrayList<Integer> r = new ArrayList<Integer>();
 			Stack<Integer> stack = new Stack<Integer>();
 			boolean [] visited = new boolean[t.dim]; //lista de visitados
-			stack.push(o); //adicionamos o primeiro nó
+			stack.push(o); //adicionamos o primeiro nï¿½
 			while (!stack.isEmpty()) {
 				int node = stack.pop(); // remove o mais recente
 				if (!visited[node]) {
@@ -153,7 +155,7 @@ public class MST {
 				}
 			
 				if (!mst.indexisnotemptyQ(mst.wmtx[source]) && !mst.indexisnotemptyQ(mst.wmtx[destiny])) {
-					System.out.println("Adicionando à MST");
+					System.out.println("Adicionando ï¿½ MST");
 					mst.addLeaf(source, destiny);
 					peso = 0;
 					source = destiny;
@@ -169,15 +171,16 @@ public class MST {
 		return mst;
 		
 	}*/
+
 	
 	public static Tree MaximalTree (ArrayList<ArrayList<Integer>> edge_list) {
-		Tree maximalTree = new Tree(); //árvore final que vamos devolver
+		Tree maximalTree = new Tree(); //ï¿½rvore final que vamos devolver
 		ArrayList<Integer> visited = new ArrayList<Integer>(); //lista de indices visitados
-		maximalTree.addLeaf(edge_list.get(0).get(0), edge_list.get(0).get(1)); //adiciona a primeira aresta (que supostamente é a que tem maior peso)
+		maximalTree.addLeaf(edge_list.get(0).get(0), edge_list.get(0).get(1)); //adiciona a primeira aresta (que supostamente ï¿½ a que tem maior peso)
 		
 		//System.out.println("maximalTree1 = " + maximalTree);
 		visited.add(edge_list.get(0).get(0));
-		visited.add(edge_list.get(0).get(1)); // é isto que está mal
+		visited.add(edge_list.get(0).get(1)); // ï¿½ isto que estï¿½ mal
 		//System.out.println("get = " + edge_list.get(0).get(1));
 		//System.out.println("visited inicio = " + visited);
 		//System.out.println("edge list inicio = " + edge_list);
@@ -186,7 +189,7 @@ public class MST {
 		
 		
 		while (!edge_list.isEmpty()) {
-			//for (int i = 0; i < dim; i++) { //verificando que não há ciclos
+			//for (int i = 0; i < dim; i++) { //verificando que nï¿½o hï¿½ ciclos
 				//System.out.println("edge list size = " + edge_list.size());
 				for (int k = 0; k < visited.size() && !edge_list.isEmpty(); k++) { 
 					//System.out.println("k = " + k);
@@ -203,7 +206,7 @@ public class MST {
 						//System.out.println("edge list = " + edge_list);
 					}
 					else {
-						maximalTree.addLeaf(edge_list.get(0).get(0), edge_list.get(0).get(1)); //adiciona a folha à nossa árvore final
+						maximalTree.addLeaf(edge_list.get(0).get(0), edge_list.get(0).get(1)); //adiciona a folha ï¿½ nossa ï¿½rvore final
 						//System.out.println("edge list1 = " + edge_list);
 						//System.out.println("maximalTree = " + maximalTree);
 						//System.out.println("edge list2 = " + edge_list);
@@ -294,6 +297,95 @@ public class MST {
     } 
 		*/
 
+		
+	public static ArrayList<ArrayList<Integer>> orderedBranchList(WGraph wg){
+
+		System.out.println(wg);
+		System.out.println("");
+
+		ArrayList<ArrayList<Integer>> finalList = new ArrayList<ArrayList<Integer>>();
+		ArrayList<Double> weightList = new ArrayList<Double>();
+
+		int graphDim = wg.dim;
+		if(graphDim == 0){
+			throw new AssertionError("A non-empty graph has to be provided");
+		}
+
+		int finalListSize = 0;
+		boolean empty = true;
+
+		for(int i = 0; i < graphDim; i++){
+			for(int j = 0; j < graphDim; j++){
+				
+				System.out.println("i,j: " + i + "," + j);
+				
+				double currentWeight = wg.get_weight(i,j);
+
+				if(currentWeight != 0){
+
+
+					if(empty){
+
+						ArrayList<Integer> currentEdge = new ArrayList<Integer>();
+						currentEdge.add(i);
+						currentEdge.add(j);
+						finalList.add(currentEdge);
+						weightList.add(currentWeight);
+
+						System.out.println("2currentWeight:" + currentWeight);
+						System.out.println("1weightList:" + weightList);
+						System.out.println("1first Edge:" + currentEdge);
+						System.out.println("1finalList:" + finalList);
+
+
+						empty = false;
+					
+
+					} else {
+						ArrayList<Integer> currentEdge = new ArrayList<Integer>();
+						currentEdge.add(i);
+						currentEdge.add(j);
+
+						boolean inserted = false;
+
+						for(int k = 0; k < finalListSize && !inserted; k++){
+							
+							System.out.println("k:" + k);
+
+							if(currentWeight >= weightList.get(k)){
+
+								
+								
+								finalList.add(k,currentEdge);
+								weightList.add(k,currentWeight);
+								inserted = true;
+
+								System.out.println("2currentWeight:" + currentWeight);
+								System.out.println("2weightList:" + weightList);
+								System.out.println("2currentEdge:" + currentEdge);
+								System.out.println("2finalList:" + finalList);
+
+							}
+
+							
+
+						}
+
+					}
+
+					finalListSize++;
+					System.out.println("finalListSize:" + finalListSize);
+				
+					}
+					
+				System.out.println("");
+			}
+			System.out.println("");
+		}
+
+
+		return finalList;
+	}
 
 	@Override
 	public String toString() {
@@ -320,18 +412,32 @@ public class MST {
         //MST mst = new MST(ds1);
         WGraph wg = new WGraph(5);
         //wg = MST.Fibfrequency(wg, ds1, 1, 2);
-        wg.add(1, 2, 2);
-        wg.add(1, 3, 1);
-        wg.add(1, 4, 3);
-        wg.add(2, 4, 5);
+        wg.add(1, 2, 2.3);
+        wg.add(1, 3, 1.2);
+        wg.add(1, 4, 3.3);
+        wg.add(2, 4, 5.19);
         //System.out.println("DataPoint: " + dp6);
         //System.out.println(ds1);
         //System.out.println(wg);
         // System.out.println("teste:" + Math.log10(2));
         //System.out.println(ds1);
         //System.out.println("Peso da aresta 1,2 = " + wg.get_weight(1, 2));
-        System.out.println("Fibfrequency = " + MST.Fibfrequency(wg, ds1,1,2)); //imprime um weighted graph 
+        //System.out.println("Fibfrequency = " + MST.Fibfrequency(wg, ds1,1,2)); //imprime um weighted graph 
         //System.out.println(wg);
+
+		WGraph wg1 = new WGraph(5);
+        //wg = MST.Fibfrequency(wg, ds1, 1, 2);
+        wg1.add(1, 2, 2);
+        wg1.add(4, 3, 1);
+        wg1.add(3, 4, 3);
+        wg1.add(2, 4, 5.2);
+		wg1.add(4, 0, 16);
+		wg1.add(4, 3, 1);
+		wg1.add(3, 1, 13.3);
+		wg1.add(4, 2, 6);
+		wg1.add(0, 0, 1.32);
+
+		System.out.println(MST.orderedBranchList(wg1));
 		
 	}
 
