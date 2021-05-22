@@ -16,7 +16,7 @@
 - frequencia atributo do dataset + implementação por fibra
 - whraph melhorar impolementacao
 - melhorar abstraçao do MRFT e a arvore la
-- iterador para ajudar abstracao (ciclos de mrft)
+- iterador(feito)  falta por no mrtft 
 - Markov, set não está protegido para simetricos
 - implementar fibras diretamente no dataset
 

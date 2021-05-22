@@ -16,6 +16,26 @@ public class Tree implements Serializable{
         this.dim = 1;
     }
 
+
+    public ArrayList<Integer> first(){
+        boolean firstFound = false;
+        ArrayList<Integer> firstBranch = new ArrayList<Integer>();
+
+        for(int i = 0;!firstFound && i < dim; i++){
+            int connectedNr = this.index.get(i).size();
+            for(int j = 0; !firstFound && j < connectedNr; j++){
+                
+                firstBranch.add(i);
+                firstBranch.add(this.index.get(i).get(j));
+
+                firstFound = true;
+            }
+            
+        }
+
+        return firstBranch;
+    }
+
     public  Iterator<ArrayList<Integer>> branchIterator(){
 
         ArrayList<ArrayList<Integer>> branchList = new ArrayList<ArrayList<Integer>>();
@@ -110,6 +130,8 @@ public class Tree implements Serializable{
        while(branchIterator.hasNext()){
            System.out.println(branchIterator.next());
        }
+
+       System.out.println("first" + t.first());
 
         ArrayList<ArrayList<Integer>> z = new ArrayList<ArrayList<Integer>>();
         
