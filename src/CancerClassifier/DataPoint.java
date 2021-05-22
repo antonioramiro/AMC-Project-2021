@@ -1,9 +1,11 @@
 package CancerClassifier;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 //DataPoint stores an array of 10 measurements (index 0 to 9) and its respective classification as benign or malignant
-public class DataPoint {
+public class DataPoint implements Serializable{
+	private static final long serialVersionUID = 9L;
 
     //Class Attributes
     int[] measurements;

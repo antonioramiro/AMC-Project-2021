@@ -138,7 +138,7 @@ public class FileHandling {
     Dataset a = FileHandling.getDataset("Datasets/bcancer.csv");
     System.out.println("Dataset example: " + Arrays.toString(a.measurementsDomain));
 
-    //FileHandling.exportClassifier(a,"maria");
+    FileHandling.exportClassifier(a,"maria");
     ClassifierPackager b = FileHandling.importClassifier("Classifiers/bcancer.classifier");
     System.out.println(b);
     

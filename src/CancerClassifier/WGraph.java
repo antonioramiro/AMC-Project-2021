@@ -1,5 +1,6 @@
 package CancerClassifier;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -20,7 +21,9 @@ class Edge {
 		}
 }
 
-public class WGraph {//(extends Graph) , usamos isto quando queremos usar a implementa��o da classe graph j� implementada anteriormente 
+public class WGraph implements Serializable{//(extends Graph) , usamos isto quando queremos usar a implementa��o da classe graph j� implementada anteriormente 
+	private static final long serialVersionUID = 7L;
+
 	int dim; //dimens�o da matriz de ajac�ncia
 	//int [][] ma; //matriz de adjac�ncia em si
 	double [][] wmtx; //matriz onde v�o ser guardados os valores dos pesos de cada aresta, ser� uma matriz sim�trica tal como a outra dado que o grafo n�o � direcionado 

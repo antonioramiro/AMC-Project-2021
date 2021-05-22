@@ -1,11 +1,14 @@
 package CancerClassifier;
 
+import java.io.Serializable;
 //To allow ArrayList use
 import java.util.ArrayList;
 import java.util.Arrays;
 
 //Dataset stores an ArrayList of DataPoints, and its length.
-public class Dataset {
+public class Dataset implements Serializable{
+	private static final long serialVersionUID = 8L;
+
 
     //Class Attributes
     ArrayList<DataPoint> dataList;

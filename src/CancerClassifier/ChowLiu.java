@@ -1,5 +1,6 @@
 package CancerClassifier;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 //import java.util.ArrayList;
@@ -9,8 +10,9 @@ import java.util.Stack;
 
 
 
-public class ChowLiu {
-	
+public class ChowLiu implements Serializable{
+	private static final long serialVersionUID = 6L;
+
 	int dim_Dataset; //m do eneunciado
 	int dim_measurement;
 	WGraph wg;

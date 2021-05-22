@@ -5,13 +5,14 @@ import java.util.Arrays;
 import java.io.Serializable;
 
 public class ClassifierPackager implements Serializable{
-    private int dim;
+	private static final long serialVersionUID = 5L;
+	private int dim;
     private ArrayList<MRFT> mrftList;
     private double[] freqList;
 
     public ClassifierPackager(Dataset data){
 
-        Tree chowliuTree = new Tree(); //ChowLiu(data);
+        Tree chowliuTree = new Tree(10); //ChowLiu(data);
 
 		int[][] edges = {{0,1}, {1,2}, {1,3},{1,4},{0,5}, {1,6}, {1,7}, {1,8}, {1,9} };
 		for(int[] e : edges) {
