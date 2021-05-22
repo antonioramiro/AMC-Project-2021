@@ -11,7 +11,8 @@ public class MRFT implements Serializable{
 	private int dim;		             //dimensï¿½o do MRFT
 	private Markov markov;	 	     	 //Datatype que armazena os Phis
 	private ArrayList<Integer> special;	 //Aresta especial
-    private Tree A;						
+    private Tree A;			
+    private int[] measurementsDomain; 
 	
 	//Construtor
 	public MRFT(Dataset T, Tree A) {
@@ -21,6 +22,7 @@ public class MRFT implements Serializable{
             this.dim = A.dim ;
             this.special = set_special(A);
             this.markov = add_PHI(T, A);
+            this.measurementsDomain = T.measurementsDomain;
             
             this.A = A;
             ArrayList<Integer> sp = new ArrayList<Integer>();
@@ -35,6 +37,11 @@ public class MRFT implements Serializable{
 	@Override
 	public String toString() {
 		return "MRFT [dim=" + this.dim + "\n tree=" + A.toString() + "\n special=" + special + "\n markov=" + this.markov.toString() + "]";
+	}
+	
+	//não gostei dessa solução 
+	public int measurementDim(int i){
+        return this.measurementsDomain[i];
 	}
 
 	//Seleciona uma aresta como especial
@@ -57,10 +64,10 @@ public class MRFT implements Serializable{
 	
 	//Calcula o valor de phi para arestas normais (phi_normal) e para a aresta especial (phi_special)
 	public double phi_normal(Dataset T, int i, int j, int xi, int xj, double delta) { 			//phi de xi 
-		return (T.Count(i, j, xi, xj) + delta)/(T.Count(i, xi) + delta*T.measurementDim(j)); 	
+		return (T.Count(i, j, xi, xj) + delta)/(T.Count(i, xi) + delta*this.measurementDim(j)); 	
 	}
 	public double phi_special(Dataset T, int i, int j, int xi, int xj, double delta) { 			//phi de xi e xj
-		return (T.Count(i,j, xi, xj) + delta)/(T.len() + delta*T.measurementDim(i)*T.measurementDim(j));     //Maria: alterei para T.len()  (estava T.len)
+		return (T.Count(i,j, xi, xj) + delta)/(T.len() + delta*this.measurementDim(i)*this.measurementDim(j));     //Maria: alterei para T.len()  (estava T.len)
 	}
 	
 	//Dado um dataset e uma ï¿½rvore, cria um Markov e adciona as matrizess PHI correspondentres a cada aresta da ï¿½rvore
@@ -73,15 +80,18 @@ public class MRFT implements Serializable{
 			for(int j=i; j < this.dim; j++) { 														
 				if (A.branchQ(i,j)) { 			//verificar se os nï¿½s em causa constituem uma aresta na ï¿½rvore
 					
+					int dimi = measurementDim(i);
+					int dimj = measurementDim(j);
+					
 					boolean special = false;
 					if(!found_special && this.specialQ(i,j)) {			//verificar se os nï¿½s em causa constituem a aresta especial
 						special = true;
 						found_special = true;}
 					
-                    Phi PHI = new Phi(T.measurementDim(i),T.measurementDim(j));		//criar uma nova matriz PHI
+                    Phi PHI = new Phi(dimi,dimj);		//criar uma nova matriz PHI
 
-					for (int xi=0; xi < T.measurementDim(i); xi++) { 				//percorrer todas as combinaï¿½ï¿½es possï¿½veis de xi e xj						 
-						for (int xj=0; xj < T.measurementDim(j); xj++) { 									
+					for (int xi=0; xi < dimi; xi++) { 				//percorrer todas as combinaï¿½ï¿½es possï¿½veis de xi e xj						 
+						for (int xj=0; xj < dimj; xj++) { 									
 							if (special) {
 								PHI.setPhi(xi,xj, phi_special(T, i, j, xi, xj, 0.2)); 	//adcionar os valores de phi(xi, xj) na posiï¿½ï¿½o correspondente da matriz PHI
 							}else { 															
