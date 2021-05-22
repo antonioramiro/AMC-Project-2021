@@ -194,7 +194,7 @@ public class Tree implements Serializable{
         //System.out.println("path: " + MST.pathQ(2, 4, MST.MaximalTree(z)));
 
 
-        System.out.println("maximalTree z = " + ChowLiu.MaximalTree(z));
+        //System.out.println("maximalTree z = " + ChowLiu.MaximalTree(z));
         //System.
 
 

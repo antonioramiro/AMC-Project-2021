@@ -34,7 +34,7 @@ public class Classifier {
 
     public static void main(String[] args) {
         //Creating graph
-        Tree g = new Tree();
+        Tree g = new Tree(6);
 		int[][] edges = {{0,1}, {1,2}, {1,3},{0,4},{4,5}};
 		for(int[] e : edges) {
 			g.addLeaf(e[0], e[1]);

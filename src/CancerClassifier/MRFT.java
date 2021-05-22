@@ -3,7 +3,7 @@ package CancerClassifier;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.ListIterator;
+//import java.util.Iterator;
 
 public class MRFT implements Serializable{
 	private static final long serialVersionUID = 4L;
@@ -14,7 +14,7 @@ public class MRFT implements Serializable{
 	private ArrayList<Integer> special;	 //Aresta especial
     private Tree A;			
     private int[] measurementsDomain; 
-	private ListIterator<ArrayList<Integer>> branchIterator;
+	//private Iterator<ArrayList<Integer>> branchIterator;
 	
 	//Construtor
 	public MRFT(Dataset T, Tree A) {
@@ -26,7 +26,7 @@ public class MRFT implements Serializable{
             this.dim = A.dim ;
 			this.measurementsDomain = T.measurementsDomain;
 			
-			this.branchIterator = A.branchIterator();
+			//this.branchIterator = A.branchIterator();
             this.special = set_special(A);
             this.markov = add_PHI(T, A);
             
@@ -89,7 +89,7 @@ public class MRFT implements Serializable{
 
 
 
-		ListIterator<ArrayList<Integer>> iterator = this.branchIterator;
+		/*Iterator<ArrayList<Integer>> iterator = this.branchIterator;
 
 		System.out.println("this." + this.branchIterator.hasNext() + ";  addPhi" + iterator.hasNext());
 
@@ -97,8 +97,14 @@ public class MRFT implements Serializable{
 			ArrayList<Integer> ij = iterator.next();
 			int i = ij.get(0);
 			int j = ij.get(1);
+		*/
 
-			int dimi = getMeasurementDim(i);
+		for(int i=0; i < this.dim; i++) {		//percorrer todas as combina��es de n�s da �rvore											
+			for(int j=i; j < this.dim; j++) { 														
+				if (A.branchQ(i,j)) { 			//verificar se os n�s em causa constituem uma aresta na �rvore
+					
+					
+					int dimi = getMeasurementDim(i);
 					int dimj = getMeasurementDim(j);
 					
 					boolean special = false;
@@ -118,8 +124,10 @@ public class MRFT implements Serializable{
 						}
 					}
                     markov.setMarkov(i, j, PHI);			//adcionar a matriz PHI correspondente � aresta (i,j) no Markov
+				}
+			}
 		}
-		System.out.println("this." + this.branchIterator.hasNext() + ";  addPhi." + iterator.hasNext());
+		//System.out.println("this." + this.branchIterator.hasNext() + ";  addPhi." + iterator.hasNext());
 		
 		return markov; 
 	}
@@ -130,14 +138,9 @@ public class MRFT implements Serializable{
 		double result = 1;
 		if ( Xn.length == dim ) {					//certifica-se de que a dimens�o do vetor � a mesma do MRFT
 
-			ListIterator<ArrayList<Integer>> iterator = this.branchIterator;
+			
 
-			while(iterator.hasNext()){
-				ArrayList<Integer> ij = iterator.next();
-				int i = ij.get(0);
-				int j = ij.get(1);
-				System.out.println("ola");
-			}
+			
 			
 			for(int i = 0; i < this.dim; i++) { 								
 				for(int j = i; j < this.dim; j++) { 			 										
@@ -158,7 +161,7 @@ public class MRFT implements Serializable{
 		
 	public static void main(String[] args) {
         //Creating graph
-        Tree g = new Tree();
+        Tree g = new Tree(5);
 		int[][] edges = {{0,1}, {1,2}, {1,3},{1,4}};
 		for(int[] e : edges) {
 			g.addLeaf(e[0], e[1]);
