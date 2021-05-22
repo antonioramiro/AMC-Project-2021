@@ -21,6 +21,7 @@ public class window2 {
 	private JFrame frmClassifier;
 	private JTextField insertValues;
 	private final JFileChooser OpenFile;
+	private ClassifierPackager cp;
 
 	/**
 	 * Launch the application.
@@ -54,12 +55,12 @@ public class window2 {
 	private void initialize() {
 		frmClassifier = new JFrame();
 		frmClassifier.setTitle("Classifier");
-		frmClassifier.setBounds(100, 100, 605, 190);
+		frmClassifier.setBounds(100, 100, 603, 283);
 		frmClassifier.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmClassifier.getContentPane().setLayout(null);
 		
 		insertValues = new JTextField();
-		insertValues.setBounds(10, 37, 569, 20);
+		insertValues.setBounds(10, 108, 569, 20);
 		frmClassifier.getContentPane().add(insertValues);
 		insertValues.setColumns(10);
 		
@@ -68,50 +69,78 @@ public class window2 {
 		resultLabel.setForeground(Color.BLACK);
 		resultLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		resultLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		resultLabel.setBounds(119, 108, 149, 36);
+		resultLabel.setBounds(219, 195, 149, 36);
 		frmClassifier.getContentPane().add(resultLabel);
 		
-		JLabel lblNewLabel = new JLabel("Insert Values");
-		lblNewLabel.setBounds(10, 22, 358, 14);
-		frmClassifier.getContentPane().add(lblNewLabel);
+		JLabel MeasurementsLbl = new JLabel("");
+		MeasurementsLbl.setBounds(10, 83, 358, 14);
+		frmClassifier.getContentPane().add(MeasurementsLbl);
 		
-		JLabel FilePath = new JLabel("");
-		FilePath.setBounds(128, 82, 451, 14);
-		frmClassifier.getContentPane().add(FilePath);
+		JLabel ProblemLbl = new JLabel("");
+		ProblemLbl.setBounds(10, 139, 569, 20);
+		frmClassifier.getContentPane().add(ProblemLbl);
 		
 		JButton ChooseFileBtn = new JButton("Choose File...");
 		ChooseFileBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (OpenFile.showOpenDialog(frmClassifier) == JFileChooser.APPROVE_OPTION) {
+					
+					JLabel FilePath = new JLabel("");
+					FilePath.setBounds(128, 49, 451, 23);
+					frmClassifier.getContentPane().add(FilePath);
+					
 					String path = OpenFile.getSelectedFile().getAbsolutePath();
 					FilePath.setText(path);
+					cp = FileHandling.importClassifier(FilePath.getText());
+					
+					MeasurementsLbl.setText(Integer.toString(cp.getMrft().get(0).getDim()));
+					
+					
 				}
 			}
 		});
-		ChooseFileBtn.setBounds(10, 78, 111, 23);
+		
+		
+		
+		ChooseFileBtn.setBounds(10, 49, 111, 23);
 		frmClassifier.getContentPane().add(ChooseFileBtn);
 		
 		JButton ClassifyBtn = new JButton("Classify");
 		ClassifyBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				String values = insertValues.getText();
 				String[] valuesList = (values.split(","));
 				int valueNumber = valuesList.length;
 				
 				int[] firstValues = new int[valueNumber];
+				//ClassifierPackager cp = FileHandling.importClassifier(FilePath.getText());
+				
 			      for (int i = 0; i < valuesList.length; i++) {
 			        int thisValue = Integer.parseInt(valuesList[i]);
+			        int dimi = cp.getMrft().get(0).getMeasurementDim(i);
+			        
+			        if (thisValue > dimi) {
+			        	ProblemLbl.setText("Measurement" + i + "out of range");
+			        }else {
 			        firstValues[i] = thisValue;
+			        }
 			      }
-			      ClassifierPackager cp = FileHandling.importClassifier(FilePath.getText());
+			      
 			      Classifier c = new Classifier(cp.getMrft(), cp.getFreq());
 			      int result = c.Classify(firstValues);
 			      resultLabel.setText(String.valueOf(result));		
 			}
 		});
 		
-		ClassifyBtn.setBounds(490, 117, 89, 23);
+		ClassifyBtn.setBounds(488, 170, 89, 23);
 		frmClassifier.getContentPane().add(ClassifyBtn);
+		
+		JLabel lblNewLabel_1 = new JLabel("Choose a Classifier");
+		lblNewLabel_1.setBounds(10, 30, 155, 14);
+		frmClassifier.getContentPane().add(lblNewLabel_1);
+		
+		
 			
 
 	}

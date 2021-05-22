@@ -50,6 +50,9 @@ public class MRFT implements Serializable{
 	public int getMeasurementDim(int i){
         return this.measurementsDomain[i];
 	}
+	public int getDim() {
+		return this.dim;
+	}
 
 	//Seleciona uma aresta como especial
 	public ArrayList<Integer> set_special(Tree A){
