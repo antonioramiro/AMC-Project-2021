@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Markov implements Serializable{
+	private static final long serialVersionUID = 2L;
 
 	private ArrayList<ArrayList<Phi>> Phis;
 	private ArrayList<ArrayList<Integer>> index;

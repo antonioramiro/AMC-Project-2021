@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.ListIterator;
 
 public class Tree implements Serializable{
+    private static final long serialVersionUID = 3L;
     int dim;
     public ArrayList<ArrayList<Integer>> index;
 
