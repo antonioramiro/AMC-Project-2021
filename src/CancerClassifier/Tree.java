@@ -3,7 +3,7 @@ package CancerClassifier;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.ListIterator;
+import java.util.Iterator;
 
 public class Tree implements Serializable{
     private static final long serialVersionUID = 3L;
@@ -40,7 +40,7 @@ public class Tree implements Serializable{
         return firstBranch;
     }
 
-    public  ListIterator<ArrayList<Integer>> branchIterator(){
+    public  ArrayList<ArrayList<Integer>> branchLister(){
 
         ArrayList<ArrayList<Integer>> branchList = new ArrayList<ArrayList<Integer>>();
         int dim = this.dim;
@@ -56,10 +56,8 @@ public class Tree implements Serializable{
             }
             
         }
-
-        ListIterator<ArrayList<Integer>> branchIterator = branchList.listIterator();
         
-        return branchIterator;
+        return branchList;
 
     }
 
@@ -185,7 +183,15 @@ public class Tree implements Serializable{
         z.add(x6);
         z.add(x7); 
         
-        
+        /*
+
+       {{1,3},{3,2}}
+
+       for (branch : arvore) {~
+    }
+
+        */
+
         
         //Tree tree = MST.MaximalTree(z);
         //System.out.println("tree: " + tree);

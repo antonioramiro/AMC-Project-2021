@@ -3,7 +3,6 @@ package CancerClassifier;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-//import java.util.Iterator;
 
 public class MRFT implements Serializable{
 	private static final long serialVersionUID = 4L;
@@ -12,30 +11,20 @@ public class MRFT implements Serializable{
 	private int dim;		             //dimens�o do MRFT
 	private Markov markov;	 	     	 //Datatype que armazena os Phis
 	private ArrayList<Integer> special;	 //Aresta especial
-    private Tree A;			
-    private int[] measurementsDomain; 
-	//private Iterator<ArrayList<Integer>> branchIterator;
 	
+    private int[] measurementsDomain; 
+
 	//Construtor
 	public MRFT(Dataset T, Tree A) {
        
         if (A.dim == T.measurementNumber){	//certifica-se de que a �rvore e o dataset dados t�m a mesma dimens�o
 			
-			this.A = A;
-
             this.dim = A.dim ;
 			this.measurementsDomain = T.measurementsDomain;
-			
-			//this.branchIterator = A.branchIterator();
-            this.special = set_special(A);
+			//this.branchList = A.branchLister();
+            this.special = A.first();	//Seleciona uma aresta como especial
             this.markov = add_PHI(T, A);
-            
-            
-
-            
-            ArrayList<Integer> sp = new ArrayList<Integer>();
-            sp.add(0);
-            sp.add(1);
+              
             
         }else {
             throw new AssertionError("The number of Tree Leafs (" +A.dim+ ") must match the number of measurements (" +T.measurementNumber+ ") in the dataset");
@@ -44,7 +33,7 @@ public class MRFT implements Serializable{
 	
 	@Override
 	public String toString() {
-		return "MRFT [dim=" + this.dim + "\n tree=" + A.toString() + "\n special=" + special + "\n markov=" + this.markov.toString() + "]";
+		return "MRFT [dim=" + this.dim + "\n tree="  + "\n special=" + special + "\n markov=" + this.markov.toString() + "]";
 	}
 	
 	//n�o gostei dessa solu��o 
@@ -55,10 +44,6 @@ public class MRFT implements Serializable{
 		return this.dim;
 	}
 
-	//Seleciona uma aresta como especial
-	public ArrayList<Integer> set_special(Tree A){
-		return A.first();
-	}
 
 	//Verifica se dois n�s i e j s�o ligados pela aresta especial
 	public boolean specialQ(int i, int j ) {	
@@ -83,23 +68,10 @@ public class MRFT implements Serializable{
 		
 		Markov markov =  new Markov(this.dim);
 		boolean found_special = false;
-
-
-
-		/*Iterator<ArrayList<Integer>> iterator = this.branchIterator;
-
-		System.out.println("this." + this.branchIterator.hasNext() + ";  addPhi" + iterator.hasNext());
-
-		while(iterator.hasNext()){
-			ArrayList<Integer> ij = iterator.next();
-			int i = ij.get(0);
-			int j = ij.get(1);
-		*/
-
+	
 		for(int i=0; i < this.dim; i++) {		//percorrer todas as combina��es de n�s da �rvore											
 			for(int j=i; j < this.dim; j++) { 														
 				if (A.branchQ(i,j)) { 			//verificar se os n�s em causa constituem uma aresta na �rvore
-					
 					
 					int dimi = getMeasurementDim(i);
 					int dimj = getMeasurementDim(j);
@@ -121,6 +93,7 @@ public class MRFT implements Serializable{
 						}
 					}
                     markov.setMarkov(i, j, PHI);			//adcionar a matriz PHI correspondente � aresta (i,j) no Markov
+					
 				}
 			}
 		}
@@ -134,14 +107,10 @@ public class MRFT implements Serializable{
 		int dim = this.dim;
 		double result = 1;
 		if ( Xn.length == dim ) {					//certifica-se de que a dimens�o do vetor � a mesma do MRFT
-
-			
-
-			
-			
+		
 			for(int i = 0; i < this.dim; i++) { 								
 				for(int j = i; j < this.dim; j++) { 			 										
-					if (A.branchQ(i,j)) {			                     	
+					if (this.markov.isTherePhi(i,j)) {			                     	
 						System.out.println(i+ "," + j);
 						result = (result*(this.markov.getMarkov(i, j).getPhi(Xn[i],Xn[j]))); 
 					}

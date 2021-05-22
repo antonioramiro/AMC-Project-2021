@@ -52,6 +52,25 @@ public class Markov implements Serializable{
 		this.N = N;
 	}
 
+
+	public boolean isTherePhi(int i, int j){
+		boolean isThere = false;
+
+		int minor = Math.min(i,j);
+		int major = Math.max(i,j);
+		
+		if(minor < N && major < N){
+			System.out.println("N: " + N);
+			for (int y = 0; !isThere && y < this.index.get(minor).size(); y++) {
+				System.out.println("Y: " + y);
+				if (this.index.get(minor).size() > 0 &&	this.index.get(minor).get(y) == major) {
+					isThere = true;
+				}
+			}
+		}
+		return isThere;
+	}
+
 	public void setMarkov(int i, int j, Phi p) {
 		if (i < N && j < N) {
 			this.Phis.get(i).add(p);
@@ -61,6 +80,8 @@ public class Markov implements Serializable{
 		}
 	}
 	
+	
+
 	//acrescentar expressao de erro caso passe o dom.
 	public Phi getMarkov(int i, int j) {
 		int minor = Math.min(i,j);
@@ -143,8 +164,11 @@ public class Markov implements Serializable{
 		System.out.println("markov 1,4" + markov.getMarkov(1, 4));
 		System.out.println("markov 1,3" + markov.getMarkov(1, 3));
 
-		
-
+		for(int i = 0; i < 10; i++){
+			for (int j = 0; j < 10; j++) {
+				System.out.println("is there: " + markov.isTherePhi(i, j) + "j: " + j + "; i:" +i);
+		}
+	}
 		/*
 		ArrayList<ArrayList<Phi>> X = new ArrayList<ArrayList<Phi>>();
 

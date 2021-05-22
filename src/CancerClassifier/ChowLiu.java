@@ -8,8 +8,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
-
-
 public class ChowLiu implements Serializable{
 	private static final long serialVersionUID = 6L;
 
@@ -351,7 +349,7 @@ public class ChowLiu implements Serializable{
 				if(currentWeight != 0){
 
 
-					if(empty){ //primeiro nó da árvore
+					if(empty){ //primeiro nï¿½ da ï¿½rvore
 
 						ArrayList<Integer> currentEdge = new ArrayList<Integer>();
 						currentEdge.add(minor);

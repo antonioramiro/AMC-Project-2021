@@ -142,7 +142,7 @@ public class FileHandling {
     ClassifierPackager b = FileHandling.importClassifier("Classifiers/diabetes.classifier");
     System.out.println(b);
     
-    int[] d = {1,3,0,0,0,0,0,0,0,0};
+    int[] d = {1,3,0,0,0,0,0,0};
     Classifier c = new Classifier(b.getMrft(), b.getFreq());
     int result = c.Classify(d);
     System.out.println(result);
