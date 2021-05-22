@@ -2,7 +2,8 @@ package CancerClassifier;
 
 //Import Dataset Needs
 import java.io.File; 
-import java.io.FileNotFoundException; 
+import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.Scanner; 
 
 //Serialization Needs
@@ -133,12 +134,18 @@ public class FileHandling {
 
   public static void main(String[] args) {
     
-    System.out.println("\n");
+    //System.out.println("\n");
     Dataset a = FileHandling.getDataset("Datasets/diabetes.csv");
-    System.out.println("Dataset example: " + a);
+    System.out.println("Dataset example: " + Arrays.toString(a.measurementsDomain));
 
-    FileHandling.exportClassifier(a,"maria");
-    ClassifierPackager b = FileHandling.importClassifier("Classifiers/maria.classifier");
+    //FileHandling.exportClassifier(a,"maria");
+    ClassifierPackager b = FileHandling.importClassifier("Classifiers/bcancer.classifier");
     System.out.println(b);
+    
+    int[] d = {1,1,0,0,0,0,0,0,0,0};
+    Classifier c = new Classifier(b.getMrft(), b.getFreq());
+    int result = c.Classify(d);
+    System.out.println(result);
+    
   }
 }

@@ -9,7 +9,7 @@ public class Dataset {
 
     //Class Attributes
     ArrayList<DataPoint> dataList;
-    int[] measurementsDomain; //domain of the dataset measurements
+    public int[] measurementsDomain; //domain of the dataset measurements
     int classDomain; //domain of the class
     int measurementNumber;
    

@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 
@@ -77,10 +78,14 @@ public class window1 {
 				if (! path.isBlank()) {
 					Dataset data = FileHandling.getDataset(path);
 					System.out.println(path);
-					String[] SplitEndOfPath = path.split("/");
+					String[] SplitEndOfPath = path.split("\\\\");
+					System.out.println(Arrays.toString(SplitEndOfPath));
 					String EndOfPath = SplitEndOfPath[(SplitEndOfPath.length)-1];
-					String[] SplitCSV = EndOfPath.split(".");
+					System.out.println(EndOfPath);
+					String[] SplitCSV = EndOfPath.split("\\.");
+					System.out.println(Arrays.toString(SplitCSV));
 					String FinalPath = SplitCSV[0];
+					System.out.println(FinalPath);
 					FileHandling.exportClassifier(data, FinalPath);
 					//FileHandling.exportClassifier(data,"aqui");
 					//FileHandling.exportClassifier(data,parsedPath[parsedPath.length-1].split(".")[0]);
