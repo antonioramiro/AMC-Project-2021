@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.ListIterator;
 
 public class MRFT implements Serializable{
+	private static final long serialVersionUID = 4L;
 
 	//Atributos
 	private int dim;		             //dimens�o do MRFT
