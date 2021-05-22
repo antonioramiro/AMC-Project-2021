@@ -135,11 +135,11 @@ public class FileHandling {
   public static void main(String[] args) {
     
     //System.out.println("\n");
-    Dataset a = FileHandling.getDataset("Datasets/bcancer.csv");
+    Dataset a = FileHandling.getDataset("Datasets/diabetes.csv");
     System.out.println("Dataset example: " + Arrays.toString(a.measurementsDomain));
 
-    FileHandling.exportClassifier(a,"maria");
-    ClassifierPackager b = FileHandling.importClassifier("Classifiers/bcancer.classifier");
+    FileHandling.exportClassifier(a,"diabetes");
+    ClassifierPackager b = FileHandling.importClassifier("Classifiers/diabetes.classifier");
     System.out.println(b);
     
     int[] d = {1,3,0,0,0,0,0,0,0,0};

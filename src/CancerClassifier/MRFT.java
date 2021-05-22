@@ -57,10 +57,7 @@ public class MRFT implements Serializable{
 
 	//Seleciona uma aresta como especial
 	public ArrayList<Integer> set_special(Tree A){
-		ArrayList<Integer> special = new ArrayList<Integer>();
-		special.add(0);
-		special.add(1);
-		return special;
+		return A.first();
 	}
 
 	//Verifica se dois n�s i e j s�o ligados pela aresta especial

@@ -134,7 +134,7 @@ public class Tree implements Serializable{
 
         System.out.println("branch: " + t.branchQ(1, 3));
 
-        int[][] edges = {{1,2}, {1,3},{5,4},{5,3}, {4,2}};
+        //int[][] edges = {{1,2}, {1,3},{5,4},{5,3}, {4,2}};
         /*for (int[] e : edges) {
             t.addLeaf(e[0], e[1]);
         }*/
@@ -147,7 +147,7 @@ public class Tree implements Serializable{
        System.out.println("first" + t.first());
 
         ArrayList<ArrayList<Integer>> z = new ArrayList<ArrayList<Integer>>();
-        Tree tree = new Tree(8);
+        //Tree tree = new Tree(8);
         
         ArrayList<Integer> x1 = new ArrayList<Integer>();
         ArrayList<Integer> x2 = new ArrayList<Integer>();
