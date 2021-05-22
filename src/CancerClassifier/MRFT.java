@@ -104,6 +104,7 @@ public class MRFT implements Serializable{
 			for(int i = 0; i < dim; i++) { 								
 				for(int j = i; j < dim; j++) { 			 										
 					if (A.branchQ(i,j)) {			                     	
+						System.out.println(i+ "," + j);
 						result = (result*(this.markov.getMarkov(i, j).getPhi(Xn[i],Xn[j]))); 
 					}
 				}	
