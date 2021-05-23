@@ -149,7 +149,7 @@ public class ChowLiu implements Serializable{
 			for (int k = 0; !edge_list.isEmpty() && k < visited.size(); k++) { 
 				if (this.pathQ(edge_list.get(0).get(0), edge_list.get(0).get(1), maximalTree) || this.pathQ(edge_list.get(0).get(1), edge_list.get(0).get(0), maximalTree)) { //se formar um ciclo
 					edge_list.remove(0);
-						//System.out.println("edge list = " + edge_list);
+					
 				}
 				else {
 					if(!(maximalTree.leafQ(edge_list.get(0).get(0)) && maximalTree.leafQ(edge_list.get(0).get(1)))){

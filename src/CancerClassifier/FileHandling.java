@@ -396,10 +396,10 @@ public class FileHandling {
     System.out.println("Diagnosis: " + result);
 
     //Creating 5 files for the CrossValidation
-    //FileHandling.datasetPartition("Datasets/hepatitis.csv","Datasets/CrossValidation/hepatitis/",5);
-    //FileHandling.datasetPartition("Datasets/bcancer.csv","Datasets/CrossValidation/bcancer/",5);
+    FileHandling.datasetPartition("Datasets/hepatitis.csv","Datasets/CrossValidation/hepatitis/",5);
+    FileHandling.datasetPartition("Datasets/bcancer.csv","Datasets/CrossValidation/bcancer/",5);
     FileHandling.datasetPartition("Datasets/thyroid.csv","Datasets/CrossValidation/thyroid/",5);
-    //FileHandling.datasetPartition("Datasets/diabetes.csv","Datasets/CrossValidation/diabetes/",5);
+    FileHandling.datasetPartition("Datasets/diabetes.csv","Datasets/CrossValidation/diabetes/",5);
 
     //Import datasets except #1
    // System.out.println(getDatasetsMinusOne("Datasets/CrossValidation/hepatitis/",1,5));

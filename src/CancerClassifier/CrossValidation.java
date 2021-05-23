@@ -1,6 +1,7 @@
 package CancerClassifier;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 
 
@@ -54,16 +55,25 @@ public class CrossValidation {
             //System.out.println("Without partition " + rejectedDataset +" of the Dataset, result is:" + Arrays.deepToString(confMatrix));
             
         }
+        
         System.out.println(diseaseName + " Result" + Arrays.deepToString(total));
+        
         
     }
 
     public static void main(String[] args) {
+        long startTime = System.nanoTime();
+        //running 5 classifiers for each disease, trained on 4/5th of the
+        //available data, and using said classifiers to test the remaining 1/5th of 
+        //the data of each classifier
         CrossValidationG("Datasets/CrossValidation/hepatitis/",5,"hepatitis");
         CrossValidationG("Datasets/CrossValidation/bcancer/",5,"bcancer");
         CrossValidationG("Datasets/CrossValidation/thyroid/",5,"thyroid");
         CrossValidationG("Datasets/CrossValidation/diabetes/",5,"diabetes");
-   
+        long endTime = System.nanoTime();
+        long timeElapsed = endTime - startTime;
+        System.out.println("Elapsed time to create 20 classifiers (trained on a combined number of ~ 4000 datapoints) and test them on more than 800 sets of measurements (combined): " + timeElapsed/1000000000d + " s");
+        //                                                           800 = 1/5 of every classifier summed up
     }
 
 
