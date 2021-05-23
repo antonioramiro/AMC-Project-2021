@@ -2,10 +2,25 @@ package CancerClassifier;
 import java.util.ArrayList;
 
 public class CrossValidation {
+    private Dataset T;
+    private int partitionNumber;
 
-    private CrossValidation(String datasetpath){
+
+    private CrossValidation(String datasetsFolderPath, int partitionNumber){
+        ArrayList<Double[][]> confMatrixList = new ArrayList<Double[][]>();
+        
+        for (int rejectedDataset = 0; rejectedDataset < partitionNumber; rejectedDataset++){
+            double[][] confMatrix = new double[2][2];
+            Dataset T = FileHandling.getDatasetsMinusOne("Datasets/CrossValidation/hepatitis/",rejectedDataset,partitionNumber);
+            
+
+        }
+        
+
+
 
     }
+
     private double[][] getConfSum(){
         double[][] a = {{1},{2}};
         return a;
