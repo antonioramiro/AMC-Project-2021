@@ -94,7 +94,7 @@ public class window2 {
 					FilePath.setText(path); //shows path on Path label
 					
 					cp = FileHandling.importClassifier(path); //imports chosen classifier 
-					int dim = cp.getMrft().get(0).getDim();  //number of measurements
+					int dim = cp.numberOfMeasurements();  //number of measurements
 					
 					MeasurementsLbl.setEnabled(true);
 					MeasurementsLbl.setText("Insert " + dim + " measurements separated by ," ); //shows measurements instructions

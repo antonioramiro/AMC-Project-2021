@@ -12,7 +12,7 @@ public class ClassifierPackager implements Serializable{
 
     public ClassifierPackager(Dataset T){
     	
-    	
+  
     	System.out.println("domain" + Arrays.toString(T.measurementsDomain));
     	
     	ChowLiu cl = new ChowLiu(T);
@@ -38,7 +38,10 @@ public class ClassifierPackager implements Serializable{
 
     public ArrayList<MRFT> getMrft() {
         return this.mrftList;
-    } 
+    }
+    public int numberOfMeasurements() {
+    	return this.getMrft().get(0).getDim();
+    }
 
     public double[] getFreq() {
         return this.freqList;
