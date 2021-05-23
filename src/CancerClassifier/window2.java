@@ -112,7 +112,7 @@ public class window2 {
 					int dim = cp.numberOfMeasurements();  //number of measurements
 					
 					MeasurementsLbl.setEnabled(true);
-					MeasurementsLbl.setText("Insert " + dim + " measurements separated by ," ); //shows measurements instructions
+					MeasurementsLbl.setText("Insert " + dim + " measurements separated by commas" ); //shows measurements instructions
 					
 					insertValues.setEditable(true);
 					insertValues.setEnabled(true);
