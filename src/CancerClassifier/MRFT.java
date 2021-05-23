@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-//wrapper implementation for a matrix
+//wrapper implementation for a Phi matrix
 class Phi implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private double[][] L;
@@ -13,17 +13,17 @@ class Phi implements Serializable{
 		this.L = l;
 	}
 
-    public Phi(int i, int j) {
-        double[][] l = new double[i][j];
+    public Phi(int xi, int xj) {
+        double[][] l = new double[xi][xj];
 		this.L = l;
 	}
 
-    public double getphiValue(int i, int j) {
-        return L[i][j];
+    public double getphiValue(int xi, int xj) {
+        return L[xi][xj];
 	}
 
-    public void setphiValue(int i, int j, double value){
-        this.L[i][j] = value;
+    public void setphiValue(int xi, int xj, double value){
+        this.L[xi][xj] = value;
     }
 
 	@Override
@@ -32,64 +32,51 @@ class Phi implements Serializable{
 	}
 }
 
-/* A classe Markov implementa um objeto no qual se pode pensar como uma matriz cujos elementos
-são o objeto Phi (implementado em Phi.java). A implementação da mesma aproveita-se do facto
-de ser uma matriz simétrica e esparsa, e é inspirada pelo trabalho de  Gundersen e Steihaug, ilustrado em:
-Storage Formats for Sparse Matrices in Java, de Mikel Luján, Anila Usman, Patrick Hardie, T. L. Freeman e
- John R. Gurd.  (https://link.springer.com/content/pdf/10.1007%2F11428831_45.pdf, Figura 2) 
+/*Markov implements a matrix-like object with Phi matrixes as elements
+  This implementation takes advantage of the properties of the matrix (sparse and simetrical)   
+  Inspired by: Gundersen e Steihaug in:
+  Storage Formats for Sparse Matrices in Java, de Mikel Luján, Anila Usman, Patrick Hardie, T. L. Freeman e
+  John R. Gurd.  (https://link.springer.com/content/pdf/10.1007%2F11428831_45.pdf, Figura 2) 
 */ 
 class Markov implements Serializable{
 	private static final long serialVersionUID = 2L;
 	
-	//Lista de Listas com os elementos de Phi
+	//list of lists with Phi matrixes as elements
 	private ArrayList<ArrayList<Phi>> Phis;  
-
-	//Lista de Listas com os índices das colunas onde há um phi. As posições dos indices na lista, 
-	//é igual à posição do Phi correspondente no atrbuto anterior. A lista na qual o índice se localiza
-	//permite conhecer qual a linha da matriz na qual ele está 
+ 
+	///list of lists with Phi matrix location indexes
 	private ArrayList<ArrayList<Integer>> index;
 
-	//número de linhas da matriz abstrata (dimensão N*N)
+	//markov dimension
 	private int N;
 
+	//creates Markov
 	public Markov(int N){
-		//criar as listas que correspondem à matriz
-		ArrayList<ArrayList<Phi>> phis = new ArrayList<ArrayList<Phi>>();
+		ArrayList<ArrayList<Phi>> phis = new ArrayList<ArrayList<Phi>>(); //creates Phi list
 		this.Phis = phis;
-		ArrayList<ArrayList<Integer>> index = new ArrayList<ArrayList<Integer>>();
+		ArrayList<ArrayList<Integer>> index = new ArrayList<ArrayList<Integer>>(); //creates index list
 		this.index = index;
 
-		//criadas as listas de listas correspondentes às linhas da matriz, simultaneamente
-		//na lista dos indices, como na lista dos phis
+		//adds Phi matrixes and corresponding indexes
 		for (int i = 0; i < N; i++) {
 			this.Phis.add(new ArrayList<Phi>());
 			this.index.add(new ArrayList<Integer>());
 		}
-
-		this.N = N;
+		this.N = N; //sets dimension
 	}
 
-
+	//looks for phi in position (i,j)
 	public boolean isTherePhi(int i, int j){
 		boolean isThere = false;
 
-		//Reconhecendo a simetricidade da "matriz", vamos apenas trabalhar com a sua
-		//componente triangular superior, onde o índice da linha é sempre menor que 
-		//o da coluna. É para isso que se usa a seguinte comparação 
-		int minor, major = -1;
-		if (i > j){
-			minor = j;
-			major = i;
-		}else{
-			minor = i;
-			major = j;
-		}
-		 
+		//sets major index and minor index  
+		int minor = Math.min(i,j);
+		int major = Math.max(i,j);
 		
-		//ver na linha minor se existe o major
+		//checks if major is present on minor line 
 		if(minor < N && major < N){
-			for (int y = 0; !isThere && y < this.index.get(minor).size(); y++) {
-				if (this.index.get(minor).size() > 0 &&	this.index.get(minor).get(y) == major) {
+			for (int y = 0; !isThere && y < this.index.get(minor).size(); y++) { //goes through every line
+				if (this.index.get(minor).size() > 0 &&	this.index.get(minor).get(y) == major) { //goes through columns (remember: markov represents a simetric matrix) 
 					isThere = true;
 				}
 			}
@@ -99,26 +86,18 @@ class Markov implements Serializable{
 
 	//setter do Phi, adiciona à linha do íncie 
 	public void setPhi(int i, int j, Phi p) {
-
-		//definir qual o minor e o major, para respeitar a matriz triangular superior
-		int minor, major = -1;
-		if (i > j){
-			minor = j;
-			major = i;
-		}else{
-			minor = i;
-			major = j;
-		}
-
-		if (i < N && j < N) {
-			this.Phis.get(minor).add(p);
-			this.index.get(minor).add(major);
+		
+		//sets major index and minor index  
+		int minor = Math.min(i,j);
+		int major = Math.max(i,j);
+	
+		if (i < N && j < N) { //checks if i and j are compatible with markov dimension
+			this.Phis.get(minor).add(p); //adds Phi matrix on markov Phi list
+			this.index.get(minor).add(major); //adds corresponding index on markov index list
 		} else {
 			throw new AssertionError("At least one index (" +i+ " or "+j+ ") out of Markov's range (" +N + ").");
 		}
 	}
-	
-	
 
 	//acrescentar expressao de erro caso passe o dom.
 	public Phi getPhi(int i, int j) {
@@ -142,22 +121,23 @@ class Markov implements Serializable{
 		}else{
 			throw new AssertionError("Requested i  j are out of phi domain");
 		}
-		
 	}
 
 
+	//returns Phi list
 	private ArrayList<ArrayList<Phi>> getPhis() {
 		return this.Phis;
 	}
 
+	//returns index list
 	private ArrayList<ArrayList<Integer>> getIndex() {
 		return this.index;
 	}
 
+	//returns markov dimension
 	public int getN() {
 		return this.N;
 	}
-
 
 	@Override
 	public String toString() {
@@ -199,26 +179,23 @@ class Markov implements Serializable{
 	}
 }
 
+//Markov Ramdom Field Tree creates a Markov of Phi matrixes, according to a given dataset and a given tree
 public class MRFT implements Serializable{
 	private static final long serialVersionUID = 4L;
 
-	//Atributos
-	private int dim;		             //dimens�o do MRFT
-	private Markov markov;	 	     	 //Datatype que armazena os Phis
-	private ArrayList<Integer> special;	 //Aresta especial
-    private int[] measurementsDomain; 
+	//Atributes
+	private int dim;		             //MRFT dimension
+	private Markov markov;	 	     	 //Markov of Phi matrixes
+	private ArrayList<Integer> special;	 //Special tree Branch 
+    private int[] measurementsDomain; 	 //List that contains the number of possible values for each dataset measurement
 
-	//Construtor
+	//Constructor
 	public MRFT(Dataset T, Tree A) {
-		this.dim = A.getDimension();
-
-        if (this.dim == T.getMeasurementNumber()){	//certifica-se de que a �rvore e o dataset dados t�m a mesma dimens�o
-            
+		this.dim = A.getDimension(); //MRFT dimension = number of tree leaves
+        if (this.dim == T.getMeasurementNumber()){	//checks if the tree and the dataset have the same dimension
 			this.measurementsDomain = T.measurementDim();
-		    this.special = A.first();	//Seleciona uma aresta como especial
-            this.markov = add_PHI(T, A);
-              
-            
+		    this.special = A.first();	//Sets special branch 
+            this.markov = add_PHI(T, A); //populates markov with Phi matrixes
         }else {
             throw new AssertionError("The number of Tree Leafs (" + this.dim + ") must match the number of measurements (" +T.getMeasurementNumber()+ ") in the dataset");
         }
@@ -229,7 +206,6 @@ public class MRFT implements Serializable{
 		return "MRFT [dim=" + this.dim + "\n tree="  + "\n special=" + special + "\n markov=" + this.markov.toString() + "]";
 	}
 	
-	//n�o gostei dessa solu��o 
 	public int getMeasurementDim(int i){
         return this.measurementsDomain[i];
 	}
@@ -238,7 +214,7 @@ public class MRFT implements Serializable{
 	}
 
 
-	//Verifica se dois n�s i e j s�o ligados pela aresta especial
+	//checks if two leaves are connected by the special branch
 	public boolean specialQ(int i, int j ) {	
 		ArrayList<Integer> edge = new ArrayList<Integer>();
 		edge.add(i);
@@ -248,70 +224,66 @@ public class MRFT implements Serializable{
 	
 
 	
-	//Calcula o valor de phi para arestas normais (phi_normal) e para a aresta especial (phi_special)
+	//phi value for normal branches
 	public double phi_normal(Dataset T, int i, int j, int xi, int xj, double delta) { 			//phi de xi 
 		return (T.Count(i, j, xi, xj) + delta)/(T.Count(i, xi) + delta*this.getMeasurementDim(j)); 	
 	}
+	//phi value for special branch
 	public double phi_special(Dataset T, int i, int j, int xi, int xj, double delta) { 			//phi de xi e xj
 		return (T.Count(i,j, xi, xj) + delta)/(T.len() + delta*this.getMeasurementDim(i)*this.getMeasurementDim(j));     //Maria: alterei para T.len()  (estava T.len)
 	}
 	
-	//Dado um dataset e uma �rvore, cria um Markov e adciona as matrizess PHI correspondentres a cada aresta da �rvore
+	//pupulates Markov with Phi matrixes containing phi values
 	public Markov add_PHI(Dataset T, Tree A){ 
-		
-		Markov markov =  new Markov(this.dim);
+		Markov markov =  new Markov(this.dim); //creates markov
 		boolean found_special = false;
-	
-		for(int i=0; i < this.dim; i++) {		//percorrer todas as combina��es de n�s da �rvore											
+		for(int i=0; i < this.dim; i++) {		//goes through each pair of tree leaves 									
 			for(int j=i; j < this.dim; j++) {													
-				if (A.branchQ(i,j)) { 			//verificar se os n�s em causa constituem uma aresta na �rvore
-					
-					int dimi = getMeasurementDim(i);
-					int dimj = getMeasurementDim(j);
-					
+				if (A.branchQ(i,j)) { 			//checks if there is a branch between leaves
+					int dimi = getMeasurementDim(i); //number of possible xi measurements of i
+					int dimj = getMeasurementDim(j); //number of possible xj measurements of j
 					boolean special = false;
-					if(!found_special && this.specialQ(i,j)) {			//verificar se os n�s em causa constituem a aresta especial
+					if(!found_special && this.specialQ(i,j)) { //checks if i and j are connected by the special branch
 						special = true;
 						found_special = true;}
-					
-                    Phi PHI = new Phi(dimi,dimj);		//criar uma nova matriz PHI
-
-					for (int xi=0; xi < dimi; xi++) { 				//percorrer todas as combina��es poss�veis de xi e xj						 
+                    Phi PHI = new Phi(dimi,dimj);		//creates Phi matrix 
+					for (int xi=0; xi < dimi; xi++) { 		//goes through possible pair of values xi and xj					 
 						for (int xj=0; xj < dimj; xj++) { 
 							
+							//adds phi values o Phi matrix
 							if (special) {
-								PHI.setphiValue(xi,xj, phi_special(T, i, j, xi, xj, 0.2)); 	//adcionar os valores de phi(xi, xj) na posi��o correspondente da matriz PHI
+								PHI.setphiValue(xi,xj, phi_special(T, i, j, xi, xj, 0.2)); 	
 							}else { 															
 								PHI.setphiValue(xi,xj, phi_normal(T, i, j, xi, xj, 0.2)); 	
 							}                           
 						}
 					}
-                    markov.setPhi(i, j, PHI);			//adcionar a matriz PHI correspondente � aresta (i,j) no Markov
-					
+                    markov.setPhi(i, j, PHI); //adds Phi matrix to markov
 				}
 			}
 		}
-		
-		
 		return markov; 
 	}
 				
-	//Dado um vetor Xn, calcula a probabilidade de seus valores no MRFT
+	//given a vector Xn with n measurement values, returns the probability of such values according to MRFT
 	public double Probability(int[] Xn) { 
 		int dim = this.dim;
+		boolean connections =  false;
 		double result = 1;
-		if ( Xn.length == dim ) {					//certifica-se de que a dimens�o do vetor � a mesma do MRFT
-		
-			for(int i = 0; i < this.dim; i++) { 								
-				for(int j = i; j < this.dim; j++) { 
-			 				 										
-					if (this.markov.isTherePhi(i,j)) {			                     	
-						
-						result = (result*(this.markov.getPhi(i, j).getphiValue(Xn[i],Xn[j]))); 
+		if ( Xn.length == dim ) { 	//checks if Xn has the right length, according to MRFT dimension 
+			for(int i = 0; i < this.dim; i++) {  //goes through every pair of Xn elements
+				for(int j = i; j < this.dim; j++) { 	 										
+					if (this.markov.isTherePhi(i,j)) { //checks if there is a Phi matrix in position (i,j)	                     	
+						if (! connections) connections = true;
+						result = (result*(this.markov.getPhi(i, j).getphiValue(Xn[i],Xn[j])));  //updates result
 					}
 				}	
 			}
-			return result;
+			if (! connections) { //probability = 0 if there are no branches
+				return 0;
+			}else {
+				return result;
+			}
 		}		
 		else {
 			throw new AssertionError("Tree's and array's dimension must be the same");
