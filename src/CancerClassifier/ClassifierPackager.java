@@ -1,48 +1,52 @@
 package CancerClassifier;
 
+//modules
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.io.Serializable;
 
+//Bundles a group of MRFTS (one for each class) and a list of frequencies (one for each class)
+//into only one object, in order to be properly seriazable, and easier to access previous
+//variables when deserealizing
 public class ClassifierPackager implements Serializable{
-	private static final long serialVersionUID = 5L;
-	private int dim;
-    private ArrayList<MRFT> mrftList;
-    private double[] freqList;
 
+    //declaring variables
+	private static final long serialVersionUID = 5L; //seriazable ID, must be unique and prevents conflicts in different IDEs/machines
+	private int dim; //how many different classes there are
+    private ArrayList<MRFT> mrftList; //list of MRFTs
+    private double[] freqList; //list of frequencies
+
+    //constructor
     public ClassifierPackager(Dataset T){
-    	
-  
-    	//System.out.println("domain" + Arrays.toString(T.measurementDim()));
-    	
+    	    	
+    	//creates a ChowLiu object (that receives a Dataset and outpus a Tree)
     	ChowLiu cl = new ChowLiu(T);
-        Tree chowliuTree = cl.getTree(); //ChowLiu(data);
+        Tree chowliuTree = cl.getTree(); 
 
-
-        this.dim = T.classDim();
+        //atributions
+        this.dim = T.classDim(); //looking for how many classes there are
         this.mrftList = new ArrayList<MRFT>(); 
         this.freqList = new double[this.dim];
     
+        //looping through all available classes to create each MRFT and frequency 
         for (int i=0; i < this.dim; i++){
-
             MRFT thisMrft = new MRFT(T.Fiber(i), chowliuTree);
             this.mrftList.add(thisMrft);
             this.freqList[i] = T.classFrequency(i);
         }
     }    
     
-
+    //Dimension Getter
     public int getDim() {
         return this.dim;
     }
 
+    //MRFT Getter
     public ArrayList<MRFT> getMrft() {
         return this.mrftList;
-    }
-    public int numberOfMeasurements() {
-    	return this.getMrft().get(0).getDim();
-    }
+    } 
 
+    //Freq Getter
     public double[] getFreq() {
         return this.freqList;
     }
@@ -58,27 +62,17 @@ public class ClassifierPackager implements Serializable{
 
     public static void main(String[] args) {
     
+        //The input will be a dataset, T
     	Dataset T = FileHandling.getDataset("Datasets/bcancer.csv");
-        //Creating Dataset
-       /* Dataset ds1 = new Dataset(8);
-        int[] m6 = {3,3,3,3,3,3,3,1,};
-        int c6 = 0;
-        DataPoint dp6 = new DataPoint(m6,c6);
-        int[] m7 = {3,3,3,3,3,3,3,3};
-        int c7 = 1;
-        DataPoint dp7 = new DataPoint(m7,c7);
-        int[] m8 = {3,3,3,3,3,3,3,3};
-        int c8 = 0;
-        DataPoint dp8 = new DataPoint(m8,c8);
-        ds1.Add(dp6);
-        for(int i = 0; i < 300; i++){
-            ds1.Add(dp7);
-        }
-        ds1.Add(dp8);
-        */
-    	
-        ClassifierPackager cp1 = new ClassifierPackager(T);
-        System.out.println(cp1);
+
+        //Initializing the object onto cp
+        ClassifierPackager cp = new ClassifierPackager(T);
+
+        
+        System.out.println("Classifier Package:" + cp);
+        System.out.println("Length of each list:" + cp.getDim());
+        System.out.println("Class of 0:" + cp.getMrft().get(0));
+        System.out.println("Frequency of 0:" + (cp.getFreq()[0]));
 
     }
     
