@@ -161,8 +161,6 @@ public class ChowLiu implements Serializable{
 
 		edge_list.remove(0);
 		
-		
-		while (!edge_list.isEmpty()) {
 			//for (int i = 0; i < dim; i++) { //verificando que n�o h� ciclos
 				//System.out.println("edge list size = " + edge_list.size());
 				for (int k = 0; !edge_list.isEmpty() && k < visited.size(); k++) { 
@@ -190,14 +188,9 @@ public class ChowLiu implements Serializable{
 							edge_list.remove(0);
 							//System.out.println("edge list = " + edge_list);
 						}
-					}
-					
-					
+					}	
 				}
-				
 				//System.out.println("edge list2 = " + edge_list);
-				
-		}
 		return maximalTree;
 		}
 		
