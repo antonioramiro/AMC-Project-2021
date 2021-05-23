@@ -86,6 +86,21 @@ public class window2 {
 		ChooseFileBtn.setBounds(10, 49, 111, 23);
 		frmClassifier.getContentPane().add(ChooseFileBtn);
 		
+		//Class label is created
+		JLabel ClassLbl = new JLabel("");
+		ClassLbl.setBounds(163, 208, 46, 14);
+		frmClassifier.getContentPane().add(ClassLbl);
+		  
+		
+		//result label is created
+		JLabel ResultHereLbl = new JLabel("");
+		ResultHereLbl.setBackground(Color.WHITE);
+		ResultHereLbl.setHorizontalAlignment(SwingConstants.CENTER);
+		ResultHereLbl.setForeground(Color.BLUE);
+		ResultHereLbl.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		ResultHereLbl.setBounds(219, 195, 149, 36);
+		frmClassifier.getContentPane().add(ResultHereLbl);
+		
 		//imports a classifier when activated
 		ChooseFileBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -143,23 +158,10 @@ public class window2 {
 						} 
 						if (allset) { //if values are compatible
 							
-							//Class label is created
-							JLabel ClassLbl = new JLabel("");
-							ClassLbl.setBounds(163, 208, 46, 14);
-							frmClassifier.getContentPane().add(ClassLbl);
-							ClassLbl.setText("Class:");  
-							
-							//result label is created
-							JLabel ResultHereLbl = new JLabel("");
-							ResultHereLbl.setHorizontalAlignment(SwingConstants.CENTER);
-							ResultHereLbl.setForeground(Color.BLUE);
-							ResultHereLbl.setFont(new Font("Tahoma", Font.PLAIN, 15));
-							ResultHereLbl.setBounds(219, 195, 149, 36);
-							frmClassifier.getContentPane().add(ResultHereLbl);
-							
 							//Classifying:
 							Classifier c = new Classifier(cp.getMrft(), cp.getFreq()); //creates a classifier from the ClassifierPackager
 							int result = c.Classify(valuesList); //classifies vector
+							ClassLbl.setText("Class:");
 							ResultHereLbl.setText(String.valueOf(result));  //shows class result
 						}
 					}else {
