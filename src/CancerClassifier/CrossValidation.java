@@ -35,17 +35,19 @@ public class CrossValidation {
             // would set the testing dataset to be equal to the complete dataset (which includes the 
             // domain of the testing one)
 
-            //T.setDomain(FileHandling.getDataset("Datasets/" + diseaseName + ".csv").measurementDim());
-            //System.out.println("A" + Arrays.toString(FileHandling.getDataset("Datasets/" + diseaseName + ".csv").measurementDim()));
-            //System.out.println("B" + Arrays.toString(T.measurementDim()));
+            T.setDomain(FileHandling.getDataset("Datasets/" + diseaseName + ".csv").measurementDim());
+            System.out.println("A1" + Arrays.toString(FileHandling.getDataset("Datasets/" + diseaseName + ".csv").measurementDim()));
+            System.out.println("B" + Arrays.toString(T.measurementDim()));
 
             ClassifierPackager  cp = new ClassifierPackager(T);
             Classifier c = new Classifier(cp.getMrft(), cp.getFreq()); //creates a classifier from the ClassifierPackager
             
             for(int i = 0; i < testingValues.size(); i++){
+               
+                //System.out.println("T" +testingValues.get(i));
                 int predicted = c.Classify(convertIntegers(testingValues.get(i)));
                 int actual = groundTruth.get(i);
-
+                
                 confMatrix[predicted][actual]++;
                 total[predicted][actual]++;
             }
@@ -57,7 +59,7 @@ public class CrossValidation {
     }
 
     public static void main(String[] args) {
-        CrossValidationG("Datasets/CrossValidation/diabetes/",5,"diabetes");
+        CrossValidationG("Datasets/CrossValidation/hepatitis/",5,"hepatitis");
    
     }
 

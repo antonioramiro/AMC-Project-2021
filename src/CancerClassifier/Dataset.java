@@ -146,7 +146,10 @@ public class Dataset {
         return fiber;
     }
 
-
+    //must be deleted
+    public void setDomain(int[] measurementsDomain){
+        this.measurementsDomain = measurementsDomain;
+    }
     
     public int getMeasurementNumber () {
     	return this.measurementNumber;
