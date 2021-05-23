@@ -64,30 +64,22 @@ public class Tree implements Serializable{
     public void addLeaf(int o, int d) {
         int minor = Math.min(o, d); 
         int major = Math.max(o, d);
-        if (minor > this.dim && major > this.dim) {
+        if (minor > this.dim || major > this.dim) {
         	throw new AssertionError("Leaves out of treetop.");
+        }else {
+           if(!(leafQ(major) && leafQ(minor))){
+                //this.index.add(new ArrayList<Integer>());
+                this.index.get(minor).add(major);
+            }else{
+                throw new AssertionError("Tree doesn't allow interconnected leaves or unexisting pairs of leaves");
+            }
         }
-        else {
-        	if (minor >= 0 && major >= 0) {
-        		if (this.branchQ(minor, major)) {
-        			throw new AssertionError("This leaf already exists in the Tree.");
-            }
-        	else{
-                if(!this.leafQ(major)){
-                    //this.index.add(new ArrayList<Integer>());
-                    this.index.get(minor).add(major);
-                }
-                else{
-                    throw new AssertionError("Tree doesn't allow interconnected leafs.");
-                }
-            }
-        	} 
-        	else {
-            throw new AssertionError("You cannot add a fallen leaf. Please, add branches to catch it");
+        	//}else {
+        		//throw new AssertionError("You cannot add a fallen leaf. Please, add branches to catch it");
         	}
-        }
+       
         
-    }
+   // }
 
     public boolean branchQ(int o, int d) {
         boolean isThere = false;
@@ -105,14 +97,18 @@ public class Tree implements Serializable{
         return isThere;
     }
 
-    public boolean leafQ(int l){
+    public boolean leafQ(int i){
         boolean isThere = false;
-        for(ArrayList<Integer> a : this.index){
-            for(int b : a){
-                isThere = b==l;
-            }
-        }
-        return isThere;
+        if (this.index.get(i).size() > 0) {
+        	isThere = true;
+        }else {
+	        for(ArrayList<Integer> a : this.index){
+	            for(int b : a){
+	                isThere = b==i; 
+	            }
+	        }   
+	    }
+    return isThere;
     }
 
     // verificar se ja existe o no ao qual vai ligar
@@ -125,24 +121,24 @@ public class Tree implements Serializable{
     }
 
     public static void main(String[] args) {
-        Tree t = new Tree(2);
-        //t.addLeaf(1, 0);
-        //t.addLeaf(3, 2);
+        Tree t = new Tree(4);
+        t.addLeaf(1, 0);
+        t.addLeaf(3, 2);
         System.out.println(t);
 
-        System.out.println("branch: " + t.branchQ(1, 3));
+        System.out.println("branch: " + t.leafQ(0));
 
         //int[][] edges = {{1,2}, {1,3},{5,4},{5,3}, {4,2}};
         /*for (int[] e : edges) {
             t.addLeaf(e[0], e[1]);
         }*/
        // System.out.println("t br: " +  Arrays.toString(t.branchIterator()));
-       ListIterator<ArrayList<Integer>> branchIterator = t.branchIterator();
-       while(branchIterator.hasNext()){
-           System.out.println(branchIterator.next());
-       }
+      // ListIterator<ArrayList<Integer>> branchIterator = t.branchIterator();
+     ///  while(branchIterator.hasNext()){
+     //      System.out.println(branchIterator.next());
+       
 
-       System.out.println("first" + t.first());
+      // System.out.println("first" + t.first());
 
         ArrayList<ArrayList<Integer>> z = new ArrayList<ArrayList<Integer>>();
         //Tree tree = new Tree(8);
@@ -210,5 +206,5 @@ public class Tree implements Serializable{
         //System.out.println(t);
         //System.out.println(z.get(0).get(1));
 
-    }
-}
+    }}
+

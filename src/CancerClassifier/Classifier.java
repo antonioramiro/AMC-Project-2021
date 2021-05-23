@@ -71,6 +71,7 @@ public class Classifier {
 
         Classifier c = new Classifier(a, f);
         System.out.println(c.Classify(m9));
+        
     }
 
     

@@ -30,11 +30,7 @@ public class DataPoint implements Serializable{
 
     //Searching the datapoint for xi in index i and xi in index j, simultaneously
     public boolean isThere(int i, int j, int xi, int xj){
-        if (i >= 10 || j >= 10 || i < 0 || j < 0){
-            throw new AssertionError("You shall provide indexes between 0 to 9");
-        } else {
             return (this.measurements[i] == xi && this.measurements[j] == xj);
-        }
     }
 
     //Searching the datapoint for xi in index i 

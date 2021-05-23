@@ -10,24 +10,24 @@ public class ClassifierPackager implements Serializable{
     private ArrayList<MRFT> mrftList;
     private double[] freqList;
 
-    public ClassifierPackager(Dataset data){
+    public ClassifierPackager(Dataset T){
+    	
+    	
+    	System.out.println("domain" + Arrays.toString(T.measurementsDomain));
+    	
+    	ChowLiu cl = new ChowLiu(T);
+        Tree chowliuTree = cl.getTree(); //ChowLiu(data);
 
-        Tree chowliuTree = new Tree(8); //ChowLiu(data);
 
-		int[][] edges = {{0,1}, {1,2}, {1,3},{1,4},{0,5}, {1,6}, {1,7}};
-		for(int[] e : edges) {
-			chowliuTree.addLeaf(e[0], e[1]);
-		}
-
-        this.dim = data.classDim();
+        this.dim = T.classDim();
         this.mrftList = new ArrayList<MRFT>(); 
         this.freqList = new double[this.dim];
     
         for (int i=0; i < this.dim; i++){
 
-            MRFT thisMrft = new MRFT(data.Fiber(i), chowliuTree);
+            MRFT thisMrft = new MRFT(T.Fiber(i), chowliuTree);
             this.mrftList.add(thisMrft);
-            this.freqList[i] = data.classFrequency(i);
+            this.freqList[i] = T.classFrequency(i);
         }
     }    
     
@@ -55,8 +55,9 @@ public class ClassifierPackager implements Serializable{
 
     public static void main(String[] args) {
     
+    	Dataset T = FileHandling.getDataset("Datasets/hepatitis.csv");
         //Creating Dataset
-        Dataset ds1 = new Dataset(8);
+       /* Dataset ds1 = new Dataset(8);
         int[] m6 = {3,3,3,3,3,3,3,1,};
         int c6 = 0;
         DataPoint dp6 = new DataPoint(m6,c6);
@@ -71,8 +72,9 @@ public class ClassifierPackager implements Serializable{
             ds1.Add(dp7);
         }
         ds1.Add(dp8);
-        
-        ClassifierPackager cp1 = new ClassifierPackager(ds1);
+        */
+    	
+        ClassifierPackager cp1 = new ClassifierPackager(T);
         System.out.println(cp1);
 
     }
