@@ -2,14 +2,15 @@ package CancerClassifier;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 
+
+//implements a Tree, by doing a special implementation of sparse matrices of a adjacency matrix
 public class Tree implements Serializable{
     private static final long serialVersionUID = 3L;
-    public int dim;
-    public ArrayList<ArrayList<Integer>> index;
+    private int dim;
+    private ArrayList<ArrayList<Integer>> index; //list of lists of column indexes
 
+    //constructor, receives dim
     public Tree(int dim) {
         ArrayList<ArrayList<Integer>> index = new ArrayList<ArrayList<Integer>>();
         this.index = index;
@@ -20,6 +21,9 @@ public class Tree implements Serializable{
         	
     }
 
+    public int getDimension(){
+        return this.dim;
+    }
 
     public ArrayList<Integer> first(){
         boolean firstFound = false;
@@ -128,17 +132,7 @@ public class Tree implements Serializable{
 
         System.out.println("branch: " + t.leafQ(0));
 
-        //int[][] edges = {{1,2}, {1,3},{5,4},{5,3}, {4,2}};
-        /*for (int[] e : edges) {
-            t.addLeaf(e[0], e[1]);
-        }*/
-       // System.out.println("t br: " +  Arrays.toString(t.branchIterator()));
-      // ListIterator<ArrayList<Integer>> branchIterator = t.branchIterator();
-     ///  while(branchIterator.hasNext()){
-     //      System.out.println(branchIterator.next());
-       
-
-      // System.out.println("first" + t.first());
+    
 
         ArrayList<ArrayList<Integer>> z = new ArrayList<ArrayList<Integer>>();
         //Tree tree = new Tree(8);
@@ -180,12 +174,9 @@ public class Tree implements Serializable{
         z.add(x7); 
         
         /*
-
        {{1,3},{3,2}}
-
        for (branch : arvore) {~
     }
-
         */
 
         
@@ -207,4 +198,3 @@ public class Tree implements Serializable{
         //System.out.println(z.get(0).get(1));
 
     }}
-

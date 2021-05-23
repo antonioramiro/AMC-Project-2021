@@ -7,7 +7,7 @@ import java.util.Arrays;
 //wrapper implementation for a matrix
 class Phi implements Serializable{
 	private static final long serialVersionUID = 1L;
-	double[][] L;
+	private double[][] L;
 
 	public Phi(double[][] l) {
 		this.L = l;
@@ -32,20 +32,35 @@ class Phi implements Serializable{
 	}
 }
 
-//markov implements a matrix of Phis
+/* A classe Markov implementa um objeto no qual se pode pensar como uma matriz cujos elementos
+são o objeto Phi (implementado em Phi.java). A implementação da mesma aproveita-se do facto
+de ser uma matriz simétrica e esparsa, e é inspirada pelo trabalho de  Gundersen e Steihaug, ilustrado em:
+Storage Formats for Sparse Matrices in Java, de Mikel Luján, Anila Usman, Patrick Hardie, T. L. Freeman e
+ John R. Gurd.  (https://link.springer.com/content/pdf/10.1007%2F11428831_45.pdf, Figura 2) 
+*/ 
 class Markov implements Serializable{
 	private static final long serialVersionUID = 2L;
+	
+	//Lista de Listas com os elementos de Phi
+	private ArrayList<ArrayList<Phi>> Phis;  
 
-	private ArrayList<ArrayList<Phi>> Phis;
+	//Lista de Listas com os índices das colunas onde há um phi. As posições dos indices na lista, 
+	//é igual à posição do Phi correspondente no atrbuto anterior. A lista na qual o índice se localiza
+	//permite conhecer qual a linha da matriz na qual ele está 
 	private ArrayList<ArrayList<Integer>> index;
+
+	//número de linhas da matriz abstrata (dimensão N*N)
 	private int N;
 
 	public Markov(int N){
+		//criar as listas que correspondem à matriz
 		ArrayList<ArrayList<Phi>> phis = new ArrayList<ArrayList<Phi>>();
 		this.Phis = phis;
 		ArrayList<ArrayList<Integer>> index = new ArrayList<ArrayList<Integer>>();
 		this.index = index;
 
+		//criadas as listas de listas correspondentes às linhas da matriz, simultaneamente
+		//na lista dos indices, como na lista dos phis
 		for (int i = 0; i < N; i++) {
 			this.Phis.add(new ArrayList<Phi>());
 			this.index.add(new ArrayList<Integer>());
@@ -58,9 +73,20 @@ class Markov implements Serializable{
 	public boolean isTherePhi(int i, int j){
 		boolean isThere = false;
 
-		int minor = Math.min(i,j);
-		int major = Math.max(i,j);
+		//Reconhecendo a simetricidade da "matriz", vamos apenas trabalhar com a sua
+		//componente triangular superior, onde o índice da linha é sempre menor que 
+		//o da coluna. É para isso que se usa a seguinte comparação 
+		int minor, major = -1;
+		if (i > j){
+			minor = j;
+			major = i;
+		}else{
+			minor = i;
+			major = j;
+		}
+		 
 		
+		//ver na linha minor se existe o major
 		if(minor < N && major < N){
 			for (int y = 0; !isThere && y < this.index.get(minor).size(); y++) {
 				if (this.index.get(minor).size() > 0 &&	this.index.get(minor).get(y) == major) {
@@ -71,10 +97,22 @@ class Markov implements Serializable{
 		return isThere;
 	}
 
+	//setter do Phi, adiciona à linha do íncie 
 	public void setPhi(int i, int j, Phi p) {
+
+		//definir qual o minor e o major, para respeitar a matriz triangular superior
+		int minor, major = -1;
+		if (i > j){
+			minor = j;
+			major = i;
+		}else{
+			minor = i;
+			major = j;
+		}
+
 		if (i < N && j < N) {
-			this.Phis.get(i).add(p);
-			this.index.get(i).add(j);
+			this.Phis.get(minor).add(p);
+			this.index.get(minor).add(major);
 		} else {
 			throw new AssertionError("At least one index (" +i+ " or "+j+ ") out of Markov's range (" +N + ").");
 		}
@@ -108,29 +146,18 @@ class Markov implements Serializable{
 	}
 
 
-	public ArrayList<ArrayList<Phi>> getPhis() {
+	private ArrayList<ArrayList<Phi>> getPhis() {
 		return this.Phis;
 	}
 
-	public void setPhis(ArrayList<ArrayList<Phi>> Phis) {
-		this.Phis = Phis;
-	}
-
-	public ArrayList<ArrayList<Integer>> getIndex() {
+	private ArrayList<ArrayList<Integer>> getIndex() {
 		return this.index;
-	}
-
-	public void setIndex(ArrayList<ArrayList<Integer>> index) {
-		this.index = index;
 	}
 
 	public int getN() {
 		return this.N;
 	}
 
-	public void setN(int N) {
-		this.N = N;
-	}
 
 	@Override
 	public String toString() {
@@ -179,22 +206,21 @@ public class MRFT implements Serializable{
 	private int dim;		             //dimens�o do MRFT
 	private Markov markov;	 	     	 //Datatype que armazena os Phis
 	private ArrayList<Integer> special;	 //Aresta especial
-	
     private int[] measurementsDomain; 
 
 	//Construtor
 	public MRFT(Dataset T, Tree A) {
-       
-        if (A.dim == T.measurementNumber){	//certifica-se de que a �rvore e o dataset dados t�m a mesma dimens�o
-			
-            this.dim = A.dim ;
-			this.measurementsDomain = T.measurementsDomain;
+		this.dim = A.getDimension();
+
+        if (this.dim == T.getMeasurementNumber()){	//certifica-se de que a �rvore e o dataset dados t�m a mesma dimens�o
+            
+			this.measurementsDomain = T.measurementDim();
 		    this.special = A.first();	//Seleciona uma aresta como especial
             this.markov = add_PHI(T, A);
               
             
         }else {
-            throw new AssertionError("The number of Tree Leafs (" +A.dim+ ") must match the number of measurements (" +T.measurementNumber+ ") in the dataset");
+            throw new AssertionError("The number of Tree Leafs (" + this.dim + ") must match the number of measurements (" +T.getMeasurementNumber()+ ") in the dataset");
         }
 	}
 	
@@ -295,7 +321,7 @@ public class MRFT implements Serializable{
     
 		
 	public static void main(String[] args) {
-        //Creating graph
+        //Creating tree
         Tree g = new Tree(5);
 		int[][] edges = {{0,1}, {1,2}, {1,3},{1,4}};
 		for(int[] e : edges) {
@@ -318,8 +344,7 @@ public class MRFT implements Serializable{
             ds1.Add(dp7);
         }
         ds1.Add(dp8);
-        System.out.println("Dataset: " + ds1);
-
+        
         //Creating MRFT
         MRFT mkv = new MRFT(ds1,g);
         int[] m9 = {3,3,3,3,3};

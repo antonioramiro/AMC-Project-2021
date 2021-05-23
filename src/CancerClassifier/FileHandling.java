@@ -14,15 +14,11 @@ import java.io.ObjectOutputStream;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 
-<<<<<<< Updated upstream
-
-=======
 //crossvalidation needs (dataset partitioning)
 import java.util.Collections;
 import java.io.FileWriter; 
 
 //As the name suggests, handles files
->>>>>>> Stashed changes
 public class FileHandling {
 
   //getDataset receives the path and imports the .csv onto a variable of the type Dataset
@@ -32,15 +28,11 @@ public class FileHandling {
       File csvFile = new File(path);
       Scanner csvReader = new Scanner(csvFile);
 
-<<<<<<< Updated upstream
-      //procedimento para a primeira linha, que definirá o nr de medições do dataset
-=======
       //for the first line, reading the line
       if(!csvReader.hasNextLine()){
         csvReader.close();
         throw new AssertionError("CSV file empty.");
       }
->>>>>>> Stashed changes
       String firstData = csvReader.nextLine();
       String[] firstValues = (firstData.split(","));
       int measurementNumber = firstValues.length - 1;
@@ -62,16 +54,6 @@ public class FileHandling {
         String data = csvReader.nextLine();
         String[] values = (data.split(","));
 
-<<<<<<< Updated upstream
-      int classification = Integer.parseInt(values[measurementNumber]);
-      int[] measurements = new int[measurementNumber];
-
-      for (int i = 0; i < firstValues.length - 1; i++) {
-        int thisMeasurement = Integer.parseInt(values[i]);
-        measurements[i] = thisMeasurement;
-      }    
-
-=======
         //Setting classification
         int classification = Integer.parseInt(values[measurementNumber]);
         
@@ -83,7 +65,6 @@ public class FileHandling {
         }    
 
         //creating and adding datapooint do dataset
->>>>>>> Stashed changes
         DataPoint dp = new DataPoint(measurements, classification);
         newDataset.Add(dp);
       }
@@ -163,9 +144,6 @@ public class FileHandling {
     return error;
   }
 
-<<<<<<< Updated upstream
-  public static void main(String[] args) {
-=======
   //partitioning dataset in parts to use for cross validation
   public static void datasetPartition(String pathDatasetStart, String pathDatasetFinal, int partitionNumber) {
 
@@ -315,27 +293,16 @@ public class FileHandling {
   
     //importing the classifier
     ClassifierPackager cp = FileHandling.importClassifier("Classifiers/diabetes.classifier");
->>>>>>> Stashed changes
     
     //System.out.println("\n");
     Dataset a = FileHandling.getDataset("Datasets/diabetes.csv");
-    System.out.println("Dataset example: " + Arrays.toString(a.measurementsDomain));
+    System.out.println("Dataset example: " + Arrays.toString(a.measurementDim()));
 
-<<<<<<< Updated upstream
-    FileHandling.exportClassifier(a,"diabetes");
-    ClassifierPackager b = FileHandling.importClassifier("Classifiers/diabetes.classifier");
-    System.out.println(b);
-    
-    int[] d = {1,3,0,0,0,0,0,0};
-    Classifier c = new Classifier(b.getMrft(), b.getFreq());
-    int result = c.Classify(d);
-    System.out.println(result);
-    
-=======
     //constructing a classifier w/ both arrays
     Classifier c = new Classifier(cp.getMrft(), cp.getFreq());
 
     //classify the measurements
+    int[] measurements = {0,0,0,0,0,0,0,0};
     int result = c.Classify(measurements);
     System.out.println("Diagnosis: " + result);
 
@@ -344,6 +311,5 @@ public class FileHandling {
 
     //Import datasets except #1
     System.out.println(getDatasetsMinusOne("Datasets/CrossValidation/hepatitis/",1,5));
->>>>>>> Stashed changes
   }
 }
