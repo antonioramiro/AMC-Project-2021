@@ -14,7 +14,6 @@ public class ChowLiu implements Serializable{
 	int dim_Dataset; //m do eneunciado
 	int dim_measurement;
 	WGraph wg;
-	//double [][] wtmx;
 	 
 	
 	
@@ -26,8 +25,7 @@ public class ChowLiu implements Serializable{
 		
 		
 	}
-	
-	//WGraph wg = new WGraph(5);
+
 	
 	public WGraph createWGraph (Dataset T) {
 		int dim = this.dim_measurement;
@@ -48,32 +46,24 @@ public class ChowLiu implements Serializable{
 	public double WeightSetter (Dataset T, int i, int j) { //recebe um dataset e calcula a frequencia de cada fibra, assumindo que todos os n�s est�o ligados 
 		double fibfrequency = 0;
 		double m = T.len();
-		System.out.println("m = " + m);
-		//for (int j = 0; j < T.measurementNumber; j++) {
+		
+		
 		for (int xi = 0; xi < T.measurementDim(i); xi++) { //calcula a frequencia de cada xi na fibra i
-		System.out.println("T.measurementDim(i) = " + T.measurementDim(i));
+		
 			for (int xj = 0; xj < T.measurementDim(j); xj++) { //calcula a frequencia de cada xj na fibra j
-					System.out.println("T.measurementDim(j) = " + T.measurementDim(j));
+					
 					if ((T.Count(i, j, xi, xj)/m) == 0 || (T.Count(i, xi)/m) == 0 || (T.Count(j, xj)/m) == 0) {
 							fibfrequency = fibfrequency + 0;
 							
-							//wg.add(i, j, fibfrequency);
+				
 					}
 					else {
 							fibfrequency = fibfrequency + (T.Count(i, j, xi, xj)/m)*(Math.log10((T.Count(i, j, xi, xj)/m)/((T.Count(i, xi)/m)*(T.Count(j, xj)/m)))); //formula do prof
-							
-							//wg.add(i, j, fibfrequency);
+						
 					}
-			System.out.println(" fibfrequency = " + fibfrequency);
-			System.out.println("count 1 = " + T.Count(i, j, xi, xj)/m);
-			System.out.println("count2 = " + T.Count(i, xi)/m);
 					
 				}
 			}
-		System.out.println("i = " + i + ", j = " + j);
-		System.out.println(wg);
-		System.out.println("Adicionando");
-		 //depois de calcular o peso da aresta, adiciona-a ao WGraph
 		
 	return fibfrequency;
 	}
@@ -81,7 +71,7 @@ public class ChowLiu implements Serializable{
 	
 	
 	
-	public static LinkedList<Integer> offspring(Tree t, int o){ //descendentes do n� o no grafo
+	public LinkedList<Integer> offspring(Tree t, int o){ //descendentes do n� o no grafo
 		LinkedList<Integer> children = new LinkedList<Integer>();
 		if (o>=0 && o<t.dim) {
 			for (int i = 0; i < t.dim; i++) {
@@ -102,14 +92,14 @@ public class ChowLiu implements Serializable{
 			ArrayList<Integer> r = new ArrayList<Integer>();
 			Stack<Integer> stack = new Stack<Integer>();
 			boolean [] visited = new boolean[t.dim]; //lista de visitados
-			stack.push(o); //adicionamos o primeiro n�
+			stack.push(o); 
 			while (!stack.isEmpty()) {
-				int node = stack.pop(); // remove o mais recente
+				int node = stack.pop(); 
 				if (!visited[node]) {
 					r.add(node);
 					visited[node]=true;
-					for (int i: ChowLiu.offspring(t, node) ) {
-						stack.push(node);
+					for (int i: this.offspring(t, node) ) {
+						stack.push(i);
 					}
 					
 				}
@@ -117,13 +107,13 @@ public class ChowLiu implements Serializable{
 			return r;
 		}
 		else {
-			throw new AssertionError("node not in graph");
+			throw new AssertionError("Node not in graph.");
 		}
 	}
 		
 	
 		
-	public static boolean pathQ(int o, int d, Tree t) {
+	public boolean pathQ(int o, int d, Tree t) {
 		boolean found = false;
 		if (o>=0 && o<t.dim && d>=0 && d<t.dim) {
 			boolean[] visited = new boolean[t.dim];
@@ -135,7 +125,7 @@ public class ChowLiu implements Serializable{
 				if (!visited[node]) {
 					found = (node == d);
 					visited[node] = true;
-					for (int i : ChowLiu.offspring(t, node)) {
+					for (int i : this.offspring(t, node)) {
 						q.add(i);
 					}
 				}
@@ -148,78 +138,56 @@ public class ChowLiu implements Serializable{
 		
 		ArrayList<ArrayList<Integer>> edge_list = list;
 		
-		Tree maximalTree = new Tree(this.dim_measurement); //�rvore final que vamos devolver
-		//System.out.println("dim measurement" + dim_measurement);
-		//System.out.println("tree: " + maximalTree);
+		Tree maximalTree = new Tree(this.dim_measurement); ;
 		ArrayList<Integer> visited = new ArrayList<Integer>(); //lista de indices visitados
 		maximalTree.addLeaf(edge_list.get(0).get(0), edge_list.get(0).get(1)); //adiciona a primeira aresta (que supostamente � a que tem maior peso)
 		
-		
-		//System.out.println("maximalTree1 = " + maximalTree);
 		visited.add(edge_list.get(0).get(0));
-		visited.add(edge_list.get(0).get(1)); // � isto que est� mal
+		visited.add(edge_list.get(0).get(1)); 
 
 		edge_list.remove(0);
 		
-			//for (int i = 0; i < dim; i++) { //verificando que n�o h� ciclos
-				//System.out.println("edge list size = " + edge_list.size());
-				for (int k = 0; !edge_list.isEmpty() && k < visited.size(); k++) { 
-					System.out.println("k_M:" + k);
-					//int currentEdge = edge_list.get(i).get(0);
-					//visited.get(k) != edge_list.get(0).get(0) && visited.get(k) != edge_list.get(0).get(1) && 
-					if (ChowLiu.pathQ(edge_list.get(0).get(0), edge_list.get(0).get(1), maximalTree) || ChowLiu.pathQ(edge_list.get(0).get(1), edge_list.get(0).get(0), maximalTree)) { //se formar um ciclo
-						edge_list.remove(0);
+			for (int k = 0; !edge_list.isEmpty() && k < visited.size(); k++) { 
+				if (this.pathQ(edge_list.get(0).get(0), edge_list.get(0).get(1), maximalTree) || this.pathQ(edge_list.get(0).get(1), edge_list.get(0).get(0), maximalTree)) { //se formar um ciclo
+					edge_list.remove(0);
 						//System.out.println("edge list = " + edge_list);
-					}
-					else {
-						if(!(maximalTree.leafQ(edge_list.get(0).get(0)) && maximalTree.leafQ(edge_list.get(0).get(1)))){
-							maximalTree.addLeaf(edge_list.get(0).get(0), edge_list.get(0).get(1)); //adiciona a folha � nossa �rvore final
+				}
+				else {
+					if(!(maximalTree.leafQ(edge_list.get(0).get(0)) && maximalTree.leafQ(edge_list.get(0).get(1)))){
+						maximalTree.addLeaf(edge_list.get(0).get(0), edge_list.get(0).get(1)); //adiciona a folha � nossa �rvore final
 				
 						
-							if (!edge_list.isEmpty() && !visited.contains(edge_list.get(0).get(0))) {
-								//System.out.println("contains: " + edge_list.get(i).get(0));
-								visited.add(edge_list.get(0).get(0));
-								//System.out.println("visited list = " + visited);
-								}
-							if (!edge_list.isEmpty() && !visited.contains(edge_list.get(0).get(1))) {
-								visited.add(edge_list.get(0).get(1));
-								//System.out.println("visited list = " + visited);
-								}
-							edge_list.remove(0);
-							//System.out.println("edge list = " + edge_list);
+						if (!edge_list.isEmpty() && !visited.contains(edge_list.get(0).get(0))) {
+							visited.add(edge_list.get(0).get(0));
 						}
-					}	
-				}
-				//System.out.println("edge list2 = " + edge_list);
+						if (!edge_list.isEmpty() && !visited.contains(edge_list.get(0).get(1))) {
+							visited.add(edge_list.get(0).get(1));
+						}
+						edge_list.remove(0);
+					}
+				}	
+			}
 		return maximalTree;
 		}
 		
 	public ArrayList<ArrayList<Integer>> orderedBranchList(){
 		WGraph wg = this.wg;
 
-		System.out.println(wg);
-		System.out.println("");
 
 		ArrayList<ArrayList<Integer>> finalList = new ArrayList<ArrayList<Integer>>();
 		ArrayList<Double> weightList = new ArrayList<Double>();
 
 		int graphDim = wg.dim;
-		System.out.println("graphDim: " + graphDim);
 		if(graphDim == 0){
 			throw new AssertionError("A non-empty graph has to be provided");
 		}
 
-		//int finalListSize = 0;
 		boolean empty = true;
 		
 		for(int i = 0; i < graphDim; i++){
 			for(int j = i; j < graphDim; j++){
 
-				System.out.println(graphDim);
-				System.out.println("i,j: " + i + "," + j);
-				
 				if (i != j) {
-				
 				
 				int minor = Math.min(i, j); 
 				int major = Math.max(i, j);
@@ -228,19 +196,13 @@ public class ChowLiu implements Serializable{
 				if(currentWeight != 0){
 
 
-					if(empty){ //primeiro n� da �rvore
+					if(empty){ 
 
 						ArrayList<Integer> currentEdge = new ArrayList<Integer>();
 						currentEdge.add(minor);
 						currentEdge.add(major);
 						finalList.add(currentEdge);
 						weightList.add(currentWeight);
-
-						System.out.println("2currentWeight:" + currentWeight);
-						System.out.println("1weightList:" + weightList);
-						System.out.println("1first Edge:" + currentEdge);
-						System.out.println("1finalList:" + finalList);
-
 
 						empty = false;
 						
@@ -263,42 +225,19 @@ public class ChowLiu implements Serializable{
 							
 							for(int k = 0; !inserted && k < wLSize; k++){
 							
-							System.out.println("k0: " + k);
-
 							if(currentWeight >= weightList.get(k)){
 
-								//System.out.println("k: " + k);
-								
 								finalList.add(k,currentEdge);
 								weightList.add(k,currentWeight);
 								inserted = true;
-
-								//System.out.println("2currentWeight:" + currentWeight);
-								//System.out.println("2weightList:" + weightList);
-								//System.out.println("2currentEdge:" + currentEdge);
-								//System.out.println("2finalList:" + finalList);
-								
-
 							}
 						}
-
-						
-							
-
-							
-
 						}
 						
 					}
 
-					
-					System.out.println("finalListSize:" + weightList.size());
-				
 				}
-					
-				System.out.println("");
 			}
-			System.out.println("");
 			}
 		}
 
