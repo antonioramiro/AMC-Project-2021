@@ -165,8 +165,8 @@ public class ChowLiu implements Serializable{
 		while (!edge_list.isEmpty()) {
 			//for (int i = 0; i < dim; i++) { //verificando que n�o h� ciclos
 				//System.out.println("edge list size = " + edge_list.size());
-				for (int k = 0; k < visited.size() && !edge_list.isEmpty(); k++) { 
-					
+				for (int k = 0; !edge_list.isEmpty() && k < visited.size(); k++) { 
+					System.out.println("k_M:" + k);
 					//int currentEdge = edge_list.get(i).get(0);
 					//visited.get(k) != edge_list.get(0).get(0) && visited.get(k) != edge_list.get(0).get(1) && 
 					if (ChowLiu.pathQ(edge_list.get(0).get(0), edge_list.get(0).get(1), maximalTree) || ChowLiu.pathQ(edge_list.get(0).get(1), edge_list.get(0).get(0), maximalTree)) { //se formar um ciclo
@@ -221,9 +221,13 @@ public class ChowLiu implements Serializable{
 		
 		for(int i = 0; i < graphDim; i++){
 			for(int j = i; j < graphDim; j++){
+
+				System.out.println(graphDim);
+				System.out.println("i,j: " + i + "," + j);
+				
 				if (i != j) {
 				
-				System.out.println("i,j: " + i + "," + j);
+				
 				int minor = Math.min(i, j); 
 				int major = Math.max(i, j);
 				double currentWeight = wg.get_weight(minor,major);
@@ -297,7 +301,7 @@ public class ChowLiu implements Serializable{
 					
 					System.out.println("finalListSize:" + weightList.size());
 				
-					}
+				}
 					
 				System.out.println("");
 			}

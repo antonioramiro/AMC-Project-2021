@@ -21,8 +21,7 @@ public class MRFT implements Serializable{
 			
             this.dim = A.dim ;
 			this.measurementsDomain = T.measurementsDomain;
-			//this.branchList = A.branchLister();
-            this.special = A.first();	//Seleciona uma aresta como especial
+		    this.special = A.first();	//Seleciona uma aresta como especial
             this.markov = add_PHI(T, A);
               
             
@@ -70,7 +69,8 @@ public class MRFT implements Serializable{
 		boolean found_special = false;
 	
 		for(int i=0; i < this.dim; i++) {		//percorrer todas as combina��es de n�s da �rvore											
-			for(int j=i; j < this.dim; j++) { 														
+			for(int j=i; j < this.dim; j++) {
+				System.out.println("j_MR:" + j); 														
 				if (A.branchQ(i,j)) { 			//verificar se os n�s em causa constituem uma aresta na �rvore
 					
 					int dimi = getMeasurementDim(i);
@@ -84,7 +84,10 @@ public class MRFT implements Serializable{
                     Phi PHI = new Phi(dimi,dimj);		//criar uma nova matriz PHI
 
 					for (int xi=0; xi < dimi; xi++) { 				//percorrer todas as combina��es poss�veis de xi e xj						 
-						for (int xj=0; xj < dimj; xj++) { 									
+						for (int xj=0; xj < dimj; xj++) { 
+							
+							System.out.println("xj" + xj);
+							
 							if (special) {
 								PHI.setPhi(xi,xj, phi_special(T, i, j, xi, xj, 0.2)); 	//adcionar os valores de phi(xi, xj) na posi��o correspondente da matriz PHI
 							}else { 															
@@ -109,7 +112,8 @@ public class MRFT implements Serializable{
 		if ( Xn.length == dim ) {					//certifica-se de que a dimens�o do vetor � a mesma do MRFT
 		
 			for(int i = 0; i < this.dim; i++) { 								
-				for(int j = i; j < this.dim; j++) { 			 										
+				for(int j = i; j < this.dim; j++) { 
+					System.out.println("j_prob:" + j); 				 										
 					if (this.markov.isTherePhi(i,j)) {			                     	
 						System.out.println(i+ "," + j);
 						result = (result*(this.markov.getMarkov(i, j).getPhi(Xn[i],Xn[j]))); 

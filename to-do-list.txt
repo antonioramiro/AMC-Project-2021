@@ -28,6 +28,9 @@
 - dar exemplos melhores
 - cross valdiation
 
+dá:
+
+bcancer 
 
 
 

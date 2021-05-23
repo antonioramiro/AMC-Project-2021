@@ -55,7 +55,7 @@ public class ClassifierPackager implements Serializable{
 
     public static void main(String[] args) {
     
-    	Dataset T = FileHandling.getDataset("Datasets/hepatitis.csv");
+    	Dataset T = FileHandling.getDataset("Datasets/bcancer.csv");
         //Creating Dataset
        /* Dataset ds1 = new Dataset(8);
         int[] m6 = {3,3,3,3,3,3,3,1,};
