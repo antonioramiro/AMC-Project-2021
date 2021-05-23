@@ -15,8 +15,7 @@ public class ChowLiu implements Serializable{
 	int dim_measurement;
 	WGraph wg;
 	 
-	
-	
+
 	public ChowLiu (Dataset T) {
 		this.dim_Dataset = T.len();
 		this.dim_measurement = T.getMeasurementNumber();

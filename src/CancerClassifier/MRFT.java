@@ -183,6 +183,8 @@ class Markov implements Serializable{
 public class MRFT implements Serializable{
 	private static final long serialVersionUID = 4L;
 
+	
+
 	//Atributes
 	private int dim;		             //MRFT dimension
 	private Markov markov;	 	     	 //Markov of Phi matrixes
@@ -199,6 +201,7 @@ public class MRFT implements Serializable{
         }else {
             throw new AssertionError("The number of Tree Leafs (" + this.dim + ") must match the number of measurements (" +T.getMeasurementNumber()+ ") in the dataset");
         }
+	
 	}
 	
 	@Override
