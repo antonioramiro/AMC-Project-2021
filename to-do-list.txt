@@ -21,17 +21,11 @@
 
 //2.a parte---------------------------------------------------
 / por fazer
-- MST 
 
 /melhorar
 - window2 JFileChooser
 - dar exemplos melhores
 - cross valdiation
-
-dá:
-
-bcancer 
-
 
 
 
