@@ -238,8 +238,7 @@ public class FileHandling {
           }
           //having the measurement number, repeat previous procedure to remaining lines
           while (csvReader.hasNextLine()) {
-            System.out.println("Reading Partition - Next Line" + i);
-            System.out.println();
+            
             //initialize data separated by commas array
             String data = csvReader.nextLine();
             String[] values = (data.split(","));
@@ -281,6 +280,94 @@ public class FileHandling {
     return null;
   }
 
+  public static ArrayList<ArrayList<Integer>> getTestingMeasurements(String path){
+    try {
+      File csvFile = new File(path);
+      Scanner csvReader = new Scanner(csvFile);
+
+      //for the first line, reading the line
+      if(!csvReader.hasNextLine()){
+        csvReader.close();
+        throw new AssertionError("CSV file empty.");
+      }
+      String firstData = csvReader.nextLine();
+      String[] firstValues = (firstData.split(","));
+      int measurementNumber = firstValues.length - 1;
+
+      ArrayList<Integer> firstMeasurements = new ArrayList<Integer>();
+      for (int i = 0; i < measurementNumber; i++) {
+        int thisMeasurement = Integer.parseInt(firstValues[i]);
+        firstMeasurements.add(thisMeasurement);
+      }
+
+      ArrayList<ArrayList<Integer>> newTestList = new ArrayList<ArrayList<Integer>>();
+      newTestList.add(firstMeasurements);
+
+      // procedimento para as restantes linhas
+      while (csvReader.hasNextLine()) {
+        String data = csvReader.nextLine();
+        String[] values = (data.split(","));
+
+        //Setting measurements
+        ArrayList<Integer> remainingMeasurements = new ArrayList<Integer>();
+        for (int i = 0; i < measurementNumber; i++) {
+          int thisMeasurement = Integer.parseInt(firstValues[i]);
+          remainingMeasurements.add(thisMeasurement);
+        } 
+
+        //creating and adding datapooint do dataset
+        
+        newTestList.add(remainingMeasurements);
+      }
+      csvReader.close();
+      
+      return newTestList;
+
+      
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } 
+    return null;
+  }
+
+  //getDataset receives the path and imports the .csv onto a variable of the type Dataset
+  public static ArrayList<Integer> getGroundTruth(String path) {
+
+    try {
+      File csvFile = new File(path);
+      Scanner csvReader = new Scanner(csvFile);
+
+      //for the first line, reading the line
+      if(!csvReader.hasNextLine()){
+        csvReader.close();
+        throw new AssertionError("CSV file empty.");
+      }
+      ArrayList<Integer> classifications = new ArrayList<Integer>();
+
+      while (csvReader.hasNextLine()) {
+        String data = csvReader.nextLine();
+        String[] values = (data.split(","));
+
+        //Setting classification
+        int classification = Integer.parseInt(values[values.length -1 ]);
+        
+        
+        classifications.add(classification);
+      }
+      csvReader.close();
+      
+      return classifications;
+
+      
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } 
+    return null;
+  }
+
+
+  
+
     public static void main(String[] args) {
     
     //importing a dataset from path
@@ -307,9 +394,15 @@ public class FileHandling {
     System.out.println("Diagnosis: " + result);
 
     //Creating 5 files for the CrossValidation
-    FileHandling.datasetPartition("Datasets/hepatitis.csv","Datasets/CrossValidation/hepatitis/",5);
+    FileHandling.datasetPartition("Datasets/thyroid.csv","Datasets/CrossValidation/thyroid/",5);
 
     //Import datasets except #1
-    System.out.println(getDatasetsMinusOne("Datasets/CrossValidation/hepatitis/",1,5));
+   // System.out.println(getDatasetsMinusOne("Datasets/CrossValidation/hepatitis/",1,5));
+
+    //get measurements to test (without CLASSIFICATION)
+    //System.out.println(getTestingMeasurements("Datasets/CrossValidation/hepatitis/1.csv"));
+
+    //get groundtruth to test 
+    //System.out.println(getGroundTruth("Datasets/CrossValidation/hepatitis/1.csv"));
   }
 }

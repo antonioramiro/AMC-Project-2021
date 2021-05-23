@@ -13,7 +13,7 @@ public class ClassifierPackager implements Serializable{
     public ClassifierPackager(Dataset T){
     	
   
-    	System.out.println("domain" + Arrays.toString(T.measurementDim()));
+    	//System.out.println("domain" + Arrays.toString(T.measurementDim()));
     	
     	ChowLiu cl = new ChowLiu(T);
         Tree chowliuTree = cl.getTree(); //ChowLiu(data);

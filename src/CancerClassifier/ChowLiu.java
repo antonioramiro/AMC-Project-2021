@@ -251,7 +251,7 @@ public class ChowLiu implements Serializable{
 	}
 	
 	public Tree getTree() {
-		System.out.println("ordered" + orderedBranchList());
+		//System.out.println("ordered" + orderedBranchList());
 		return MaximalTree(orderedBranchList());
 		
 	}
