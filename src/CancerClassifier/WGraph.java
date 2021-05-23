@@ -109,49 +109,7 @@ public class WGraph implements Serializable{//(extends Graph) , usamos isto quan
 		return edgelist;
 	}
 	
-	
-	
-	public LinkedList<Integer> offspring(int o){
-		LinkedList<Integer> children = new LinkedList<Integer>();
-		if (o>=0 && o<this.dim) {
-			for (int i = 0; i < wmtx.length; i++) {
-				if (wmtx[o][i] != 0) {
-					children.add(i);
-				}
-			}
-			return children;
-		} else {
-			throw new AssertionError("node not in graph");
-		}
-	}
-	
-	
-		
-	public ArrayList<Integer> DFS (int o) { //dá-nos os descendentes de cada árvore, em profundidade
-		if ( o>= 0 && o< this.dim) {
-			ArrayList<Integer> r = new ArrayList<Integer>();
-			Stack<Integer> stack = new Stack<Integer>();
-			boolean [] visited = new boolean[this.dim]; //lista de visitados
-			stack.push(o); //adicionamos o primeiro nó
-			while (!stack.isEmpty()) {
-				int node = stack.pop(); // remove o mais recente
-				if (!visited[node]) {
-					r.add(node);
-					visited[node]=true;
-					for (int i: this.offspring(node)) {
-						stack.push(node);
-					}
-					
-				}
-			}
-			return r;
-		}
-		else {
-			throw new AssertionError("node not in graph");
-		}
-	}
-	
-	
+
 	
 
 	
