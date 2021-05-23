@@ -36,6 +36,10 @@ public class ClassifierPackager implements Serializable{
         }
     }    
     
+    public int numberOfMeasurements() {
+    	return this.getMrft().get(0).getDim();
+    }
+    
     //Dimension Getter
     public int getDim() {
         return this.dim;
@@ -49,6 +53,7 @@ public class ClassifierPackager implements Serializable{
     //Freq Getter
     public double[] getFreq() {
         return this.freqList;
+
     }
 
     @Override

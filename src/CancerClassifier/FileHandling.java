@@ -290,6 +290,8 @@ public class FileHandling {
         csvReader.close();
         throw new AssertionError("CSV file empty.");
       }
+
+      
       String firstData = csvReader.nextLine();
       String[] firstValues = (firstData.split(","));
       int measurementNumber = firstValues.length - 1;
@@ -311,7 +313,7 @@ public class FileHandling {
         //Setting measurements
         ArrayList<Integer> remainingMeasurements = new ArrayList<Integer>();
         for (int i = 0; i < measurementNumber; i++) {
-          int thisMeasurement = Integer.parseInt(firstValues[i]);
+          int thisMeasurement = Integer.parseInt(values[i]);
           remainingMeasurements.add(thisMeasurement);
         } 
 
@@ -394,7 +396,10 @@ public class FileHandling {
     System.out.println("Diagnosis: " + result);
 
     //Creating 5 files for the CrossValidation
+    FileHandling.datasetPartition("Datasets/hepatitis.csv","Datasets/CrossValidation/hepatitis/",5);
+    FileHandling.datasetPartition("Datasets/bcancer.csv","Datasets/CrossValidation/bcancer/",5);
     FileHandling.datasetPartition("Datasets/thyroid.csv","Datasets/CrossValidation/thyroid/",5);
+    FileHandling.datasetPartition("Datasets/diabetes.csv","Datasets/CrossValidation/diabetes/",5);
 
     //Import datasets except #1
    // System.out.println(getDatasetsMinusOne("Datasets/CrossValidation/hepatitis/",1,5));

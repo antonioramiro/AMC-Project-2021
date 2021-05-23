@@ -17,12 +17,10 @@ public class CrossValidation {
     return ret;
 }
 
-    private static void CrossValidationG(String datasetsFolderPath, int partitionNumber, String diseaseName){
-        ArrayList<Integer[][]> confMatrixList = new ArrayList<Integer[][]>();
-        
+    private static void CrossValidationG(String datasetsFolderPath, int partitionNumber, String diseaseName){       
         int[][] total = new int[2][2];
         for (int rejectedDataset = 0; rejectedDataset < partitionNumber; rejectedDataset++){
-            System.out.println("Rejected:" + rejectedDataset);
+            
 
             ArrayList<ArrayList<Integer>> testingValues = FileHandling.getTestingMeasurements("Datasets/CrossValidation/"+ diseaseName+"/"+ rejectedDataset +".csv");
             ArrayList<Integer> groundTruth = FileHandling.getGroundTruth("Datasets/CrossValidation/"+ diseaseName +"/"+ rejectedDataset +".csv");
@@ -30,18 +28,21 @@ public class CrossValidation {
             int[][] confMatrix = new int[2][2];
 
             Dataset T = FileHandling.getDatasetsMinusOne("Datasets/CrossValidation/"+diseaseName+"/",rejectedDataset,partitionNumber);
-            //T.setDomain(FileHandling.getDataset("Datasets/" + diseaseName + ".csv").measurementDim());
             
-            System.out.println("A" + Arrays.toString(FileHandling.getDataset("Datasets/" + diseaseName + ".csv").measurementDim()));
-            System.out.println("B" + Arrays.toString(T.measurementDim()));
+            // T.setDomain not implemented since it harms the Dataset object, however
+            // there can be a case in which the testing dataset has one of the measurements
+            // out of the testing domain, and it won't be able to test. The lines bellow,
+            // would set the testing dataset to be equal to the complete dataset (which includes the 
+            // domain of the testing one)
 
-            //System.out.println("Dataset" + T);
+            //T.setDomain(FileHandling.getDataset("Datasets/" + diseaseName + ".csv").measurementDim());
+            //System.out.println("A" + Arrays.toString(FileHandling.getDataset("Datasets/" + diseaseName + ".csv").measurementDim()));
+            //System.out.println("B" + Arrays.toString(T.measurementDim()));
 
             ClassifierPackager  cp = new ClassifierPackager(T);
             Classifier c = new Classifier(cp.getMrft(), cp.getFreq()); //creates a classifier from the ClassifierPackager
             
             for(int i = 0; i < testingValues.size(); i++){
-                System.out.println("T"+testingValues.get(i));
                 int predicted = c.Classify(convertIntegers(testingValues.get(i)));
                 int actual = groundTruth.get(i);
 
@@ -51,28 +52,13 @@ public class CrossValidation {
             System.out.println("Without partition " + rejectedDataset +" of the Dataset, result is:" + Arrays.deepToString(confMatrix));
             
         }
+        System.out.println("Result" + Arrays.deepToString(total));
         
     }
 
-    private double[][] getConfSum(){
-        double[][] a = {{1},{2}};
-        return a;
-    }
-
-
-    //cortar o dataset em 5
-    //inicializar arraylist de doubles
-    ArrayList<Double[]> ola = new  ArrayList<Double[]>();
-
-    //ciclo testes, rodando
-        //constroi classificador com 4
-        //testa com 1, e compara com ground truth
-        //adiciona nova conf.matrix à array list~
-
-    //soma todas e devolve
-
     public static void main(String[] args) {
         CrossValidationG("Datasets/CrossValidation/diabetes/",5,"diabetes");
+   
     }
 
 
