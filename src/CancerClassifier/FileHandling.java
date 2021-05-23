@@ -156,7 +156,7 @@ public class FileHandling {
     //importing a dataset from path
     Dataset T = FileHandling.getDataset("Datasets/diabetes.csv");
     //proving dataset correct importing (w/o spamming the console)
-    System.out.println("Dataset domain: " + Arrays.toString(T.measurementsDomain));
+    System.out.println("Dataset domain: " + Arrays.toString(T.measurementDim()));
 
     //exporting the classifier
     FileHandling.exportClassifier(T,"diabetes");

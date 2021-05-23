@@ -20,7 +20,7 @@ public class ChowLiu implements Serializable{
 	
 	public ChowLiu (Dataset T) {
 		this.dim_Dataset = T.len();
-		this.dim_measurement = T.measurementNumber;
+		this.dim_measurement = T.getMeasurementNumber();
 		this.wg = createWGraph(T);
 		
 		
@@ -82,9 +82,10 @@ public class ChowLiu implements Serializable{
 	
 	
 	public static LinkedList<Integer> offspring(Tree t, int o){ //descendentes do n� o no grafo
+		int treeDim = t.getDimension();
 		LinkedList<Integer> children = new LinkedList<Integer>();
-		if (o>=0 && o<t.dim) {
-			for (int i = 0; i < t.dim; i++) {
+		if (o>=0 && o<treeDim) {
+			for (int i = 0; i < treeDim; i++) {
 				if (t.branchQ(o, i)) {
 					children.add(i);
 				}
@@ -98,10 +99,11 @@ public class ChowLiu implements Serializable{
 	
 
 	public ArrayList<Integer> DFS (int o, Tree t) { //d�-nos os descendentes de cada �rvore, em profundidade
-		if ( o>= 0 && o< t.dim) {
+		int treeDim = t.getDimension();
+		if ( o>= 0 && o< treeDim) {
 			ArrayList<Integer> r = new ArrayList<Integer>();
 			Stack<Integer> stack = new Stack<Integer>();
-			boolean [] visited = new boolean[t.dim]; //lista de visitados
+			boolean [] visited = new boolean[treeDim]; //lista de visitados
 			stack.push(o); //adicionamos o primeiro n�
 			while (!stack.isEmpty()) {
 				int node = stack.pop(); // remove o mais recente
@@ -125,8 +127,9 @@ public class ChowLiu implements Serializable{
 		
 	public static boolean pathQ(int o, int d, Tree t) {
 		boolean found = false;
-		if (o>=0 && o<t.dim && d>=0 && d<t.dim) {
-			boolean[] visited = new boolean[t.dim];
+		int treeDim = t.getDimension();
+		if (o>=0 && o<treeDim && d>=0 && d<treeDim) {
+			boolean[] visited = new boolean[treeDim];
 			Queue<Integer> q = new LinkedList<Integer>();
 			
 			q.add(o);

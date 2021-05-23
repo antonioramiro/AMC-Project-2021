@@ -8,8 +8,8 @@ import java.util.Arrays;
 class DataPoint {
 	
     //Class Attributes
-    int[] measurements;
-    int classification;
+    private int[] measurements;
+    private int classification;
 
     //Constructor of DataPoint with specific measurements and classification. Array length and classification must be as expected.
     public DataPoint(int[] m, int c){
@@ -54,10 +54,10 @@ class DataPoint {
 public class Dataset {
 	
     //Class Attributes
-    ArrayList<DataPoint> dataList;
-    public int[] measurementsDomain; //domain of the dataset measurements
-    int classDomain; //domain of the class
-    int measurementNumber;
+    private ArrayList<DataPoint> dataList;
+    private int[] measurementsDomain; //domain of the dataset measurements
+    private int classDomain; //domain of the class
+    private int measurementNumber;
    
     //Constructor of empty Dataset
     public Dataset(int measurementNumber){
@@ -87,12 +87,17 @@ public class Dataset {
         return this.dataList.size();
     }
 
-    //returns de dimension of a measurement i
+    //returns the dimension of a measurement i
     public int measurementDim(int i){
         return this.measurementsDomain[i];
     }
 
-    //returns de dimension of a measurement i
+    //returns the dimensions of the measurement
+    public int[] measurementDim(){
+        return this.measurementsDomain;
+    }
+
+    //returns the dimension of a class i
     public int classDim(){
         return this.classDomain;
     }    
