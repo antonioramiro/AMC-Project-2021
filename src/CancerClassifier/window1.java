@@ -42,7 +42,7 @@ public class window1 {
 	//Initialize the contents of the frame.	
 	private void initialize() {
 		frmWindow = new JFrame();
-		frmWindow.getContentPane().setBackground(Color.WHITE);
+		
 		frmWindow.setTitle("Classifier Creator");
 		frmWindow.setBounds(100, 100, 664, 154);
 		frmWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -53,16 +53,27 @@ public class window1 {
 		instructionsLbl.setBounds(10, 23, 376, 14);
 		frmWindow.getContentPane().add(instructionsLbl);
 		
+		//Open file button 
+		JButton OpenBtn = new JButton("Choose file...");
+		OpenBtn.setBounds(10, 44, 113, 23);
+		frmWindow.getContentPane().add(OpenBtn);
+
 		//Dataset path label
 		JLabel PathLbl = new JLabel("");
 		PathLbl.setBackground(Color.BLACK);
 		PathLbl.setBounds(133, 48, 493, 19);
 		frmWindow.getContentPane().add(PathLbl);
 		
-		//Open file button 
-		JButton OpenBtn = new JButton("Choose file...");
-		OpenBtn.setBounds(10, 44, 113, 23);
-		frmWindow.getContentPane().add(OpenBtn);
+		//Update label
+		JLabel updateLbl = new JLabel("");
+		updateLbl.setForeground(Color.BLACK);
+		updateLbl.setBounds(10, 70, 517, 22);
+		frmWindow.getContentPane().add(updateLbl);
+
+		//Import button 
+		JButton ImportBtn = new JButton("Import");
+		ImportBtn.setBounds(537, 70, 89, 23);
+		frmWindow.getContentPane().add(ImportBtn);
 		
 		//Let's user select a dataset when Open button is activated
 		OpenBtn.addActionListener(new ActionListener() {
@@ -72,17 +83,6 @@ public class window1 {
 					PathLbl.setText(path); //sets path label with dataset path
 			}
 		}});
-
-		//Update label
-		JLabel updateLbl = new JLabel("");
-		updateLbl.setForeground(Color.BLACK);
-		updateLbl.setBounds(10, 70, 517, 22);
-		frmWindow.getContentPane().add(updateLbl);
-		
-		//Import button 
-		JButton ImportBtn = new JButton("Import");
-		ImportBtn.setBounds(537, 70, 89, 23);
-		frmWindow.getContentPane().add(ImportBtn);
 		
 		//Imports a dataset and creates a classifier when ImportButton is activated
 		ImportBtn.addActionListener(new ActionListener() {

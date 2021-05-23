@@ -56,6 +56,27 @@ public class window2 {
 		frmClassifier.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmClassifier.getContentPane().setLayout(null);
 		
+		//Instructions Label
+		JLabel InstructionsLbl = new JLabel("Choose a classifier");
+		InstructionsLbl.setBounds(10, 23, 396, 20);
+		frmClassifier.getContentPane().add(InstructionsLbl);
+		
+		//Choose file button
+		JButton ChooseFileBtn = new JButton("Choose File...");
+		ChooseFileBtn.setBounds(10, 49, 111, 23);
+		frmClassifier.getContentPane().add(ChooseFileBtn);
+		
+		//Classifier path label
+		JLabel FilePath = new JLabel("");
+		FilePath.setBounds(128, 49, 451, 23);
+		frmClassifier.getContentPane().add(FilePath);
+		
+		//Insert measurements Label
+		JLabel MeasurementsLbl = new JLabel("Insert Measurements");
+		MeasurementsLbl.setEnabled(false);
+		MeasurementsLbl.setBounds(10, 83, 358, 14);
+		frmClassifier.getContentPane().add(MeasurementsLbl);
+		
 		//Text field to insert measurement values
 		insertValues = new JTextField();
 		insertValues.setEditable(false);
@@ -64,16 +85,10 @@ public class window2 {
 		frmClassifier.getContentPane().add(insertValues);
 		insertValues.setColumns(10);
 		
-		//Instructions Label
-		JLabel MeasurementsLbl = new JLabel("Insert Measurements");
-		MeasurementsLbl.setEnabled(false);
-		MeasurementsLbl.setBounds(10, 83, 358, 14);
-		frmClassifier.getContentPane().add(MeasurementsLbl);
-		
-		//Classifier path label
-		JLabel FilePath = new JLabel("");
-		FilePath.setBounds(128, 49, 451, 23);
-		frmClassifier.getContentPane().add(FilePath);
+		//classify button
+		JButton ClassifyBtn = new JButton("Classify");
+		ClassifyBtn.setBounds(490, 170, 89, 23);
+		frmClassifier.getContentPane().add(ClassifyBtn);
 		
 		//Problems label 
 		JLabel ProblemLbl = new JLabel("");
@@ -81,16 +96,11 @@ public class window2 {
 		ProblemLbl.setBounds(10, 139, 569, 20);
 		frmClassifier.getContentPane().add(ProblemLbl);
 
-		//Choose file button
-		JButton ChooseFileBtn = new JButton("Choose File...");
-		ChooseFileBtn.setBounds(10, 49, 111, 23);
-		frmClassifier.getContentPane().add(ChooseFileBtn);
 		
 		//Class label is created
 		JLabel ClassLbl = new JLabel("");
 		ClassLbl.setBounds(163, 208, 46, 14);
 		frmClassifier.getContentPane().add(ClassLbl);
-		  
 		
 		//result label is created
 		JLabel ResultHereLbl = new JLabel("");
@@ -119,11 +129,6 @@ public class window2 {
 				}
 			}
 		});
-		
-		//classify button
-		JButton ClassifyBtn = new JButton("Classify");
-		ClassifyBtn.setBounds(490, 170, 89, 23);
-		frmClassifier.getContentPane().add(ClassifyBtn);
 		
 		//classifies values when classify button is activated 
 		ClassifyBtn.addActionListener(new ActionListener() {
