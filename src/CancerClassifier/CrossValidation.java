@@ -1,6 +1,7 @@
 package CancerClassifier;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 
 
@@ -33,7 +34,7 @@ public class CrossValidation {
             // there can be a case in which the testing dataset has one of the measurements
             // out of the testing domain, and it won't be able to test. The lines bellow,
             // would set the testing dataset to be equal to the complete dataset (which includes the 
-            // domain of the testing one)
+            // domain of the testing one) - which makes sense, it has never seen that data point before
 
             //T.setDomain(FileHandling.getDataset("Datasets/" + diseaseName + ".csv").measurementDim());
             //System.out.println("A" + Arrays.toString(FileHandling.getDataset("Datasets/" + diseaseName + ".csv").measurementDim()));
@@ -43,22 +44,36 @@ public class CrossValidation {
             Classifier c = new Classifier(cp.getMrft(), cp.getFreq()); //creates a classifier from the ClassifierPackager
             
             for(int i = 0; i < testingValues.size(); i++){
+               
+                
                 int predicted = c.Classify(convertIntegers(testingValues.get(i)));
                 int actual = groundTruth.get(i);
-
+                
                 confMatrix[predicted][actual]++;
                 total[predicted][actual]++;
             }
-            System.out.println("Without partition " + rejectedDataset +" of the Dataset, result is:" + Arrays.deepToString(confMatrix));
+            //System.out.println("Without partition " + rejectedDataset +" of the Dataset, result is:" + Arrays.deepToString(confMatrix));
             
         }
-        System.out.println("Result" + Arrays.deepToString(total));
+        
+        System.out.println(diseaseName + " Result" + Arrays.deepToString(total));
+        
         
     }
 
     public static void main(String[] args) {
+        long startTime = System.nanoTime();
+        //running 5 classifiers for each disease, trained on 4/5th of the
+        //available data, and using said classifiers to test the remaining 1/5th of 
+        //the data of each classifier
+        CrossValidationG("Datasets/CrossValidation/hepatitis/",5,"hepatitis");
+        CrossValidationG("Datasets/CrossValidation/bcancer/",5,"bcancer");
+        CrossValidationG("Datasets/CrossValidation/thyroid/",5,"thyroid");
         CrossValidationG("Datasets/CrossValidation/diabetes/",5,"diabetes");
-   
+        long endTime = System.nanoTime();
+        long timeElapsed = endTime - startTime;
+        System.out.println("Elapsed time to create 20 classifiers (trained on a combined number of ~ 4000 datapoints) and test them on more than 800 sets of measurements (combined): " + timeElapsed/1000000000d + " s");
+        //                                                           800 = 1/5 of every classifier summed up
     }
 
 

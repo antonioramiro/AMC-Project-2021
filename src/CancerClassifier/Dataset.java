@@ -142,11 +142,15 @@ public class Dataset {
             if (dp.getClassification() == classification){
                 fiber.Add(dp);
             }
+            fiber.setDomain(this.measurementsDomain);
         }
         return fiber;
     }
 
-
+    
+    private void setDomain(int[] measurementsDomain){
+        this.measurementsDomain = measurementsDomain;
+    }
     
     public int getMeasurementNumber () {
     	return this.measurementNumber;
