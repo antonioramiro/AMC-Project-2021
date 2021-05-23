@@ -12,7 +12,7 @@ public class CrossValidation {
         for (int rejectedDataset = 0; rejectedDataset < partitionNumber; rejectedDataset++){
             double[][] confMatrix = new double[2][2];
             Dataset T = FileHandling.getDatasetsMinusOne("Datasets/CrossValidation/hepatitis/",rejectedDataset,partitionNumber);
-            
+                        
 
         }
         
