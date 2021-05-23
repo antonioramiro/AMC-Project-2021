@@ -3,8 +3,6 @@ package CancerClassifier;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Stack;
 
 
 // Weighted Graph implementation 
@@ -73,7 +71,7 @@ public class WGraph implements Serializable{//(extends Graph) , usamos isto quan
 		return found;
 	}
 	
-	public ArrayList<ArrayList<Integer>> Edge_Sort() { //não funciona :(((
+	public ArrayList<ArrayList<Integer>> Edge_Sort() { //nï¿½o funciona :(((
 		ArrayList<ArrayList<Integer>> edgelist = new ArrayList<ArrayList<Integer>>();
 		ArrayList<Double> weightlist = new ArrayList<Double>();
 		
@@ -91,9 +89,9 @@ public class WGraph implements Serializable{//(extends Graph) , usamos isto quan
 				}
 				else {
 					for (int k = 0; k < weightlist.size() && !put ; k++) {
-						System.out.println("próximo ahaha " + i + ", " + j +  " get_weight = " + this.get_weight(i, j) + " weightlist.get = " + weightlist.get(k));
+						System.out.println("prï¿½ximo ahaha " + i + ", " + j +  " get_weight = " + this.get_weight(i, j) + " weightlist.get = " + weightlist.get(k));
 						if (this.get_weight(i, j) >= weightlist.get(k)) {
-							//não entra aqui
+							//nï¿½o entra aqui
 							ArrayList<Integer> edge = new ArrayList<Integer>(); 
 							edge.add(i);
 							edge.add(j);

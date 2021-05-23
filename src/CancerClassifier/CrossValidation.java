@@ -1,13 +1,8 @@
 package CancerClassifier;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
-
-
 
 public class CrossValidation {
-    private Dataset T;
-    private int partitionNumber;
 
     public static int[] convertIntegers(ArrayList<Integer> integers){
         int[] ret = new int[integers.size()];
@@ -30,7 +25,7 @@ public class CrossValidation {
 
             Dataset T = FileHandling.getDatasetsMinusOne("Datasets/CrossValidation/"+diseaseName+"/",rejectedDataset,partitionNumber);
             
-            // T.setDomain not implemented since it harms the Dataset object, however
+            // T.setDomain not implemented publically since it harms the Dataset object, however
             // there can be a case in which the testing dataset has one of the measurements
             // out of the testing domain, and it won't be able to test. The lines bellow,
             // would set the testing dataset to be equal to the complete dataset (which includes the 
@@ -73,7 +68,10 @@ public class CrossValidation {
         long endTime = System.nanoTime();
         long timeElapsed = endTime - startTime;
         System.out.println("Elapsed time to create 20 classifiers (trained on a combined number of ~ 4000 datapoints) and test them on more than 800 sets of measurements (combined): " + timeElapsed/1000000000d + " s");
-        //                                                           800 = 1/5 of every classifier summed up
+        //                                                          800 = 1/5 of every classifier summed up
+
+        //we suggest running FileHandling main, to re-partition the datasets in a different way so that
+        //different results can be seen. previously partitioned datasets have to be deleted 1st
     }
 
 
