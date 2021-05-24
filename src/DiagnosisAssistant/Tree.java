@@ -1,4 +1,4 @@
-package CancerClassifier;
+package DiagnosisAssistant;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,10 +21,12 @@ public class Tree implements Serializable{
         	
     }
 
+    //devolve numero de nos
     public int getDimension(){
         return this.dim;
     }
 
+    //devolve o primeiro nó que encontrar
     public ArrayList<Integer> first(){
         boolean firstFound = false;
         ArrayList<Integer> firstBranch = new ArrayList<Integer>();
@@ -40,31 +42,10 @@ public class Tree implements Serializable{
             }
             
         }
-
         return firstBranch;
     }
 
-    public  ArrayList<ArrayList<Integer>> branchLister(){
-
-        ArrayList<ArrayList<Integer>> branchList = new ArrayList<ArrayList<Integer>>();
-        int dim = this.dim;
-
-        for(int i = 0; i < dim; i++){
-            int connectedNr = this.index.get(i).size();
-            for(int j = 0; j < connectedNr; j++){
-                ArrayList<Integer> currentBranch = new ArrayList<Integer>();
-                currentBranch.add(i);
-                currentBranch.add(this.index.get(i).get(j));
-
-                branchList.add(currentBranch);
-            }
-            
-        }
-        
-        return branchList;
-
-    }
-
+    //adds a leaf to the tree
     public void addLeaf(int o, int d) {
         int minor = Math.min(o, d); 
         int major = Math.max(o, d);
@@ -78,15 +59,13 @@ public class Tree implements Serializable{
                 throw new AssertionError("Tree doesn't allow interconnected leaves or unexisting pairs of leaves");
             }
         }
-        	//}else {
-        		//throw new AssertionError("You cannot add a fallen leaf. Please, add branches to catch it");
-        	}
+    }
        
-        
-   // }
-
+    //verifies if certain branch exists
     public boolean branchQ(int o, int d) {
         boolean isThere = false;
+
+        //protects simetric implementation
         int minor = Math.min(o, d); 
         int major = Math.max(o, d);
         
@@ -96,11 +75,11 @@ public class Tree implements Serializable{
                     isThere = true;
                 }
             }
-        
         }
         return isThere;
     }
 
+    //checks if a tree exists
     public boolean leafQ(int i){
         boolean isThere = false;
         if (this.index.get(i).size() > 0) {
@@ -115,10 +94,6 @@ public class Tree implements Serializable{
     return isThere;
     }
 
-    // verificar se ja existe o no ao qual vai ligar
-    // verificar se nao faz clique
-    // verificar se ele proprio ja existe
-
     @Override
     public String toString() {
         return "{" + " dim='" + this.dim + "'" + ", index='" + (this.index) + "'" + "}";
@@ -129,72 +104,9 @@ public class Tree implements Serializable{
         t.addLeaf(1, 0);
         t.addLeaf(3, 2);
         System.out.println(t);
+        
+        System.out.println(t.leafQ(3));
 
         System.out.println("branch: " + t.leafQ(0));
-
-    
-
-        ArrayList<ArrayList<Integer>> z = new ArrayList<ArrayList<Integer>>();
-        //Tree tree = new Tree(8);
-        
-        ArrayList<Integer> x1 = new ArrayList<Integer>();
-        ArrayList<Integer> x2 = new ArrayList<Integer>();
-        ArrayList<Integer> x3 = new ArrayList<Integer>();
-        ArrayList<Integer> x4 = new ArrayList<Integer>();
-        ArrayList<Integer> x5 = new ArrayList<Integer>();
-        ArrayList<Integer> x6 = new ArrayList<Integer>();
-        ArrayList<Integer> x7 = new ArrayList<Integer>();
-        x1.add(0);
-        x1.add(1);
-        
-        x3.add(0);
-        x3.add(2);
-        
-        x2.add(1);
-        x2.add(2);
-        
-        x4.add(0);
-        x4.add(3);
-        
-        x5.add(1);
-        x5.add(4);
-        
-        x6.add(2);
-        x6.add(4);
-        
-        x7.add(7);
-        x7.add(5);
-        //System.out.println("arraylist x = " + x);
-        z.add(x1);
-        z.add(x3);
-        z.add(x2);
-        z.add(x4);
-        z.add(x5);
-        z.add(x6);
-        z.add(x7); 
-        
-        /*
-       {{1,3},{3,2}}
-       for (branch : arvore) {~
     }
-        */
-
-        
-        //Tree tree = MST.MaximalTree(z);
-        //System.out.println("tree: " + tree);
-     
-        //System.out.println("arrayList z = " + z);
-        //System.out.println("path: " + MST.pathQ(2, 4, MST.MaximalTree(z)));
-
-
-        //System.out.println("maximalTree z = " + ChowLiu.MaximalTree(z));
-        //System.
-
-
-        //System.out.println(t.leafQ(5));
-        //System.out.println(t.branchQ(1,3));
-
-        //System.out.println(t);
-        //System.out.println(z.get(0).get(1));
-
-    }}
+}

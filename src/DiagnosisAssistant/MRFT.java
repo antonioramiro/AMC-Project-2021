@@ -1,4 +1,4 @@
-package CancerClassifier;
+package DiagnosisAssistant;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -183,8 +183,6 @@ class Markov implements Serializable{
 public class MRFT implements Serializable{
 	private static final long serialVersionUID = 4L;
 
-	
-
 	//Atributes
 	private int dim;		             //MRFT dimension
 	private Markov markov;	 	     	 //Markov of Phi matrixes
@@ -218,7 +216,7 @@ public class MRFT implements Serializable{
 
 
 	//checks if two leaves are connected by the special branch
-	public boolean specialQ(int i, int j ) {	
+	private boolean specialQ(int i, int j ) {	
 		ArrayList<Integer> edge = new ArrayList<Integer>();
 		edge.add(i);
 		edge.add(j);
@@ -228,16 +226,16 @@ public class MRFT implements Serializable{
 
 	
 	//phi value for normal branches
-	public double phi_normal(Dataset T, int i, int j, int xi, int xj, double delta) { 			//phi de xi 
+	private double phi_normal(Dataset T, int i, int j, int xi, int xj, double delta) { 			//phi de xi 
 		return (T.Count(i, j, xi, xj) + delta)/(T.Count(i, xi) + delta*this.getMeasurementDim(j)); 	
 	}
 	//phi value for special branch
-	public double phi_special(Dataset T, int i, int j, int xi, int xj, double delta) { 			//phi de xi e xj
+	private double phi_special(Dataset T, int i, int j, int xi, int xj, double delta) { 			//phi de xi e xj
 		return (T.Count(i,j, xi, xj) + delta)/(T.len() + delta*this.getMeasurementDim(i)*this.getMeasurementDim(j));     //Maria: alterei para T.len()  (estava T.len)
 	}
 	
 	//pupulates Markov with Phi matrixes containing phi values
-	public Markov add_PHI(Dataset T, Tree A){ 
+	private Markov add_PHI(Dataset T, Tree A){ 
 		Markov markov =  new Markov(this.dim); //creates markov
 		boolean found_special = false;
 		for(int i=0; i < this.dim; i++) {		//goes through each pair of tree leaves 									

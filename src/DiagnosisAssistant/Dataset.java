@@ -1,4 +1,4 @@
-package CancerClassifier;
+package DiagnosisAssistant;
 
 
 //To allow ArrayList use

@@ -1,4 +1,4 @@
-package CancerClassifier;
+package DiagnosisAssistant;
 
 //modules
 import java.util.ArrayList;

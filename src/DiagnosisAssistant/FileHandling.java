@@ -1,4 +1,4 @@
-package CancerClassifier;
+package DiagnosisAssistant;
 
 //Import Dataset Needs
 import java.io.File; 
