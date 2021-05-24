@@ -52,54 +52,49 @@ public class window2 {
 		//frame
 		frmClassifier = new JFrame();
 		frmClassifier.setTitle("Classifier");
-		frmClassifier.setBounds(100, 100, 605, 304);
+		frmClassifier.setBounds(100, 100, 696, 200);
 		frmClassifier.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmClassifier.getContentPane().setLayout(null);
 		
-		//Instructions Label
-		JLabel InstructionsLbl = new JLabel("Choose a classifier");
-		InstructionsLbl.setBounds(10, 23, 396, 20);
-		frmClassifier.getContentPane().add(InstructionsLbl);
-		
 		//Choose file button
-		JButton ChooseFileBtn = new JButton("Choose File...");
-		ChooseFileBtn.setBounds(10, 49, 111, 23);
+		JButton ChooseFileBtn = new JButton("Choose Classifier");
+		ChooseFileBtn.setBounds(10, 29, 155, 23);
 		frmClassifier.getContentPane().add(ChooseFileBtn);
 		
 		//Classifier path label
 		JLabel FilePath = new JLabel("");
-		FilePath.setBounds(128, 49, 451, 23);
+		FilePath.setBounds(175, 29, 495, 23);
 		frmClassifier.getContentPane().add(FilePath);
 		
 		//Insert measurements Label
 		JLabel MeasurementsLbl = new JLabel("Insert Measurements");
 		MeasurementsLbl.setEnabled(false);
-		MeasurementsLbl.setBounds(10, 83, 358, 14);
+		MeasurementsLbl.setBounds(20, 63, 133, 14);
 		frmClassifier.getContentPane().add(MeasurementsLbl);
 		
 		//Text field to insert measurement values
 		insertValues = new JTextField();
 		insertValues.setEditable(false);
 		insertValues.setEnabled(false);
-		insertValues.setBounds(10, 108, 569, 20);
+		insertValues.setBounds(175, 60, 495, 20);
 		frmClassifier.getContentPane().add(insertValues);
 		insertValues.setColumns(10);
 		
 		//classify button
 		JButton ClassifyBtn = new JButton("Classify");
-		ClassifyBtn.setBounds(490, 170, 89, 23);
+		ClassifyBtn.setBounds(581, 91, 89, 23);
 		frmClassifier.getContentPane().add(ClassifyBtn);
 		
 		//Problems label 
 		JLabel ProblemLbl = new JLabel("");
 		ProblemLbl.setForeground(Color.RED);
-		ProblemLbl.setBounds(10, 139, 569, 20);
+		ProblemLbl.setBounds(10, 94, 474, 20);
 		frmClassifier.getContentPane().add(ProblemLbl);
 
 		
 		//Class label is created
 		JLabel ClassLbl = new JLabel("");
-		ClassLbl.setBounds(163, 208, 46, 14);
+		ClassLbl.setBounds(175, 113, 46, 14);
 		frmClassifier.getContentPane().add(ClassLbl);
 		
 		//result label is created
@@ -108,7 +103,7 @@ public class window2 {
 		ResultHereLbl.setHorizontalAlignment(SwingConstants.CENTER);
 		ResultHereLbl.setForeground(Color.BLUE);
 		ResultHereLbl.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		ResultHereLbl.setBounds(219, 195, 149, 36);
+		ResultHereLbl.setBounds(231, 120, 126, 30);
 		frmClassifier.getContentPane().add(ResultHereLbl);
 		
 		//imports a classifier when activated
