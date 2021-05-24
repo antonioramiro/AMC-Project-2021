@@ -174,7 +174,6 @@ public class FileHandling {
         }
       
         csvWriter.close();
-        System.out.println("Successfully wrote dataset partition " + i);
       }
       
 

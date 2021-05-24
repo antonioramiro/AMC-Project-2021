@@ -3,13 +3,11 @@ package CancerClassifier;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Stack;
 
 
 // Weighted Graph implementation 
-//public class WGraph extends Graph { -> sï¿½ quando a classe graph estiver implemtada
-	
+
+//creating the attributes of the edge
 class Edge {
         int source;
        	int destiny;
@@ -21,29 +19,29 @@ class Edge {
 		}
 }
 
-public class WGraph implements Serializable{//(extends Graph) , usamos isto quando queremos usar a implementaï¿½ï¿½o da classe graph jï¿½ implementada anteriormente 
+public class WGraph implements Serializable{
 	private static final long serialVersionUID = 7L;
 
-	int dim; //dimensï¿½o da matriz de ajacï¿½ncia
-	//int [][] ma; //matriz de adjacï¿½ncia em si
-	double [][] wmtx; //matriz onde vï¿½o ser guardados os valores dos pesos de cada aresta, serï¿½ uma matriz simï¿½trica tal como a outra dado que o grafo nï¿½o ï¿½ direcionado 
-	//no fundo cada entrada desta matriz refere-se a uma aresta, nessa entrada guardamos o peso dessa aresta
+	//Class Attributes
+	int dim; 
+	double [][] wmtx; 
 	
+	//WGraph Constructor 
 	public WGraph (int d) {
 		this.dim = d;
-		//this.ma = new int[d][d];
 		this.wmtx = new double[d][d];
 	}
 	
-	public int getDim() { //funï¿½ï¿½o que nos dï¿½ a dimensï¿½o da matriz de adjcï¿½ncia (que acaba por ser a mesma dimensï¿½o da matriz com os pesos)
-		return this.dim; //se acharem por bem tambï¿½m podemos devolver a dimensï¿½o da matriz dos pesos mas vai ser igual
+	//getter for WGraph's dimension
+	public int getDim() { 
+		return this.dim; 
 	}
 	
-	public void add(int source, int destiny, double weight) { //adicionar um peso w a uma aresta (que vai do nï¿½ s ao nï¿½ d)
+	//adding an edge with a corresponding weight
+	public void add(int source, int destiny, double weight) { 
 		int minor = Math.min(source, destiny); 
         int major = Math.max(source, destiny);
-		if (minor >= 0 && minor < this.dim && major >= 0 && major < this.dim) { //verificar se as arestas estï¿½o de acordo com a dimensï¿½o da matriz
-			//this.ma[s][d] = 1; //adiciono a aresta de qualquer maneira, nï¿½o sei se preferem verificar antes se existe (dï¿½vida(?))
+		if (minor >= 0 && minor < this.dim && major >= 0 && major < this.dim) { 
 			if (this.wmtx[minor][major] < 10e-10) {
 				this.wmtx[minor][major] = weight;
 			}
@@ -55,25 +53,28 @@ public class WGraph implements Serializable{//(extends Graph) , usamos isto quan
 			
 	}
 	
-	public double get_weight(int source, int destiny) { //falta verificar se existe node/ramo
+	//getter for the weight of a specific edge
+	public double get_weight(int source, int destiny) { 
 		int minor = Math.min(source, destiny); 
         int major = Math.max(source, destiny);
 		return this.wmtx[minor][major];
 	}
 	
-	public boolean indexisnotemptyQ (double [] wtmx) {
+	//returns whether the node exits or not
+	public boolean indexisnotemptyQ (int index) {
 		boolean found = false;
 		for (int i = 0; i < this.dim && !found; i++ ) {
-				if (wtmx[i] != 0) {
+				if (this.wmtx[index].length != 0) {
 					found = true;
-				
+				 
 				}
 			
 			}
 		return found;
 	}
 	
-	public ArrayList<ArrayList<Integer>> Edge_Sort() { //não funciona :(((
+<<<<<<< Updated upstream
+	public ArrayList<ArrayList<Integer>> Edge_Sort() { //nï¿½o funciona :(((
 		ArrayList<ArrayList<Integer>> edgelist = new ArrayList<ArrayList<Integer>>();
 		ArrayList<Double> weightlist = new ArrayList<Double>();
 		
@@ -91,9 +92,9 @@ public class WGraph implements Serializable{//(extends Graph) , usamos isto quan
 				}
 				else {
 					for (int k = 0; k < weightlist.size() && !put ; k++) {
-						System.out.println("próximo ahaha " + i + ", " + j +  " get_weight = " + this.get_weight(i, j) + " weightlist.get = " + weightlist.get(k));
+						System.out.println("prï¿½ximo ahaha " + i + ", " + j +  " get_weight = " + this.get_weight(i, j) + " weightlist.get = " + weightlist.get(k));
 						if (this.get_weight(i, j) >= weightlist.get(k)) {
-							//não entra aqui
+							//nï¿½o entra aqui
 							ArrayList<Integer> edge = new ArrayList<Integer>(); 
 							edge.add(i);
 							edge.add(j);
@@ -113,20 +114,34 @@ public class WGraph implements Serializable{//(extends Graph) , usamos isto quan
 	
 
 	
+=======
+>>>>>>> Stashed changes
 	
 	public String toString() {
 		return "WGraph [dim=" + dim + ", wmtx=" + Arrays.deepToString(wmtx);
 	}
 	
-    //funciona	
     public static void main(String[] args) {
+    	//creating a Weighted Graph
         WGraph wg = new WGraph(3);
+        
+        //adding the edges
         int[][] edges = { {0,1,10}, {1,2,7}, {2,0,3} };
         for (int[] e : edges) {
         	wg.add(e[0], e[1], e[2]);
         }
+        
+        //printing the Weighted Graph
         System.out.println(wg);
-        System.out.println(wg.Edge_Sort());
+        
+        //getting the Weighted Graph's dimension
+        System.out.println("Weighted Graph dimension: " + wg.getDim());
+        
+        //getting the weight of a specific edge
+        System.out.println("(1,2) weight: " + wg.get_weight(1, 2));
+        
+        //checking if the node and are already in the Weighted Graph
+        System.out.println("Index 1 is not empty: " + wg.indexisnotemptyQ(1));
     }
 
 

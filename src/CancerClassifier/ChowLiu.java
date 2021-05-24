@@ -11,7 +11,7 @@ import java.util.Stack;
 public class ChowLiu implements Serializable{
 	private static final long serialVersionUID = 6L;
 
-	int dim_Dataset; //m do eneunciado
+	int dim_Dataset;
 	int dim_measurement;
 	WGraph wg;
 	 
