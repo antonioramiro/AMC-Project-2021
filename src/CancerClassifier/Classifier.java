@@ -3,16 +3,19 @@ package CancerClassifier;
 
 import java.util.ArrayList;
 
-
+//implements the classifier
 public class Classifier {
+	//class attributes
     ArrayList<MRFT> arrayMRFT;
     double[] Frequency;
-           
+    
+    //Constructor        
 	public Classifier(ArrayList<MRFT> arrayMRFT, double[] Frequency){
 		this.arrayMRFT = arrayMRFT;
         this.Frequency = Frequency;
 	    }
-
+	
+	//return the expected diagnosis
     public int Classify(int[] Xn){
     	int classDimension = arrayMRFT.size(); 
         double p = 0;

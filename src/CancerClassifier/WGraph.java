@@ -1,11 +1,11 @@
 package CancerClassifier;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.Arrays;
 
 
-// Weighted Graph implementation 
+// Weighted Graph implementation, by 
 
 //creating the attributes of the edge
 class Edge {
@@ -60,62 +60,6 @@ public class WGraph implements Serializable{
 		return this.wmtx[minor][major];
 	}
 	
-	//returns whether the node exits or not
-	public boolean indexisnotemptyQ (int index) {
-		boolean found = false;
-		for (int i = 0; i < this.dim && !found; i++ ) {
-				if (this.wmtx[index].length != 0) {
-					found = true;
-				 
-				}
-			
-			}
-		return found;
-	}
-	
-<<<<<<< Updated upstream
-	public ArrayList<ArrayList<Integer>> Edge_Sort() { //n�o funciona :(((
-		ArrayList<ArrayList<Integer>> edgelist = new ArrayList<ArrayList<Integer>>();
-		ArrayList<Double> weightlist = new ArrayList<Double>();
-		
-		
-		for (int i = 0; i < this.dim ; i++) {
-			for (int j = i+1;j < this.dim; j++) {
-				boolean put = false;
-				if (weightlist.isEmpty()) {
-					System.out.println("primeiro if ahaha");
-					ArrayList<Integer> edge = new ArrayList<Integer>(); 
-					edge.add(i);
-					edge.add(j);
-					weightlist.add(this.wmtx[i][j]);
-					edgelist.add(edge);
-				}
-				else {
-					for (int k = 0; k < weightlist.size() && !put ; k++) {
-						System.out.println("pr�ximo ahaha " + i + ", " + j +  " get_weight = " + this.get_weight(i, j) + " weightlist.get = " + weightlist.get(k));
-						if (this.get_weight(i, j) >= weightlist.get(k)) {
-							//n�o entra aqui
-							ArrayList<Integer> edge = new ArrayList<Integer>(); 
-							edge.add(i);
-							edge.add(j);
-							weightlist.add(k+1,this.wmtx[i][j]);
-							edgelist.add(k+1,edge);
-							put = true;
-						}
-						
-					}
-				}
-			}
-		}
-		return edgelist;
-	}
-	
-
-	
-
-	
-=======
->>>>>>> Stashed changes
 	
 	public String toString() {
 		return "WGraph [dim=" + dim + ", wmtx=" + Arrays.deepToString(wmtx);
@@ -140,8 +84,7 @@ public class WGraph implements Serializable{
         //getting the weight of a specific edge
         System.out.println("(1,2) weight: " + wg.get_weight(1, 2));
         
-        //checking if the node and are already in the Weighted Graph
-        System.out.println("Index 1 is not empty: " + wg.indexisnotemptyQ(1));
+        
     }
 
 
